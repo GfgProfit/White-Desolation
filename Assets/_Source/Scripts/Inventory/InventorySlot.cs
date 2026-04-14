@@ -6,4 +6,5 @@ public class InventorySlot
 
     public int MaxStack => Item != null ? Item.MaxStack : 1;
     public bool IsEmpty => Item == null || Count <= 0;
+    public bool IsFull => !IsEmpty && Count >= MaxStack;
 }
