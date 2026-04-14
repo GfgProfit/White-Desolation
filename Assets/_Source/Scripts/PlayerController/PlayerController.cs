@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
     private float _currentSpeed;
     private Vector3 _rawInput;
     private float _verticalVelocity;
-    private IPlayerInput _input;
     private Vector3 _cameraTargetLocalPos;
     private Vector3 _cameraDefaultLocalPos;
     #endregion
@@ -59,8 +58,6 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        _input = new LegacyPlayerInput();
 
         _currentSpeed = _walkSpeed;
 
@@ -89,7 +86,7 @@ public class PlayerController : MonoBehaviour
     #region Core Logic
     private void Look()
     {
-        Vector2 mouseDelta = _input.GetMouseDelta();
+        Vector2 mouseDelta = _playerInput.GetMouseDelta();
         float mouseX = mouseDelta.x * _mouseSensitivity;
         float mouseY = mouseDelta.y * _mouseSensitivity;
 
@@ -101,7 +98,7 @@ public class PlayerController : MonoBehaviour
 
     private void SetRawInput()
     {
-        Vector2 input = _input.GetMovementInput();
+        Vector2 input = _playerInput.GetMovementInput();
         _rawInput = new Vector3(input.x, _rawInput.y, input.y);
     }
 
@@ -116,7 +113,7 @@ public class PlayerController : MonoBehaviour
                 _verticalVelocity = -2f;
             }
 
-            if (_input.IsJumpPressed())
+            if (_playerInput.IsJumpPressed())
             {
                 _verticalVelocity = _jumpForce;
             }
@@ -154,7 +151,7 @@ public class PlayerController : MonoBehaviour
     {
         IsWalking = _rawInput.x != 0f || _rawInput.z != 0f;
 
-        IsSprinting = CanSprinting && IsWalking && _input.IsSprintHeld() && _rawInput.z > 0;
+        IsSprinting = CanSprinting && IsWalking && _playerInput.IsSprintHeld() && _rawInput.z > 0;
     }
 
     private void HandleCrouch()
