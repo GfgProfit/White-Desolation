@@ -17,6 +17,16 @@ MonoBehaviour:
     (\u041F\u0438\u0442\u044C\u0435\u0432\u0430\u044F)"
   _description: "\u041E\u0431\u044B\u0447\u043D\u0430\u044F \u0431\u0443\u0442\u044B\u043B\u043A\u0430
     \u043F\u0438\u0442\u044C\u0435\u0432\u043E\u0439 \u0432\u043E\u0434\u044B."
+  _icon: {fileID: 21300000, guid: a15de02756653c741a10730e8acc7435, type: 3}
+  _category: 2
+  _primaryAction: 1
   _isStackable: 0
   _maxStack: 1
-  _icon: {fileID: 21300000, guid: a15de02756653c741a10730e8acc7435, type: 3}
+  _usesDurability: 1
+  _isUnbreakable: 0
+  _maxDurability: 100
+  _usesCustomAmount: 1
+  _amountUnit: 1
+  _maxAmount: 10
+  _restoreHydration: 0
+  _restoreCalories: 0

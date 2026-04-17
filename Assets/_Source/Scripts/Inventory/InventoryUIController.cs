@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class InventoryUIController : MonoBehaviour
 {
-    private const string DebugPrefix = "<color=green>[InventoryUI]</color>";
+    private const string DebugPrefix = "[InventoryUI]";
 
     [Header("Root")]
     [SerializeField] private GameObject _inventoryRoot;
@@ -19,9 +19,11 @@ public class InventoryUIController : MonoBehaviour
     [SerializeField] private TMP_Text _itemNameText;
     [SerializeField] private TMP_Text _itemDescriptionText;
     [SerializeField] private TMP_Text _itemCountText;
+    [SerializeField] private TMP_Text _itemStatsText;
 
     [Header("Buttons")]
     [SerializeField] private Button _useButton;
+    [SerializeField] private TMP_Text _useButtonLabel;
     [SerializeField] private Button _dropOneButton;
     [SerializeField] private Button _dropStackButton;
 
@@ -41,9 +43,14 @@ public class InventoryUIController : MonoBehaviour
         if (_inventoryRoot != null)
             _inventoryRoot.SetActive(false);
 
-        _useButton.onClick.AddListener(HandleUseClicked);
-        _dropOneButton.onClick.AddListener(HandleDropOneClicked);
-        _dropStackButton.onClick.AddListener(HandleDropStackClicked);
+        if (_useButton != null)
+            _useButton.onClick.AddListener(HandleUseClicked);
+
+        if (_dropOneButton != null)
+            _dropOneButton.onClick.AddListener(HandleDropOneClicked);
+
+        if (_dropStackButton != null)
+            _dropStackButton.onClick.AddListener(HandleDropStackClicked);
     }
 
     private void Start()
@@ -63,9 +70,14 @@ public class InventoryUIController : MonoBehaviour
         if (_inventoryController != null)
             _inventoryController.OnInventoryChanged -= RefreshView;
 
-        _useButton.onClick.RemoveListener(HandleUseClicked);
-        _dropOneButton.onClick.RemoveListener(HandleDropOneClicked);
-        _dropStackButton.onClick.RemoveListener(HandleDropStackClicked);
+        if (_useButton != null)
+            _useButton.onClick.RemoveListener(HandleUseClicked);
+
+        if (_dropOneButton != null)
+            _dropOneButton.onClick.RemoveListener(HandleDropOneClicked);
+
+        if (_dropStackButton != null)
+            _dropStackButton.onClick.RemoveListener(HandleDropStackClicked);
     }
 
     private void Update()
@@ -88,18 +100,21 @@ public class InventoryUIController : MonoBehaviour
     private void Open()
     {
         _isOpen = true;
-        _inventoryRoot.SetActive(true);
+
+        if (_inventoryRoot != null)
+            _inventoryRoot.SetActive(true);
 
         SetBlockedBehaviours(false);
         SetCursorState(true);
-
         RefreshView();
     }
 
     private void Close()
     {
         _isOpen = false;
-        _inventoryRoot.SetActive(false);
+
+        if (_inventoryRoot != null)
+            _inventoryRoot.SetActive(false);
 
         SetBlockedBehaviours(true);
         SetCursorState(false);
@@ -117,6 +132,7 @@ public class InventoryUIController : MonoBehaviour
         else
         {
             _selectedIndex = Mathf.Clamp(_selectedIndex, 0, _inventoryController.SlotCount - 1);
+
             if (_selectedIndex < 0)
                 _selectedIndex = 0;
         }
@@ -135,11 +151,13 @@ public class InventoryUIController : MonoBehaviour
 
         _spawnedCells.Clear();
 
+        if (_inventoryController == null || _cellPrefab == null || _gridRoot == null)
+            return;
+
         for (int i = 0; i < _inventoryController.SlotCount; i++)
         {
             InventorySlot slot = _inventoryController.GetSlotAt(i);
             InventoryItemCellView cell = Instantiate(_cellPrefab, _gridRoot);
-
             cell.Bind(slot, i, i == _selectedIndex, HandleSlotSelected);
             _spawnedCells.Add(cell);
         }
@@ -159,30 +177,67 @@ public class InventoryUIController : MonoBehaviour
 
     private void RefreshDetails()
     {
-        InventorySlot slot = _inventoryController.GetSlotAt(_selectedIndex);
+        InventorySlot slot = _inventoryController != null
+            ? _inventoryController.GetSlotAt(_selectedIndex)
+            : null;
 
         bool hasSelection = slot != null && !slot.IsEmpty && slot.Item != null;
+        bool hasPrimaryAction = hasSelection && slot.Item.PrimaryAction != ItemPrimaryActionType.None;
 
-        _useButton.interactable = hasSelection;
-        _dropOneButton.interactable = hasSelection;
-        _dropStackButton.interactable = hasSelection;
+        if (_useButton != null)
+            _useButton.interactable = hasPrimaryAction;
+
+        if (_dropOneButton != null)
+            _dropOneButton.interactable = hasSelection;
+
+        if (_dropStackButton != null)
+            _dropStackButton.interactable = hasSelection && (slot.Count > 1 || slot.HasAmount);
+
+        if (_useButtonLabel != null)
+            _useButtonLabel.text = hasSelection
+                ? InventoryDisplayFormatter.FormatPrimaryActionLabel(slot)
+                : "Использовать";
 
         if (!hasSelection)
         {
-            _itemIcon.enabled = false;
-            _itemIcon.sprite = null;
-            _itemNameText.text = "Не выбран предмет.";
-            _itemDescriptionText.text = string.Empty;
-            _itemCountText.text = string.Empty;
+            if (_itemIcon != null)
+            {
+                _itemIcon.enabled = false;
+                _itemIcon.sprite = null;
+            }
+
+            if (_itemNameText != null)
+                _itemNameText.text = "Не выбран предмет.";
+
+            if (_itemDescriptionText != null)
+                _itemDescriptionText.text = string.Empty;
+
+            if (_itemCountText != null)
+                _itemCountText.text = string.Empty;
+
+            if (_itemStatsText != null)
+                _itemStatsText.text = string.Empty;
+
             return;
         }
 
-        _itemIcon.enabled = slot.Item.Icon != null;
-        _itemIcon.sprite = slot.Item.Icon;
+        if (_itemIcon != null)
+        {
+            _itemIcon.enabled = slot.Item.Icon != null;
+            _itemIcon.sprite = slot.Item.Icon;
+        }
 
-        _itemNameText.text = slot.Item.DisplayName;
-        _itemDescriptionText.text = slot.Item.Description;
-        _itemCountText.text = $"x{slot.Count}";
+        if (_itemNameText != null)
+            _itemNameText.text = slot.Item.DisplayName;
+
+        if (_itemDescriptionText != null)
+            _itemDescriptionText.text = slot.Item.Description;
+
+        if (_itemCountText != null)
+            _itemCountText.text = InventoryDisplayFormatter.FormatPrimaryValue(slot);
+
+        if (_itemStatsText != null)
+            _itemStatsText.text = InventoryDisplayFormatter.FormatStats(slot);
     }
 
     private void HandleUseClicked()
@@ -191,8 +246,20 @@ public class InventoryUIController : MonoBehaviour
         if (slot == null || slot.Item == null)
             return;
 
-        Debug.Log($"{DebugPrefix} Use requested for {slot.Item.DisplayName}.");
-        // TODO: здесь позже подключается реальная логика использования предмета
+        switch (slot.Item.PrimaryAction)
+        {
+            case ItemPrimaryActionType.Use:
+                Debug.Log($"{DebugPrefix} Use requested for {slot.Item.DisplayName}.");
+                break;
+
+            case ItemPrimaryActionType.Action:
+                Debug.Log($"{DebugPrefix} Action requested for {slot.Item.DisplayName}.");
+                break;
+
+            default:
+                Debug.Log($"{DebugPrefix} No primary action for {slot.Item.DisplayName}.");
+                break;
+        }
     }
 
     private void HandleDropOneClicked()

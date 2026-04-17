@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ab4cbba0c9743748a35073d09f6b5c1, type: 3}
-  m_Name: Condensed Milk
+  m_Name: Soda Can
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  _id: condensed_milk
-  _displayName: "\u0421\u0433\u0443\u0449\u0435\u043D\u043E\u0435 \u043C\u043E\u043B\u043E\u043A\u043E"
-  _description: "\u0421\u0433\u0443\u0449\u0435\u043D\u043E\u0435 \u043C\u043E\u043B\u043E\u043A\u043E"
-  _icon: {fileID: 21300000, guid: dd2e7c1b0356e3f49b68111a1ae4351d, type: 3}
-  _category: 1
-  _primaryAction: 1
+  _id: soda_can
+  _displayName: "\u0413\u0430\u0437\u0438\u0440\u043E\u0432\u043A\u0430 \"\u0421\u0430\u043C\u043C\u0438\u0442\""
+  _description: "\u0413\u0430\u0437\u0438\u0440\u043E\u0432\u043A\u0430 \"\u0421\u0430\u043C\u043C\u0438\u0442\""
+  _icon: {fileID: 21300000, guid: 89c54c6289416d74f9b8971b63e6e082, type: 3}
+  _category: 2
+  _primaryAction: 0
   _isStackable: 0
   _maxStack: 1
   _usesDurability: 1
   _isUnbreakable: 0
   _maxDurability: 100
   _usesCustomAmount: 0
-  _amountUnit: 1
+  _amountUnit: 0
   _maxAmount: 1
-  _restoreHydration: 0
-  _restoreCalories: 500
+  _restoreHydration: 100
+  _restoreCalories: 250

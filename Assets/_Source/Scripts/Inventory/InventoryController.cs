@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
-    private const string DebugPrefix = "<color=cyan>[Inventory]</color>";
+    private const string DebugPrefix = "[Inventory]";
 
     private readonly List<InventorySlot> _items = new();
 
     public IReadOnlyList<InventorySlot> Items => _items;
-
     public int SlotCount => _items.Count;
 
     public event Action OnInventoryChanged;
 
-    public bool TryAddItem(ItemData itemData, int count)
+    public bool TryAddItem(
+        ItemData itemData,
+        int count,
+        float? currentAmountOverride = null,
+        float? currentDurabilityOverride = null)
     {
         if (itemData == null)
         {
@@ -28,18 +31,29 @@ public class InventoryController : MonoBehaviour
             return false;
         }
 
-        int remaining = count;
+        if (itemData.UsesCustomAmount)
+        {
+            bool addedCustomAmount = TryAddCustomAmountItem(itemData, count, currentAmountOverride, currentDurabilityOverride);
+            if (addedCustomAmount)
+            {
+                NotifyChanged();
+                Debug.Log($"{DebugPrefix} Added custom-amount item {itemData.DisplayName} x{count}.");
+            }
+
+            return addedCustomAmount;
+        }
 
         if (itemData.IsStackable)
         {
+            int remaining = count;
+
             for (int i = 0; i < _items.Count; i++)
             {
                 InventorySlot slot = _items[i];
-
                 if (slot == null || slot.IsEmpty)
                     continue;
 
-                if (!AreSameItem(slot.Item, itemData))
+                if (!CanMergeIntoStack(slot, itemData, currentDurabilityOverride, currentAmountOverride))
                     continue;
 
                 if (slot.IsFull)
@@ -58,25 +72,33 @@ public class InventoryController : MonoBehaviour
                     return true;
                 }
             }
+
+            while (remaining > 0)
+            {
+                int amountForNewSlot = Mathf.Min(itemData.MaxStack, remaining);
+
+                InventorySlot newSlot = new();
+                newSlot.Initialize(itemData, amountForNewSlot, currentDurabilityOverride, currentAmountOverride);
+
+                _items.Add(newSlot);
+                remaining -= amountForNewSlot;
+            }
+
+            NotifyChanged();
+            Debug.Log($"{DebugPrefix} Added {count}x {itemData.DisplayName}.");
+            return true;
         }
 
-        while (remaining > 0)
+        for (int i = 0; i < count; i++)
         {
-            int amountForNewSlot = itemData.IsStackable
-                ? Mathf.Min(itemData.MaxStack, remaining)
-                : 1;
+            InventorySlot newSlot = new();
+            newSlot.Initialize(itemData, 1, currentDurabilityOverride, currentAmountOverride);
 
-            _items.Add(new InventorySlot
-            {
-                Item = itemData,
-                Count = amountForNewSlot
-            });
-
-            remaining -= amountForNewSlot;
+            _items.Add(newSlot);
         }
 
         NotifyChanged();
-        Debug.Log($"{DebugPrefix} Added {count}x {itemData.DisplayName}. {Items.Count}");
+        Debug.Log($"{DebugPrefix} Added {count}x {itemData.DisplayName}.");
         return true;
     }
 
@@ -106,7 +128,6 @@ public class InventoryController : MonoBehaviour
         for (int i = _items.Count - 1; i >= 0; i--)
         {
             InventorySlot slot = _items[i];
-
             if (slot == null || slot.IsEmpty)
                 continue;
 
@@ -114,13 +135,12 @@ public class InventoryController : MonoBehaviour
                 continue;
 
             int amountToRemove = Mathf.Min(slot.Count, remainingToRemove);
+
             slot.Count -= amountToRemove;
             remainingToRemove -= amountToRemove;
 
             if (slot.Count <= 0)
-            {
                 _items.RemoveAt(i);
-            }
 
             if (remainingToRemove <= 0)
             {
@@ -167,9 +187,7 @@ public class InventoryController : MonoBehaviour
         slot.Count -= amountToRemove;
 
         if (slot.Count <= 0)
-        {
             _items.RemoveAt(slotIndex);
-        }
 
         NotifyChanged();
         return true;
@@ -185,7 +203,6 @@ public class InventoryController : MonoBehaviour
         for (int i = 0; i < _items.Count; i++)
         {
             InventorySlot slot = _items[i];
-
             if (slot == null || slot.IsEmpty)
                 continue;
 
@@ -193,6 +210,31 @@ public class InventoryController : MonoBehaviour
                 continue;
 
             total += slot.Count;
+        }
+
+        return total;
+    }
+
+    public float GetTotalAmount(ItemData itemData)
+    {
+        if (itemData == null || !itemData.UsesCustomAmount)
+            return 0f;
+
+        float total = 0f;
+
+        for (int i = 0; i < _items.Count; i++)
+        {
+            InventorySlot slot = _items[i];
+            if (slot == null || slot.IsEmpty)
+                continue;
+
+            if (!AreSameItem(slot.Item, itemData))
+                continue;
+
+            if (!slot.HasAmount)
+                continue;
+
+            total += slot.CurrentAmount;
         }
 
         return total;
@@ -207,6 +249,76 @@ public class InventoryController : MonoBehaviour
     {
         _items.Clear();
         NotifyChanged();
+    }
+
+    private bool TryAddCustomAmountItem(
+        ItemData itemData,
+        int count,
+        float? currentAmountOverride,
+        float? currentDurabilityOverride)
+    {
+        float amountPerItem = currentAmountOverride ?? itemData.MaxAmount;
+
+        if (amountPerItem <= 0.0001f)
+        {
+            Debug.LogWarning($"{DebugPrefix} Cannot add {itemData.DisplayName}: amount must be > 0.");
+            return false;
+        }
+
+        for (int itemIndex = 0; itemIndex < count; itemIndex++)
+        {
+            float remainingAmountForItem = amountPerItem;
+
+            while (remainingAmountForItem > 0.0001f)
+            {
+                float amountForSlot = Mathf.Min(itemData.MaxAmount, remainingAmountForItem);
+
+                InventorySlot newSlot = new();
+                newSlot.Initialize(itemData, 1, currentDurabilityOverride, amountForSlot);
+
+                _items.Add(newSlot);
+                remainingAmountForItem -= amountForSlot;
+            }
+        }
+
+        return true;
+    }
+
+    private bool CanMergeIntoStack(
+        InventorySlot slot,
+        ItemData incomingItem,
+        float? incomingDurabilityOverride,
+        float? incomingAmountOverride)
+    {
+        if (slot == null || slot.IsEmpty || slot.Item == null || incomingItem == null)
+            return false;
+
+        if (!AreSameItem(slot.Item, incomingItem))
+            return false;
+
+        // custom amount сейчас всё ещё не стакаем
+        if (slot.Item.UsesCustomAmount || incomingItem.UsesCustomAmount)
+        {
+            float incomingAmount = Mathf.Clamp(
+                incomingAmountOverride ?? incomingItem.MaxAmount,
+                0f,
+                incomingItem.MaxAmount);
+
+            return Mathf.Approximately(slot.CurrentAmount, incomingAmount);
+        }
+
+        // для stack + durability сливаем только одинаковую текущую прочность
+        if (slot.Item.UsesDurability && !slot.Item.IsUnbreakable)
+        {
+            float incomingDurability = Mathf.Clamp(
+                incomingDurabilityOverride ?? incomingItem.MaxDurability,
+                0f,
+                incomingItem.MaxDurability);
+
+            return Mathf.Approximately(slot.CurrentDurability, incomingDurability);
+        }
+
+        return true;
     }
 
     private static bool AreSameItem(ItemData a, ItemData b)

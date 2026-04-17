@@ -8,6 +8,7 @@ public class InventoryItemCellView : MonoBehaviour
     [SerializeField] private Button _button;
     [SerializeField] private Image _iconImage;
     [SerializeField] private TMP_Text _countText;
+    [SerializeField] private TMP_Text _durabilityText;
     //[SerializeField] private GameObject _selectionFrame;
 
     private int _slotIndex;
@@ -20,29 +21,64 @@ public class InventoryItemCellView : MonoBehaviour
 
         if (slot != null && slot.Item != null)
         {
-            _iconImage.enabled = slot.Item.Icon != null;
-            _iconImage.sprite = slot.Item.Icon;
+            if (_iconImage != null)
+            {
+                _iconImage.enabled = slot.Item.Icon != null;
+                _iconImage.sprite = slot.Item.Icon;
+            }
 
-            bool showCount = slot.Count > 1;
-            _countText.gameObject.SetActive(showCount);
-            _countText.text = slot.Count.ToString();
+            if (_countText != null)
+            {
+                string countLabel = InventoryDisplayFormatter.FormatCellCount(slot);
+                bool showCount = !string.IsNullOrWhiteSpace(countLabel);
+
+                _countText.gameObject.SetActive(showCount);
+                _countText.text = countLabel;
+            }
+
+            if (_durabilityText != null)
+            {
+                bool showDurability = slot.Item.UsesDurability;
+                _durabilityText.gameObject.SetActive(showDurability);
+                _durabilityText.text = showDurability
+                    ? InventoryDisplayFormatter.FormatDurabilityShort(slot)
+                    : string.Empty;
+            }
         }
         else
         {
-            _iconImage.enabled = false;
-            _iconImage.sprite = null;
-            _countText.gameObject.SetActive(false);
+            if (_iconImage != null)
+            {
+                _iconImage.enabled = false;
+                _iconImage.sprite = null;
+            }
+
+            if (_countText != null)
+            {
+                _countText.gameObject.SetActive(false);
+                _countText.text = string.Empty;
+            }
+
+            if (_durabilityText != null)
+            {
+                _durabilityText.gameObject.SetActive(false);
+                _durabilityText.text = string.Empty;
+            }
         }
 
-        //_selectionFrame.SetActive(isSelected);
+        SetSelected(isSelected);
 
-        _button.onClick.RemoveAllListeners();
-        _button.onClick.AddListener(HandleClick);
+        if (_button != null)
+        {
+            _button.onClick.RemoveAllListeners();
+            _button.onClick.AddListener(HandleClick);
+        }
     }
 
     public void SetSelected(bool isSelected)
     {
-        //_selectionFrame.SetActive(isSelected);
+        //if (_selectionFrame != null)
+        //    _selectionFrame.SetActive(isSelected);
     }
 
     private void HandleClick()
