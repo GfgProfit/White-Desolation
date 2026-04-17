@@ -26,5 +26,8 @@ MonoBehaviour:
   _usesCustomAmount: 1
   _amountUnit: 1
   _maxAmount: 5
+  _baseWeightKg: 1.8
+  _weightDependsOnAmount: 1
+  _weightPerUnit: 0.75
   _restoreHydration: 0
   _restoreCalories: 0

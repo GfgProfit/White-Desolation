@@ -290,6 +290,7 @@ MonoBehaviour:
   _iconImage: {fileID: 3800850829043882174}
   _countText: {fileID: 685371588698694593}
   _durabilityText: {fileID: 6289550746214811295}
+  _weightText: {fileID: 3237803792006604333}
 --- !u!1 &5649285949037491341
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,7 +651,7 @@ GameObject:
   - component: {fileID: 8964247291076853797}
   - component: {fileID: 2279725961629538055}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: Stats Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -797,8 +798,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

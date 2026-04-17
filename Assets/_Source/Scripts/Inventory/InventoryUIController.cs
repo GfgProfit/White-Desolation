@@ -14,12 +14,29 @@ public class InventoryUIController : MonoBehaviour
     [SerializeField] private Transform _gridRoot;
     [SerializeField] private InventoryItemCellView _cellPrefab;
 
+    [Header("Weight Display")]
+    [SerializeField] private TMP_Text _carryWeightText;
+    [SerializeField] private TMP_Text _currentWeightText;
+    [SerializeField] private Slider _carryWeightSlider;
+
     [Header("Details")]
     [SerializeField] private Image _itemIcon;
     [SerializeField] private TMP_Text _itemNameText;
     [SerializeField] private TMP_Text _itemDescriptionText;
     [SerializeField] private TMP_Text _itemCountText;
-    [SerializeField] private TMP_Text _itemStatsText;
+
+    [Header("Stats")]
+    [SerializeField] private GameObject _durabilityHolder;
+    [SerializeField] private TMP_Text _durabilityText;
+
+    [SerializeField] private GameObject _weightHolder;
+    [SerializeField] private TMP_Text _weightText;
+
+    [SerializeField] private GameObject _caloriesHolder;
+    [SerializeField] private TMP_Text _caloriesText;
+
+    [SerializeField] private GameObject _hydrationHolder;
+    [SerializeField] private TMP_Text _hydrationText;
 
     [Header("Buttons")]
     [SerializeField] private Button _useButton;
@@ -125,6 +142,8 @@ public class InventoryUIController : MonoBehaviour
         if (_inventoryController == null)
             return;
 
+        RefreshCarryWeight();
+
         if (_inventoryController.SlotCount == 0)
         {
             _selectedIndex = -1;
@@ -139,6 +158,22 @@ public class InventoryUIController : MonoBehaviour
 
         RebuildGrid();
         RefreshDetails();
+    }
+
+    private void RefreshCarryWeight()
+    {
+        if (_carryWeightText == null || _inventoryController == null)
+            return;
+
+        _carryWeightText.text = InventoryDisplayFormatter.FormatCarryWeight(
+            _inventoryController.CurrentCarryWeightKg,
+            _inventoryController.MaxCarryWeightKg);
+
+        _currentWeightText.text = InventoryDisplayFormatter.FormatCarryWeight(
+            _inventoryController.CurrentCarryWeightKg, 0);
+
+        _carryWeightSlider.maxValue = _inventoryController.MaxCarryWeightKg;
+        _carryWeightSlider.value = _inventoryController.CurrentCarryWeightKg;
     }
 
     private void RebuildGrid()
@@ -215,9 +250,7 @@ public class InventoryUIController : MonoBehaviour
             if (_itemCountText != null)
                 _itemCountText.text = string.Empty;
 
-            if (_itemStatsText != null)
-                _itemStatsText.text = string.Empty;
-
+            ClearStats();
             return;
         }
 
@@ -236,8 +269,51 @@ public class InventoryUIController : MonoBehaviour
         if (_itemCountText != null)
             _itemCountText.text = InventoryDisplayFormatter.FormatPrimaryValue(slot);
 
-        if (_itemStatsText != null)
-            _itemStatsText.text = InventoryDisplayFormatter.FormatStats(slot);
+        RefreshStats(slot);
+    }
+
+    private void RefreshStats(InventorySlot slot)
+    {
+        SetStatRow(
+            _durabilityHolder,
+            _durabilityText,
+            InventoryDisplayFormatter.TryGetDurabilityText(slot, out string durabilityText),
+            durabilityText);
+
+        SetStatRow(
+            _weightHolder,
+            _weightText,
+            InventoryDisplayFormatter.TryGetWeightText(slot, out string weightText),
+            weightText);
+
+        SetStatRow(
+            _caloriesHolder,
+            _caloriesText,
+            InventoryDisplayFormatter.TryGetCaloriesText(slot, out string caloriesText),
+            caloriesText);
+
+        SetStatRow(
+            _hydrationHolder,
+            _hydrationText,
+            InventoryDisplayFormatter.TryGetHydrationText(slot, out string hydrationText),
+            hydrationText);
+    }
+
+    private void ClearStats()
+    {
+        SetStatRow(_durabilityHolder, _durabilityText, false, string.Empty);
+        SetStatRow(_weightHolder, _weightText, false, string.Empty);
+        SetStatRow(_caloriesHolder, _caloriesText, false, string.Empty);
+        SetStatRow(_hydrationHolder, _hydrationText, false, string.Empty);
+    }
+
+    private void SetStatRow(GameObject holder, TMP_Text textComponent, bool visible, string value)
+    {
+        if (holder != null)
+            holder.SetActive(visible);
+
+        if (textComponent != null)
+            textComponent.text = visible ? value : string.Empty;
     }
 
     private void HandleUseClicked()

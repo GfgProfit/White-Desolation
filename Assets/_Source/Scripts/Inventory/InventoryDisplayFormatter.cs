@@ -1,4 +1,3 @@
-using System.Text;
 using UnityEngine;
 
 public static class InventoryDisplayFormatter
@@ -12,7 +11,7 @@ public static class InventoryDisplayFormatter
             return FormatAmount(slot.Item.AmountUnit, slot.CurrentAmount);
 
         if (slot.Count > 1)
-            return slot.Count.ToString();
+            return $"x{slot.Count}";
 
         return string.Empty;
     }
@@ -25,50 +24,68 @@ public static class InventoryDisplayFormatter
         if (slot.HasAmount)
             return $"{FormatAmount(slot.Item.AmountUnit, slot.CurrentAmount)} / {FormatAmount(slot.Item.AmountUnit, slot.Item.MaxAmount)}";
 
-        return $"Количество: {slot.Count}";
+        return $"x{slot.Count}";
     }
 
-    public static string FormatStats(InventorySlot slot)
+    public static bool TryGetDurabilityText(InventorySlot slot, out string text)
     {
+        text = string.Empty;
+
+        if (slot == null || slot.Item == null || !slot.Item.UsesDurability)
+            return false;
+
+        if (slot.Item.IsUnbreakable)
+        {
+            text = "100%";
+            return true;
+        }
+
+        int percent = Mathf.RoundToInt(slot.Durability01 * 100f);
+        text = $"{percent}%";
+        return true;
+    }
+
+    public static bool TryGetWeightText(InventorySlot slot, out string text)
+    {
+        text = string.Empty;
+
         if (slot == null || slot.Item == null)
-            return string.Empty;
+            return false;
 
-        StringBuilder sb = new();
+        float currentWeight = InventoryWeightCalculator.GetSlotWeightKg(slot);
+        if (currentWeight <= 0f)
+            return false;
 
-        if (slot.HasAmount)
-        {
-            sb.Append("Объём: ");
-            sb.Append(FormatAmount(slot.Item.AmountUnit, slot.CurrentAmount));
-            sb.Append(" / ");
-            sb.AppendLine(FormatAmount(slot.Item.AmountUnit, slot.Item.MaxAmount));
-        }
+        text = $"{currentWeight:0.##} кг";
+        return true;
+    }
 
-        if (slot.Item.UsesDurability)
-        {
-            if (slot.Item.IsUnbreakable)
-            {
-                sb.AppendLine("Прочность: 100% (не ломается)");
-            }
-            else
-            {
-                sb.Append("Прочность: ");
-                sb.AppendLine(FormatDurabilityShort(slot));
-            }
-        }
+    public static bool TryGetCaloriesText(InventorySlot slot, out string text)
+    {
+        text = string.Empty;
 
-        if (!Mathf.Approximately(slot.Item.RestoreHydration, 0f))
-        {
-            sb.Append("Изменение жажды: ");
-            sb.AppendLine(FormatSignedFloat(slot.Item.RestoreHydration));
-        }
+        if (slot == null || slot.Item == null)
+            return false;
 
-        if (slot.Item.RestoreCalories != 0)
-        {
-            sb.Append("Изменение калорий: ");
-            sb.AppendLine(FormatSignedInt(slot.Item.RestoreCalories));
-        }
+        if (slot.Item.RestoreCalories == 0)
+            return false;
 
-        return sb.ToString().TrimEnd();
+        text = FormatSignedInt(slot.Item.RestoreCalories);
+        return true;
+    }
+
+    public static bool TryGetHydrationText(InventorySlot slot, out string text)
+    {
+        text = string.Empty;
+
+        if (slot == null || slot.Item == null)
+            return false;
+
+        if (Mathf.Approximately(slot.Item.RestoreHydration, 0f))
+            return false;
+
+        text = FormatSignedFloat(slot.Item.RestoreHydration);
+        return true;
     }
 
     public static string FormatPrimaryActionLabel(InventorySlot slot)
@@ -94,6 +111,16 @@ public static class InventoryDisplayFormatter
 
         int percent = Mathf.RoundToInt(slot.Durability01 * 100f);
         return $"{percent}%";
+    }
+
+    public static string FormatCarryWeight(float currentWeightKg, float maxWeightKg)
+    {
+        string color = currentWeightKg > maxWeightKg ? "<color=#9E2F3C>" : "<color=white>";
+
+        if (maxWeightKg > 0f)
+            return $"{currentWeightKg:0.##} / {color}{maxWeightKg:0.##}</color> кг";
+
+        return $"{currentWeightKg:0.##} кг";
     }
 
     public static string FormatAmount(ItemAmountUnit unit, float value)
@@ -128,24 +155,5 @@ public static class InventoryDisplayFormatter
             return value.ToString();
 
         return "0";
-    }
-
-    private static string FormatCategory(ItemCategory category)
-    {
-        return category switch
-        {
-            ItemCategory.Food => "Еда",
-            ItemCategory.Water => "Вода",
-            ItemCategory.Medical => "Медикаменты",
-            ItemCategory.Consumable => "Расходник",
-            ItemCategory.Resource => "Ресурс",
-            ItemCategory.Tool => "Инструмент",
-            ItemCategory.Weapon => "Оружие",
-            ItemCategory.Clothing => "Одежда",
-            ItemCategory.Fuel => "Топливо",
-            ItemCategory.Ammo => "Боеприпасы",
-            ItemCategory.Misc => "Разное",
-            _ => "Не задан"
-        };
     }
 }

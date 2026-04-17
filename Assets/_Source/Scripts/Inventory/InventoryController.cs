@@ -6,10 +6,16 @@ public class InventoryController : MonoBehaviour
 {
     private const string DebugPrefix = "[Inventory]";
 
+    [Header("Weight Limit")]
+    [SerializeField, Min(0f)] private float _maxCarryWeightKg = 30f;
+
     private readonly List<InventorySlot> _items = new();
 
     public IReadOnlyList<InventorySlot> Items => _items;
     public int SlotCount => _items.Count;
+
+    public float MaxCarryWeightKg => _maxCarryWeightKg;
+    public float CurrentCarryWeightKg => GetCurrentTotalWeightKg();
 
     public event Action OnInventoryChanged;
 
@@ -240,6 +246,22 @@ public class InventoryController : MonoBehaviour
         return total;
     }
 
+    public float GetCurrentTotalWeightKg()
+    {
+        float totalWeight = 0f;
+
+        for (int i = 0; i < _items.Count; i++)
+        {
+            InventorySlot slot = _items[i];
+            if (slot == null || slot.IsEmpty)
+                continue;
+
+            totalWeight += InventoryWeightCalculator.GetSlotWeightKg(slot);
+        }
+
+        return totalWeight;
+    }
+
     public bool Contains(ItemData itemData, int count = 1)
     {
         return GetTotalCount(itemData) >= count;
@@ -296,7 +318,6 @@ public class InventoryController : MonoBehaviour
         if (!AreSameItem(slot.Item, incomingItem))
             return false;
 
-        // custom amount сейчас всё ещё не стакаем
         if (slot.Item.UsesCustomAmount || incomingItem.UsesCustomAmount)
         {
             float incomingAmount = Mathf.Clamp(
@@ -307,7 +328,6 @@ public class InventoryController : MonoBehaviour
             return Mathf.Approximately(slot.CurrentAmount, incomingAmount);
         }
 
-        // для stack + durability сливаем только одинаковую текущую прочность
         if (slot.Item.UsesDurability && !slot.Item.IsUnbreakable)
         {
             float incomingDurability = Mathf.Clamp(

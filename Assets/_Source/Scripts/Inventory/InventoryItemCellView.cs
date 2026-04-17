@@ -9,6 +9,7 @@ public class InventoryItemCellView : MonoBehaviour
     [SerializeField] private Image _iconImage;
     [SerializeField] private TMP_Text _countText;
     [SerializeField] private TMP_Text _durabilityText;
+    [SerializeField] private TMP_Text _weightText;
     //[SerializeField] private GameObject _selectionFrame;
 
     private int _slotIndex;
@@ -40,9 +41,12 @@ public class InventoryItemCellView : MonoBehaviour
             {
                 bool showDurability = slot.Item.UsesDurability;
                 _durabilityText.gameObject.SetActive(showDurability);
-                _durabilityText.text = showDurability
-                    ? InventoryDisplayFormatter.FormatDurabilityShort(slot)
-                    : string.Empty;
+                _durabilityText.text = showDurability ? InventoryDisplayFormatter.FormatDurabilityShort(slot) : string.Empty;
+            }
+
+            if (_weightText != null)
+            {
+                _weightText.text = InventoryDisplayFormatter.TryGetWeightText(slot, out string weightText) ? weightText : string.Empty;
             }
         }
         else

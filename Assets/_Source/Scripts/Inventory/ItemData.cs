@@ -30,6 +30,12 @@ public class ItemData : ScriptableObject
     [SerializeField, ShowIf(nameof(_usesCustomAmount))] private ItemAmountUnit _amountUnit = ItemAmountUnit.Liter;
     [SerializeField, ShowIf(nameof(_usesCustomAmount)), Min(0.01f)] private float _maxAmount = 1f;
 
+    [Header("Stats")]
+    [SerializeField, Min(0f)] private float _baseWeightKg = 0f;
+
+    [SerializeField] private bool _weightDependsOnAmount;
+    [SerializeField, Min(0f)] private float _weightPerUnit = 0f;
+
     [Header("Consumable Effects")]
     [SerializeField] private float _restoreHydration;
     [SerializeField] private int _restoreCalories;
@@ -42,9 +48,6 @@ public class ItemData : ScriptableObject
     public ItemCategory Category => _category;
     public ItemPrimaryActionType PrimaryAction => _primaryAction;
 
-    // ВАЖНО:
-    // stackable + durability теперь разрешено
-    // запрещаем только stackable + custom amount
     public bool IsStackable => !_usesCustomAmount && _isStackable;
     public int MaxStack => IsStackable ? _maxStack : 1;
 
@@ -56,7 +59,10 @@ public class ItemData : ScriptableObject
     public ItemAmountUnit AmountUnit => _amountUnit;
     public float MaxAmount => _usesCustomAmount ? _maxAmount : 0f;
 
-    // Теперь значения могут быть и отрицательными
+    public float BaseWeightKg => _baseWeightKg;
+    public bool WeightDependsOnAmount => _weightDependsOnAmount && _usesCustomAmount;
+    public float WeightPerUnit => _weightPerUnit;
+
     public float RestoreHydration => _restoreHydration;
     public int RestoreCalories => _restoreCalories;
 
@@ -65,7 +71,6 @@ public class ItemData : ScriptableObject
 
     private void OnValidate()
     {
-        // Только custom amount конфликтует со stack
         if (_usesCustomAmount)
         {
             _isStackable = false;
@@ -95,7 +100,14 @@ public class ItemData : ScriptableObject
             _maxAmount = 1f;
         }
 
-        // отрицательные hydration/calories теперь НЕ режем
+        if (_baseWeightKg < 0f)
+            _baseWeightKg = 0f;
+
+        if (_weightPerUnit < 0f)
+            _weightPerUnit = 0f;
+
+        if (!_usesCustomAmount)
+            _weightDependsOnAmount = false;
     }
 
     [Button]
