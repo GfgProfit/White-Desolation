@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab4cbba0c9743748a35073d09f6b5c1, type: 3}
+  m_Name: Condensed Milk
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  _id: condensed_milk
+  _displayName: "\u0421\u0433\u0443\u0449\u0435\u043D\u043E\u0435 \u043C\u043E\u043B\u043E\u043A\u043E"
+  _description: "\u0421\u0433\u0443\u0449\u0435\u043D\u043E\u0435 \u043C\u043E\u043B\u043E\u043A\u043E"
+  _isStackable: 0
+  _maxStack: 1
+  _icon: {fileID: 21300000, guid: dd2e7c1b0356e3f49b68111a1ae4351d, type: 3}

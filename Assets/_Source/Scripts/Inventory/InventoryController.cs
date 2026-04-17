@@ -10,6 +10,8 @@ public class InventoryController : MonoBehaviour
 
     public IReadOnlyList<InventorySlot> Items => _items;
 
+    public int SlotCount => _items.Count;
+
     public event Action OnInventoryChanged;
 
     public bool TryAddItem(ItemData itemData, int count)
@@ -126,6 +128,47 @@ public class InventoryController : MonoBehaviour
                 Debug.Log($"{DebugPrefix} Removed {count}x {itemData.DisplayName}.");
                 return true;
             }
+        }
+
+        NotifyChanged();
+        return true;
+    }
+
+    public InventorySlot GetSlotAt(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= _items.Count)
+            return null;
+
+        return _items[slotIndex];
+    }
+
+    public bool TryRemoveFromSlot(int slotIndex, int count)
+    {
+        if (slotIndex < 0 || slotIndex >= _items.Count)
+        {
+            Debug.LogWarning($"{DebugPrefix} Invalid slot index: {slotIndex}.");
+            return false;
+        }
+
+        if (count <= 0)
+        {
+            Debug.LogWarning($"{DebugPrefix} Remove count must be > 0.");
+            return false;
+        }
+
+        InventorySlot slot = _items[slotIndex];
+        if (slot == null || slot.IsEmpty)
+        {
+            Debug.LogWarning($"{DebugPrefix} Slot {slotIndex} is empty.");
+            return false;
+        }
+
+        int amountToRemove = Mathf.Min(count, slot.Count);
+        slot.Count -= amountToRemove;
+
+        if (slot.Count <= 0)
+        {
+            _items.RemoveAt(slotIndex);
         }
 
         NotifyChanged();
