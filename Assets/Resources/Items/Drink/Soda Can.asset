@@ -29,5 +29,5 @@ MonoBehaviour:
   _baseWeightKg: 0.3
   _weightDependsOnAmount: 0
   _weightPerUnit: 0
-  _restoreHydration: 100
+  _restoreHydration: 0.15
   _restoreCalories: 250

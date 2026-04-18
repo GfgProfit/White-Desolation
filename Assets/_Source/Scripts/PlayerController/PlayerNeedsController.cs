@@ -24,7 +24,6 @@ public class PlayerNeedsController : MonoBehaviour
     [Header("Base Drain Per Second")]
     [Tooltip("Если > 0, персонаж согревается. Если < 0, остывает.")]
     [SerializeField] private float _temperatureDeltaPerSecond = 0f;
-
     [SerializeField, Min(0f)] private float _fatigueDrainPerSecond = 0.1f;
     [SerializeField, Min(0f)] private float _thirstDrainPerSecond = 0.0005f;
     [SerializeField, Min(0f)] private float _hungerDrainPerSecond = 0.15f;
@@ -92,6 +91,9 @@ public class PlayerNeedsController : MonoBehaviour
     public bool IsCool => _temperature > 50f && _temperature <= 75f;
     public bool IsWarm => _temperature > 75f;
 
+    public float MissingThirst => Mathf.Max(0f, _maxThirst - _thirst);
+    public float MissingHunger => Mathf.Max(0f, _maxHunger - _hunger);
+
     private void Awake()
     {
         _temperature = Mathf.Clamp(_startTemperature, 0f, _maxTemperature);
@@ -148,10 +150,34 @@ public class PlayerNeedsController : MonoBehaviour
         RefreshUI();
     }
 
+    public float RestoreThirstUpTo(float availableHydration)
+    {
+        if (availableHydration <= 0f)
+            return 0f;
+
+        float restored = Mathf.Min(MissingThirst, availableHydration);
+        if (restored <= 0f)
+            return 0f;
+
+        AddThirst(restored);
+        return restored;
+    }
+
+    public float RestoreHungerUpTo(float availableCalories)
+    {
+        if (availableCalories <= 0f)
+            return 0f;
+
+        float restored = Mathf.Min(MissingHunger, availableCalories);
+        if (restored <= 0f)
+            return 0f;
+
+        AddHunger(restored);
+        return restored;
+    }
+
     public void ApplyConsumable(float hydrationValue, float caloriesValue)
     {
-        // Положительное значение восстанавливает ресурс.
-        // Отрицательное значение, наоборот, отнимает.
         AddThirst(hydrationValue);
         AddHunger(caloriesValue);
     }

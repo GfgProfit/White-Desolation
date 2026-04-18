@@ -8,9 +8,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _walkSpeed = 3.0f;
     [SerializeField] private float _sprintSpeed = 6.0f;
 
-    [SerializeField] private float _jumpForce = 5f;
-    [SerializeField] private float _gravity = 9.81f;
-
     [SerializeField] private Vector2 _cameraClampLimit = new(-90.0f, 90.0f);
 
     [Space]
@@ -108,23 +105,7 @@ public class PlayerController : MonoBehaviour
     {
         float speed = CalculateTargetSpeed();
 
-        if (_characterController.isGrounded)
-        {
-            if (_verticalVelocity < 0f)
-            {
-                _verticalVelocity = -2f;
-            }
-
-            if (_playerInput.IsJumpPressed())
-            {
-                _verticalVelocity = _jumpForce;
-            }
-        }
-
-        _verticalVelocity -= _gravity * Time.deltaTime;
-
         Vector3 move = (transform.right * _rawInput.x + transform.forward * _rawInput.z).normalized * speed;
-        move.y = _verticalVelocity;
 
         _characterController.Move(move * Time.deltaTime);
     }

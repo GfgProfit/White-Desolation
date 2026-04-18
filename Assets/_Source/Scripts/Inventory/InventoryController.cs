@@ -5,6 +5,7 @@ using UnityEngine;
 public class InventoryController : MonoBehaviour
 {
     private const string DebugPrefix = "[Inventory]";
+    private const float ZeroTolerance = 0.0001f;
 
     [Header("Weight Limit")]
     [SerializeField, Min(0f)] private float _maxCarryWeightKg = 30f;
@@ -47,6 +48,20 @@ public class InventoryController : MonoBehaviour
             }
 
             return addedCustomAmount;
+        }
+
+        if (RequiresDedicatedConsumableInstance(itemData))
+        {
+            for (int i = 0; i < count; i++)
+            {
+                InventorySlot newSlot = new();
+                newSlot.Initialize(itemData, 1, currentDurabilityOverride, currentAmountOverride);
+                _items.Add(newSlot);
+            }
+
+            NotifyChanged();
+            Debug.Log($"{DebugPrefix} Added instance consumable {itemData.DisplayName} x{count}.");
+            return true;
         }
 
         if (itemData.IsStackable)
@@ -199,6 +214,55 @@ public class InventoryController : MonoBehaviour
         return true;
     }
 
+    public bool TryConsumeFromSlot(
+        int slotIndex,
+        float hydrationToConsume = 0f,
+        float caloriesToConsume = 0f,
+        float amountToConsume = 0f)
+    {
+        if (slotIndex < 0 || slotIndex >= _items.Count)
+        {
+            Debug.LogWarning($"{DebugPrefix} Invalid slot index: {slotIndex}.");
+            return false;
+        }
+
+        InventorySlot slot = _items[slotIndex];
+        if (slot == null || slot.IsEmpty || slot.Item == null)
+        {
+            Debug.LogWarning($"{DebugPrefix} Slot {slotIndex} is empty.");
+            return false;
+        }
+
+        if (!Mathf.Approximately(hydrationToConsume, 0f))
+        {
+            slot.CurrentHydration -= hydrationToConsume;
+
+            if (Mathf.Abs(slot.CurrentHydration) <= ZeroTolerance)
+                slot.CurrentHydration = 0f;
+        }
+
+        if (!Mathf.Approximately(caloriesToConsume, 0f))
+        {
+            slot.CurrentCalories -= caloriesToConsume;
+
+            if (Mathf.Abs(slot.CurrentCalories) <= ZeroTolerance)
+                slot.CurrentCalories = 0f;
+        }
+
+        if (!Mathf.Approximately(amountToConsume, 0f))
+        {
+            slot.CurrentAmount = Mathf.Max(0f, slot.CurrentAmount - amountToConsume);
+        }
+
+        if (ShouldRemoveSlotAfterConsume(slot))
+        {
+            _items.RemoveAt(slotIndex);
+        }
+
+        NotifyChanged();
+        return true;
+    }
+
     public int GetTotalCount(ItemData itemData)
     {
         if (itemData == null)
@@ -281,7 +345,7 @@ public class InventoryController : MonoBehaviour
     {
         float amountPerItem = currentAmountOverride ?? itemData.MaxAmount;
 
-        if (amountPerItem <= 0.0001f)
+        if (amountPerItem <= ZeroTolerance)
         {
             Debug.LogWarning($"{DebugPrefix} Cannot add {itemData.DisplayName}: amount must be > 0.");
             return false;
@@ -291,7 +355,7 @@ public class InventoryController : MonoBehaviour
         {
             float remainingAmountForItem = amountPerItem;
 
-            while (remainingAmountForItem > 0.0001f)
+            while (remainingAmountForItem > ZeroTolerance)
             {
                 float amountForSlot = Mathf.Min(itemData.MaxAmount, remainingAmountForItem);
 
@@ -318,6 +382,9 @@ public class InventoryController : MonoBehaviour
         if (!AreSameItem(slot.Item, incomingItem))
             return false;
 
+        if (slot.UsesPerInstanceConsumableState || RequiresDedicatedConsumableInstance(incomingItem))
+            return false;
+
         if (slot.Item.UsesCustomAmount || incomingItem.UsesCustomAmount)
         {
             float incomingAmount = Mathf.Clamp(
@@ -339,6 +406,28 @@ public class InventoryController : MonoBehaviour
         }
 
         return true;
+    }
+
+    private static bool RequiresDedicatedConsumableInstance(ItemData itemData)
+    {
+        return itemData != null &&
+               (!Mathf.Approximately(itemData.RestoreHydration, 0f) ||
+                itemData.RestoreCalories != 0);
+    }
+
+    private static bool ShouldRemoveSlotAfterConsume(InventorySlot slot)
+    {
+        if (slot == null || slot.Item == null)
+            return true;
+
+        if (slot.HasAmount)
+            return slot.CurrentAmount <= ZeroTolerance;
+
+        if (slot.UsesPerInstanceConsumableState)
+            return Mathf.Abs(slot.CurrentHydration) <= ZeroTolerance &&
+                   Mathf.Abs(slot.CurrentCalories) <= ZeroTolerance;
+
+        return slot.IsEmpty;
     }
 
     private static bool AreSameItem(ItemData a, ItemData b)

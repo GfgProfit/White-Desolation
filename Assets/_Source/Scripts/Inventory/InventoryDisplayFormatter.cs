@@ -2,6 +2,8 @@ using UnityEngine;
 
 public static class InventoryDisplayFormatter
 {
+    private const float ZeroTolerance = 0.0001f;
+
     public static string FormatCellCount(InventorySlot slot)
     {
         if (slot == null || slot.Item == null)
@@ -67,10 +69,10 @@ public static class InventoryDisplayFormatter
         if (slot == null || slot.Item == null)
             return false;
 
-        if (slot.Item.RestoreCalories == 0)
+        if (Mathf.Approximately(slot.CurrentCalories, 0f))
             return false;
 
-        text = FormatSignedInt(slot.Item.RestoreCalories);
+        text = FormatSignedInt(Mathf.RoundToInt(slot.CurrentCalories));
         return true;
     }
 
@@ -81,10 +83,16 @@ public static class InventoryDisplayFormatter
         if (slot == null || slot.Item == null)
             return false;
 
-        if (Mathf.Approximately(slot.Item.RestoreHydration, 0f))
+        if (IsDrinkableVolumeItem(slot))
+        {
+            text = FormatSignedFloat(slot.CurrentAmount);
+            return true;
+        }
+
+        if (Mathf.Approximately(slot.CurrentHydration, 0f))
             return false;
 
-        text = FormatSignedFloat(slot.Item.RestoreHydration);
+        text = FormatSignedFloat(slot.CurrentHydration);
         return true;
     }
 
@@ -115,10 +123,10 @@ public static class InventoryDisplayFormatter
 
     public static string FormatCarryWeight(float currentWeightKg, float maxWeightKg)
     {
-        string color = currentWeightKg > maxWeightKg ? "<color=#9E2F3C>" : "<color=white>";
+        string color = currentWeightKg > maxWeightKg ? "" : "";
 
         if (maxWeightKg > 0f)
-            return $"{currentWeightKg:0.##} / {color}{maxWeightKg:0.##}</color> кг";
+            return $"{currentWeightKg:0.##} / {color}{maxWeightKg:0.##} кг";
 
         return $"{currentWeightKg:0.##} кг";
     }
@@ -133,6 +141,36 @@ public static class InventoryDisplayFormatter
         };
 
         return $"{value:0.##} {suffix}";
+    }
+
+    private static bool IsDrinkableVolumeItem(InventorySlot slot)
+    {
+        if (slot == null || slot.Item == null)
+            return false;
+
+        if (slot.Item.PrimaryAction != ItemPrimaryActionType.Use)
+            return false;
+
+        if (slot.Item.Category != ItemCategory.Water)
+            return false;
+
+        if (!slot.HasAmount)
+            return false;
+
+        if (slot.Item.AmountUnit != ItemAmountUnit.Liter)
+            return false;
+
+        if (slot.CurrentAmount <= ZeroTolerance)
+            return false;
+
+        // Только для чистой воды, без калорий
+        if (slot.Item.RestoreCalories > 0)
+            return false;
+
+        if (slot.CurrentCalories > ZeroTolerance)
+            return false;
+
+        return true;
     }
 
     private static string FormatSignedFloat(float value)
