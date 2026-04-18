@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private VignetteController _vignetteController;
+    [SerializeField] private PlayerNeedsController _needsController;
     #endregion
 
     #region Private Fields
@@ -80,6 +81,7 @@ public class PlayerController : MonoBehaviour
         HandleCrouch();
         Move();
         UpdateCameraFieldOfView();
+        UpdateNeedsState(IsWalking, IsSprinting, IsCrouching);
     }
     #endregion
 
@@ -152,6 +154,26 @@ public class PlayerController : MonoBehaviour
         IsWalking = _rawInput.x != 0f || _rawInput.z != 0f;
 
         IsSprinting = CanSprinting && IsWalking && _playerInput.IsSprintHeld() && _rawInput.z > 0;
+    }
+
+    private void UpdateNeedsState(bool isMoving, bool isRunning, bool isCrouching)
+    {
+        if (isCrouching)
+        {
+            _needsController.SetLocomotionState(PlayerLocomotionState.Walking);
+        }
+        else if (isRunning)
+        {
+            _needsController.SetLocomotionState(PlayerLocomotionState.Running);
+        }
+        else if (isMoving)
+        {
+            _needsController.SetLocomotionState(PlayerLocomotionState.Walking);
+        }
+        else
+        {
+            _needsController.SetLocomotionState(PlayerLocomotionState.Idle);
+        }
     }
 
     private void HandleCrouch()
