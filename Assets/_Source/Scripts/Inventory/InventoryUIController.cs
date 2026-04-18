@@ -60,6 +60,7 @@ public class InventoryUIController : MonoBehaviour
 
     [Header("Optional")]
     [SerializeField] private Behaviour[] _disableWhileOpen;
+    [SerializeField] private GameObject[] _obectDisableWhileOpen;
 
     [Inject] private InventoryController _inventoryController;
     [Inject] private IPlayerInput _playerInput;
@@ -163,6 +164,7 @@ public class InventoryUIController : MonoBehaviour
             _inventoryRoot.SetActive(true);
 
         SetBlockedBehaviours(false);
+        SetBlockedObjects(false);
         SetCursorState(true);
         RefreshView();
     }
@@ -178,6 +180,7 @@ public class InventoryUIController : MonoBehaviour
             _inventoryRoot.SetActive(false);
 
         SetBlockedBehaviours(true);
+        SetBlockedObjects(true);
         SetCursorState(false);
     }
 
@@ -812,6 +815,18 @@ public class InventoryUIController : MonoBehaviour
         {
             if (_disableWhileOpen[i] != null)
                 _disableWhileOpen[i].enabled = enabled;
+        }
+    }
+
+    private void SetBlockedObjects(bool enabled)
+    {
+        if (_obectDisableWhileOpen == null)
+            return;
+
+        for (int i = 0; i < _obectDisableWhileOpen.Length; i++)
+        {
+            if (_obectDisableWhileOpen[i] != null)
+                _obectDisableWhileOpen[i].SetActive(enabled);
         }
     }
 

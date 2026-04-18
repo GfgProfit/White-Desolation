@@ -19,10 +19,36 @@ public class WorldItem : MonoBehaviour, IInteractable
     public ItemData ItemData => _itemData;
     public int Count => _count;
 
+    public float CurrentAmount =>
+        _overrideCurrentAmount
+            ? _currentAmount
+            : (_itemData != null && _itemData.UsesCustomAmount ? _itemData.MaxAmount : 0f);
+
+    public float CurrentDurability =>
+        _overrideCurrentDurability
+            ? _currentDurability
+            : (_itemData != null && _itemData.UsesDurability && !_itemData.IsUnbreakable
+                ? _itemData.MaxDurability
+                : 100f);
+
+    public bool HasDurability =>
+        _itemData != null && _itemData.UsesDurability;
+
+    public float CurrentWeightKg =>
+        InventoryWeightCalculator.CalculateIncomingWeightKg(
+            _itemData,
+            _count,
+            _overrideCurrentAmount ? _currentAmount : null);
+
     public void Interact()
     {
+        TryPickup();
+    }
+
+    public bool TryPickup()
+    {
         if (_inventoryController == null || _itemData == null)
-            return;
+            return false;
 
         bool success = _inventoryController.TryAddItem(
             _itemData,
@@ -33,10 +59,11 @@ public class WorldItem : MonoBehaviour, IInteractable
         if (!success)
         {
             Debug.Log($"{DebugPrefix} Could not pick up {_itemData.DisplayName} x{_count}. Inventory full.");
-            return;
+            return false;
         }
 
         Debug.Log($"{DebugPrefix} Picked up {_itemData.DisplayName} x{_count}.");
         Destroy(gameObject);
+        return true;
     }
 }

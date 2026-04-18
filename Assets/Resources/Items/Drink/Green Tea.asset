@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab4cbba0c9743748a35073d09f6b5c1, type: 3}
+  m_Name: Green Tea
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  _id: green_tea
+  _displayName: "\u0422\u0440\u0430\u0432\u044F\u043D\u043E\u0439 \u0447\u0430\u0439"
+  _description: "\u041F\u0430\u0447\u043A\u0430 \u0447\u0430\u044F \u0441 \u043F\u0440\u0438\u044F\u0442\u043D\u044B\u043C
+    \u0437\u0430\u043F\u0430\u0445\u043E\u043C. \u0415\u0441\u043B\u0438 \u0432\u0435\u0440\u0438\u0442\u044C
+    \u044D\u0442\u0438\u043A\u0435\u0442\u043A\u0435, \u0447\u0430\u0439 \u043F\u043E\u043C\u043E\u0433\u0430\u0435\u0442
+    \u0440\u0430\u0441\u0441\u043B\u0430\u0431\u0438\u0442\u044C\u0441\u044F \u0438
+    \u043E\u0442\u0434\u043E\u0445\u043D\u0443\u0442\u044C \u0432 \u043F\u043E\u043A\u043E\u0435."
+  _icon: {fileID: 21300000, guid: 2b729072e0271e743860809ad7992c8c, type: 3}
+  _category: 2
+  _primaryAction: 0
+  _isStackable: 1
+  _maxStack: 5
+  _usesDurability: 1
+  _isUnbreakable: 0
+  _maxDurability: 100
+  _usesCustomAmount: 0
+  _amountUnit: 1
+  _maxAmount: 1
+  _baseWeightKg: 0.01
+  _weightDependsOnAmount: 0
+  _weightPerUnit: 0
+  _restoreHydration: 0
+  _restoreCalories: 0
