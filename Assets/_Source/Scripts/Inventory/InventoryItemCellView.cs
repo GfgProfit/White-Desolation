@@ -1,19 +1,27 @@
+using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventoryItemCellView : MonoBehaviour
+public class InventoryItemCellView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Button _button;
     [SerializeField] private Image _iconImage;
     [SerializeField] private TMP_Text _countText;
     [SerializeField] private TMP_Text _durabilityText;
     [SerializeField] private TMP_Text _weightText;
-    //[SerializeField] private GameObject _selectionFrame;
+    [SerializeField] private CanvasGroup _selectionFrame;
 
     private int _slotIndex;
     private Action<int> _onClicked;
+
+    private void OnDisable()
+    {
+        _iconImage.rectTransform.localScale = Vector3.one;
+        _selectionFrame.alpha = 0.0f;
+    }
 
     public void Bind(InventorySlot slot, int slotIndex, bool isSelected, Action<int> onClicked)
     {
@@ -79,10 +87,26 @@ public class InventoryItemCellView : MonoBehaviour
         }
     }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _iconImage.rectTransform.DOScale(1.15f, 0.2f).SetEase(Ease.OutBack);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _iconImage.rectTransform.DOScale(1.0f, 0.2f).SetEase(Ease.OutBack);
+    }
+
     public void SetSelected(bool isSelected)
     {
-        //if (_selectionFrame != null)
-        //    _selectionFrame.SetActive(isSelected);
+        if (isSelected)
+        {
+            _selectionFrame.DOFade(1, 0.2f).SetEase(Ease.OutBack);
+        }
+        else
+        {
+            _selectionFrame.DOFade(0, 0.2f).SetEase(Ease.OutBack);
+        }
     }
 
     private void HandleClick()
