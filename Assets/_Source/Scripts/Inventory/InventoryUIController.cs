@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class InventoryUIController : MonoBehaviour
+public partial class InventoryUIController : MonoBehaviour
 {
     private const string DebugPrefix = "[InventoryUI]";
     private const float ZeroTolerance = 0.0001f;
+
+    private static readonly Color SelectedCategoryButtonColor = new Color32(0x30, 0x3B, 0x37, 0xFF);   // #303B37
+    private static readonly Color UnselectedCategoryButtonColor = new Color32(0x19, 0x1D, 0x1E, 0xFF); // #191D1E
 
     [Header("Root")]
     [SerializeField] private GameObject _inventoryRoot;
@@ -17,31 +21,15 @@ public class InventoryUIController : MonoBehaviour
     [SerializeField] private Transform _gridRoot;
     [SerializeField] private InventoryItemCellView _cellPrefab;
 
-    [Serializable]
-    private struct CategoryFilterButton
-    {
-        public InventoryCategoryFilter Filter;
-        public Button Button;
-        public Image RootImage;
-        public CanvasGroup IconCanvasGroup;
-    }
-
-    private enum InventoryCategoryFilter
-    {
-        All = 0,
-        MiscAndFuel = 1,
-        Medical = 2,
-        Clothing = 3,
-        FoodAndWater = 4,
-        ToolWeaponAndAmmo = 5,
-        Resources = 6
-    }
-
-    private static readonly Color SelectedCategoryButtonColor = new Color32(0x30, 0x3B, 0x37, 0xFF);   // #303B37
-    private static readonly Color UnselectedCategoryButtonColor = new Color32(0x19, 0x1D, 0x1E, 0xFF); // #191D1E
-
     [Header("Category Filters")]
     [SerializeField] private CategoryFilterButton[] _categoryFilterButtons;
+
+    [Header("Sort")]
+    [SerializeField] private SortButtonConfig[] _sortButtons;
+    [SerializeField] private InventorySortMode _defaultSortMode = InventorySortMode.Name;
+    [SerializeField] private InventorySortDirection _defaultSortDirection = InventorySortDirection.Ascending;
+    [SerializeField, Range(0f, 1f)] private float _selectedSortButtonAlpha = 1f;
+    [SerializeField, Range(0f, 1f)] private float _unselectedSortButtonAlpha = 0.2f;
 
     [Header("Weight Display")]
     [SerializeField] private TMP_Text _carryWeightText;
@@ -61,13 +49,10 @@ public class InventoryUIController : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private GameObject _durabilityHolder;
     [SerializeField] private TMP_Text _durabilityText;
-
     [SerializeField] private GameObject _weightHolder;
     [SerializeField] private TMP_Text _weightText;
-
     [SerializeField] private GameObject _caloriesHolder;
     [SerializeField] private TMP_Text _caloriesText;
-
     [SerializeField] private GameObject _hydrationHolder;
     [SerializeField] private TMP_Text _hydrationText;
 
@@ -92,36 +77,16 @@ public class InventoryUIController : MonoBehaviour
     [Inject] private InventoryController _inventoryController;
     [Inject] private IPlayerInput _playerInput;
 
-    private readonly List<InventoryItemCellView> _spawnedCells = new();
-    private readonly List<int> _visibleSlotIndices = new();
-
     private bool _isOpen;
     private bool _isUsingItem;
     private int _selectedIndex = -1;
     private InventoryCategoryFilter _activeFilter = InventoryCategoryFilter.All;
+    private readonly List<SortButtonBinding> _sortButtonBindings = new();
+    private readonly List<InventoryItemCellView> _spawnedCells = new();
+    private readonly List<int> _visibleSlotIndices = new();
+    private InventorySortMode _activeSortMode = InventorySortMode.None;
+    private InventorySortDirection _activeSortDirection = InventorySortDirection.Ascending;
     private Coroutine _useRoutine;
-
-    private struct UsePlan
-    {
-        public int SlotIndex;
-        public ItemPrimaryActionType ActionType;
-        public string VerbText;
-        public float Duration;
-        public float HydrationToApply;
-        public float CaloriesToApply;
-        public float HydrationStateToConsume;
-        public float CaloriesStateToConsume;
-        public float AmountToConsume;
-
-        public bool HasInventoryConsume =>
-            !Mathf.Approximately(HydrationStateToConsume, 0f) ||
-            !Mathf.Approximately(CaloriesStateToConsume, 0f) ||
-            !Mathf.Approximately(AmountToConsume, 0f);
-
-        public bool HasPlayerEffect =>
-            !Mathf.Approximately(HydrationToApply, 0f) ||
-            !Mathf.Approximately(CaloriesToApply, 0f);
-    }
 
     private void Awake()
     {
@@ -139,6 +104,13 @@ public class InventoryUIController : MonoBehaviour
 
         InitializeCategoryFilterButtons();
         RefreshCategoryFilterButtonVisuals();
+
+        InitializeSortButtons();
+
+        _activeSortMode = _defaultSortMode;
+        _activeSortDirection = _defaultSortDirection;
+
+        RefreshSortButtonVisuals();
     }
 
     private void Start()
@@ -163,6 +135,8 @@ public class InventoryUIController : MonoBehaviour
 
         if (_dropOneButton != null)
             _dropOneButton.onClick.RemoveListener(HandleDropOneClicked);
+
+        CleanupSortButtons();
 
         if (_useRoutine != null)
             StopCoroutine(_useRoutine);
@@ -223,10 +197,218 @@ public class InventoryUIController : MonoBehaviour
 
         RefreshCarryWeight();
         RebuildVisibleSlotIndices();
+        SortVisibleSlotIndices();
         ValidateSelectedIndexForCurrentFilter();
         RebuildGrid();
         RefreshDetails();
         RefreshCategoryFilterButtonVisuals();
+        RefreshSortButtonVisuals();
+    }
+
+    private void InitializeSortButtons()
+    {
+        CleanupSortButtons();
+
+        if (_sortButtons == null)
+            return;
+
+        for (int i = 0; i < _sortButtons.Length; i++)
+        {
+            SortButtonConfig config = _sortButtons[i];
+
+            if (config.Button == null)
+                continue;
+
+            InventorySortMode mode = config.Mode;
+            UnityAction action = () => HandleSortButtonClicked(mode);
+
+            config.Button.onClick.AddListener(action);
+            _sortButtonBindings.Add(new SortButtonBinding(config.Button, action));
+        }
+    }
+
+    private void CleanupSortButtons()
+    {
+        for (int i = 0; i < _sortButtonBindings.Count; i++)
+        {
+            SortButtonBinding binding = _sortButtonBindings[i];
+
+            if (binding.Button != null && binding.Action != null)
+                binding.Button.onClick.RemoveListener(binding.Action);
+        }
+
+        _sortButtonBindings.Clear();
+    }
+
+    private void HandleSortButtonClicked(InventorySortMode mode)
+    {
+        if (mode == InventorySortMode.None)
+            return;
+
+        if (_activeSortMode == mode)
+        {
+            _activeSortDirection = _activeSortDirection == InventorySortDirection.Ascending
+                ? InventorySortDirection.Descending
+                : InventorySortDirection.Ascending;
+        }
+        else
+        {
+            _activeSortMode = mode;
+            _activeSortDirection = InventorySortDirection.Ascending;
+        }
+
+        RefreshView();
+    }
+
+    private void RefreshSortButtonVisuals()
+    {
+        if (_sortButtons == null)
+            return;
+
+        for (int i = 0; i < _sortButtons.Length; i++)
+        {
+            SortButtonConfig config = _sortButtons[i];
+            bool isSelected = _activeSortMode != InventorySortMode.None && config.Mode == _activeSortMode;
+
+            if (config.CanvasGroup != null)
+                config.CanvasGroup.alpha = isSelected
+                    ? _selectedSortButtonAlpha
+                    : _unselectedSortButtonAlpha;
+        }
+    }
+
+    private void SortVisibleSlotIndices()
+    {
+        if (_inventoryController == null)
+            return;
+
+        if (_activeSortMode == InventorySortMode.None)
+            return;
+
+        if (_visibleSlotIndices.Count <= 1)
+            return;
+
+        _visibleSlotIndices.Sort(CompareVisibleSlotIndices);
+    }
+
+    private int CompareVisibleSlotIndices(int leftSourceIndex, int rightSourceIndex)
+    {
+        if (_inventoryController == null)
+            return leftSourceIndex.CompareTo(rightSourceIndex);
+
+        InventorySlot leftSlot = _inventoryController.GetSlotAt(leftSourceIndex);
+        InventorySlot rightSlot = _inventoryController.GetSlotAt(rightSourceIndex);
+
+        if (leftSlot == null && rightSlot == null)
+            return leftSourceIndex.CompareTo(rightSourceIndex);
+
+        if (leftSlot == null)
+            return 1;
+
+        if (rightSlot == null)
+            return -1;
+
+        switch (_activeSortMode)
+        {
+            case InventorySortMode.Name:
+                return CompareSlotsByName(leftSlot, leftSourceIndex, rightSlot, rightSourceIndex);
+
+            case InventorySortMode.Durability:
+                return CompareSlotsByDurability(leftSlot, leftSourceIndex, rightSlot, rightSourceIndex);
+
+            case InventorySortMode.Weight:
+                return CompareSlotsByWeight(leftSlot, leftSourceIndex, rightSlot, rightSourceIndex);
+
+            default:
+                return leftSourceIndex.CompareTo(rightSourceIndex);
+        }
+    }
+
+    private int CompareSlotsByName(
+        InventorySlot leftSlot,
+        int leftSourceIndex,
+        InventorySlot rightSlot,
+        int rightSourceIndex)
+    {
+        string leftName = leftSlot.Item != null ? leftSlot.Item.DisplayName : string.Empty;
+        string rightName = rightSlot.Item != null ? rightSlot.Item.DisplayName : string.Empty;
+
+        int compare = string.Compare(leftName, rightName, StringComparison.CurrentCultureIgnoreCase);
+
+        if (_activeSortDirection == InventorySortDirection.Descending)
+            compare = -compare;
+
+        if (compare != 0)
+            return compare;
+
+        return leftSourceIndex.CompareTo(rightSourceIndex);
+    }
+
+    private int CompareSlotsByDurability(
+        InventorySlot leftSlot,
+        int leftSourceIndex,
+        InventorySlot rightSlot,
+        int rightSourceIndex)
+    {
+        bool leftHasDurability = leftSlot.HasDurability;
+        bool rightHasDurability = rightSlot.HasDurability;
+
+        // Предметы без прочности всегда отправляем в конец,
+        // независимо от направления сортировки.
+        if (leftHasDurability != rightHasDurability)
+            return leftHasDurability ? -1 : 1;
+
+        if (leftHasDurability && rightHasDurability)
+        {
+            // Сортируем по нормализованной прочности 0..1,
+            // чтобы разные max durability сравнивались корректно.
+            int compare = leftSlot.Durability01.CompareTo(rightSlot.Durability01);
+
+            if (_activeSortDirection == InventorySortDirection.Descending)
+                compare = -compare;
+
+            if (compare != 0)
+                return compare;
+        }
+
+        return CompareByNameThenSourceIndex(leftSlot, leftSourceIndex, rightSlot, rightSourceIndex);
+    }
+
+    private int CompareSlotsByWeight(
+        InventorySlot leftSlot,
+        int leftSourceIndex,
+        InventorySlot rightSlot,
+        int rightSourceIndex)
+    {
+        float leftWeight = InventoryWeightCalculator.GetSlotWeightKg(leftSlot);
+        float rightWeight = InventoryWeightCalculator.GetSlotWeightKg(rightSlot);
+
+        int compare = leftWeight.CompareTo(rightWeight);
+
+        if (_activeSortDirection == InventorySortDirection.Descending)
+            compare = -compare;
+
+        if (compare != 0)
+            return compare;
+
+        return CompareByNameThenSourceIndex(leftSlot, leftSourceIndex, rightSlot, rightSourceIndex);
+    }
+
+    private int CompareByNameThenSourceIndex(
+        InventorySlot leftSlot,
+        int leftSourceIndex,
+        InventorySlot rightSlot,
+        int rightSourceIndex)
+    {
+        string leftName = leftSlot.Item != null ? leftSlot.Item.DisplayName : string.Empty;
+        string rightName = rightSlot.Item != null ? rightSlot.Item.DisplayName : string.Empty;
+
+        int compare = string.Compare(leftName, rightName, StringComparison.CurrentCultureIgnoreCase);
+
+        if (compare != 0)
+            return compare;
+
+        return leftSourceIndex.CompareTo(rightSourceIndex);
     }
 
     private void RefreshCarryWeight()
