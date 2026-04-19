@@ -4,12 +4,11 @@ public enum ItemCategory
     Food = 1,
     Water = 2,
     Medical = 3,
-    Consumable = 4,
-    Resource = 5,
-    Tool = 6,
-    Weapon = 7,
-    Clothing = 8,
-    Fuel = 9,
-    Ammo = 10,
-    Misc = 11
+    Resource = 4,
+    Tool = 5,
+    Weapon = 6,
+    Clothing = 7,
+    Fuel = 8,
+    Ammo = 9,
+    Misc = 10
 }

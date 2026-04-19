@@ -2080,10 +2080,10 @@ TextureImporter:
       name: Base Atlas_hd_90
       rect:
         serializedVersion: 2
-        x: 2162
-        y: 3794
-        width: 75
-        height: 82
+        x: 2154
+        y: 3786
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2666,28 +2666,6 @@ TextureImporter:
       bones: []
       spriteID: 625dddb21b050484d812d2a2f4619620
       internalID: 844486921
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Base Atlas_hd_117
-      rect:
-        serializedVersion: 2
-        x: 2161
-        y: 3806
-        width: 6
-        height: 7
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e1a1ab699eed4044cbbd302925b457a5
-      internalID: 2014527681
       vertices: []
       indices: 
       edges: []
@@ -4170,10 +4148,10 @@ TextureImporter:
       name: Base Atlas_hd_186
       rect:
         serializedVersion: 2
-        x: 1897
-        y: 3541
-        width: 88
-        height: 73
+        x: 1893
+        y: 3525
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -4214,10 +4192,10 @@ TextureImporter:
       name: Base Atlas_hd_188
       rect:
         serializedVersion: 2
-        x: 2170
-        y: 3544
-        width: 57
-        height: 65
+        x: 2166
+        y: 3537
+        width: 70
+        height: 70
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -5182,10 +5160,10 @@ TextureImporter:
       name: Base Atlas_hd_233
       rect:
         serializedVersion: 2
-        x: 1650
-        y: 3409
-        width: 72
-        height: 73
+        x: 1638
+        y: 3399
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -5597,28 +5575,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Base Atlas_hd_252
-      rect:
-        serializedVersion: 2
-        x: 1722
-        y: 3452
-        width: 4
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8c69c4abbc1481f4797ce1d725a3c5f0
-      internalID: 51521282
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Base Atlas_hd_253
       rect:
         serializedVersion: 2
@@ -5724,28 +5680,6 @@ TextureImporter:
       bones: []
       spriteID: bbed1326b3656d249a28d93e3e9b3725
       internalID: -1016209446
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Base Atlas_hd_258
-      rect:
-        serializedVersion: 2
-        x: 1650
-        y: 3431
-        width: 4
-        height: 4
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 67230f55c493ed84a8f03f4f99425af4
-      internalID: -715448295
       vertices: []
       indices: 
       edges: []
@@ -16292,10 +16226,10 @@ TextureImporter:
       name: Base Atlas_hd_744
       rect:
         serializedVersion: 2
-        x: 2805
-        y: 2230
-        width: 78
-        height: 95
+        x: 2799
+        y: 2232
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -16402,10 +16336,10 @@ TextureImporter:
       name: Base Atlas_hd_749
       rect:
         serializedVersion: 2
-        x: 3592
-        y: 2252
-        width: 66
-        height: 69
+        x: 3576
+        y: 2233
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -17766,10 +17700,10 @@ TextureImporter:
       name: Base Atlas_hd_811
       rect:
         serializedVersion: 2
-        x: 2795
-        y: 1966
-        width: 103
-        height: 121
+        x: 2789
+        y: 1965
+        width: 120
+        height: 120
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
