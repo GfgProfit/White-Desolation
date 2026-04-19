@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -15,6 +16,32 @@ public class InventoryUIController : MonoBehaviour
     [Header("Grid")]
     [SerializeField] private Transform _gridRoot;
     [SerializeField] private InventoryItemCellView _cellPrefab;
+
+    [Serializable]
+    private struct CategoryFilterButton
+    {
+        public InventoryCategoryFilter Filter;
+        public Button Button;
+        public Image RootImage;
+        public CanvasGroup IconCanvasGroup;
+    }
+
+    private enum InventoryCategoryFilter
+    {
+        All = 0,
+        MiscAndFuel = 1,
+        Medical = 2,
+        Clothing = 3,
+        FoodAndWater = 4,
+        ToolWeaponAndAmmo = 5,
+        Resources = 6
+    }
+
+    private static readonly Color SelectedCategoryButtonColor = new Color32(0x30, 0x3B, 0x37, 0xFF);   // #303B37
+    private static readonly Color UnselectedCategoryButtonColor = new Color32(0x19, 0x1D, 0x1E, 0xFF); // #191D1E
+
+    [Header("Category Filters")]
+    [SerializeField] private CategoryFilterButton[] _categoryFilterButtons;
 
     [Header("Weight Display")]
     [SerializeField] private TMP_Text _carryWeightText;
@@ -66,10 +93,12 @@ public class InventoryUIController : MonoBehaviour
     [Inject] private IPlayerInput _playerInput;
 
     private readonly List<InventoryItemCellView> _spawnedCells = new();
+    private readonly List<int> _visibleSlotIndices = new();
 
     private bool _isOpen;
     private bool _isUsingItem;
     private int _selectedIndex = -1;
+    private InventoryCategoryFilter _activeFilter = InventoryCategoryFilter.All;
     private Coroutine _useRoutine;
 
     private struct UsePlan
@@ -107,6 +136,9 @@ public class InventoryUIController : MonoBehaviour
 
         if (_dropOneButton != null)
             _dropOneButton.onClick.AddListener(HandleDropOneClicked);
+
+        InitializeCategoryFilterButtons();
+        RefreshCategoryFilterButtonVisuals();
     }
 
     private void Start()
@@ -190,21 +222,11 @@ public class InventoryUIController : MonoBehaviour
             return;
 
         RefreshCarryWeight();
-
-        if (_inventoryController.SlotCount == 0)
-        {
-            _selectedIndex = -1;
-        }
-        else
-        {
-            _selectedIndex = Mathf.Clamp(_selectedIndex, 0, _inventoryController.SlotCount - 1);
-
-            if (_selectedIndex < 0)
-                _selectedIndex = 0;
-        }
-
+        RebuildVisibleSlotIndices();
+        ValidateSelectedIndexForCurrentFilter();
         RebuildGrid();
         RefreshDetails();
+        RefreshCategoryFilterButtonVisuals();
     }
 
     private void RefreshCarryWeight()
@@ -243,11 +265,13 @@ public class InventoryUIController : MonoBehaviour
         if (_inventoryController == null || _cellPrefab == null || _gridRoot == null)
             return;
 
-        for (int i = 0; i < _inventoryController.SlotCount; i++)
+        for (int i = 0; i < _visibleSlotIndices.Count; i++)
         {
-            InventorySlot slot = _inventoryController.GetSlotAt(i);
+            int sourceSlotIndex = _visibleSlotIndices[i];
+            InventorySlot slot = _inventoryController.GetSlotAt(sourceSlotIndex);
+
             InventoryItemCellView cell = Instantiate(_cellPrefab, _gridRoot);
-            cell.Bind(slot, i, i == _selectedIndex, HandleSlotSelected);
+            cell.Bind(slot, sourceSlotIndex, sourceSlotIndex == _selectedIndex, HandleSlotSelected);
             _spawnedCells.Add(cell);
         }
     }
@@ -261,10 +285,132 @@ public class InventoryUIController : MonoBehaviour
 
         for (int i = 0; i < _spawnedCells.Count; i++)
         {
-            _spawnedCells[i].SetSelected(i == _selectedIndex);
+            bool isSelected = i < _visibleSlotIndices.Count && _visibleSlotIndices[i] == _selectedIndex;
+            _spawnedCells[i].SetSelected(isSelected);
         }
 
         RefreshDetails();
+    }
+
+    private void InitializeCategoryFilterButtons()
+    {
+        if (_categoryFilterButtons == null)
+            return;
+
+        for (int i = 0; i < _categoryFilterButtons.Length; i++)
+        {
+            CategoryFilterButton config = _categoryFilterButtons[i];
+
+            if (config.Button == null)
+                continue;
+
+            InventoryCategoryFilter filter = config.Filter;
+            config.Button.onClick.AddListener(() => HandleCategoryFilterClicked(filter));
+        }
+    }
+
+    private void HandleCategoryFilterClicked(InventoryCategoryFilter filter)
+    {
+        if (_activeFilter == filter)
+        {
+            RefreshCategoryFilterButtonVisuals();
+            return;
+        }
+
+        _activeFilter = filter;
+        RefreshView();
+    }
+
+    private void RefreshCategoryFilterButtonVisuals()
+    {
+        if (_categoryFilterButtons == null)
+            return;
+
+        for (int i = 0; i < _categoryFilterButtons.Length; i++)
+        {
+            CategoryFilterButton config = _categoryFilterButtons[i];
+            bool isSelected = config.Filter == _activeFilter;
+
+            if (config.RootImage != null)
+                config.RootImage.color = isSelected
+                    ? SelectedCategoryButtonColor
+                    : UnselectedCategoryButtonColor;
+
+            if (config.IconCanvasGroup != null)
+                config.IconCanvasGroup.alpha = isSelected ? 1f : 0.2f;
+        }
+    }
+
+    private void RebuildVisibleSlotIndices()
+    {
+        _visibleSlotIndices.Clear();
+
+        if (_inventoryController == null)
+            return;
+
+        for (int i = 0; i < _inventoryController.SlotCount; i++)
+        {
+            InventorySlot slot = _inventoryController.GetSlotAt(i);
+
+            if (ShouldShowSlotForCurrentFilter(slot))
+                _visibleSlotIndices.Add(i);
+        }
+    }
+
+    private void ValidateSelectedIndexForCurrentFilter()
+    {
+        if (_visibleSlotIndices.Count == 0)
+        {
+            _selectedIndex = -1;
+            return;
+        }
+
+        if (_selectedIndex >= 0 && _visibleSlotIndices.Contains(_selectedIndex))
+            return;
+
+        _selectedIndex = _visibleSlotIndices[0];
+    }
+
+    private bool ShouldShowSlotForCurrentFilter(InventorySlot slot)
+    {
+        if (slot == null || slot.IsEmpty || slot.Item == null)
+            return false;
+
+        return IsCategoryAllowedByCurrentFilter(slot.Item.Category);
+    }
+
+    private bool IsCategoryAllowedByCurrentFilter(ItemCategory category)
+    {
+        switch (_activeFilter)
+        {
+            case InventoryCategoryFilter.All:
+                return true;
+
+            case InventoryCategoryFilter.MiscAndFuel:
+                return category == ItemCategory.Misc
+                    || category == ItemCategory.Fuel;
+
+            case InventoryCategoryFilter.Medical:
+                return category == ItemCategory.Medical;
+
+            case InventoryCategoryFilter.Clothing:
+                return category == ItemCategory.Clothing;
+
+            case InventoryCategoryFilter.FoodAndWater:
+                return category == ItemCategory.Food
+                    || category == ItemCategory.Water;
+
+            case InventoryCategoryFilter.ToolWeaponAndAmmo:
+                return category == ItemCategory.Tool
+                    || category == ItemCategory.Weapon
+                    || category == ItemCategory.Ammo;
+
+            case InventoryCategoryFilter.Resources:
+                return category == ItemCategory.Resource;
+
+            default:
+                return true;
+        }
     }
 
     private void RefreshDetails()
