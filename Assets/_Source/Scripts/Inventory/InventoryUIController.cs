@@ -49,6 +49,7 @@ public partial class InventoryUIController : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private GameObject _durabilityHolder;
     [SerializeField] private TMP_Text _durabilityText;
+    [SerializeField] private Image _durabilityIcon;
     [SerializeField] private GameObject _weightHolder;
     [SerializeField] private TMP_Text _weightText;
     [SerializeField] private GameObject _caloriesHolder;
@@ -663,6 +664,8 @@ public partial class InventoryUIController : MonoBehaviour
             InventoryDisplayFormatter.TryGetDurabilityText(slot, out string durabilityText),
             durabilityText);
 
+        Utils.SetDurabilityColor(slot, _durabilityText, _durabilityIcon);
+
         SetStatRow(
             _weightHolder,
             _weightText,
@@ -764,28 +767,48 @@ public partial class InventoryUIController : MonoBehaviour
 
         SetUseProgress(1f, plan.VerbText);
 
+        if (plan.HasToolDurabilityConsume)
+        {
+            _inventoryController.TryConsumeDurabilityFromFirstMatchingItem(
+                plan.ToolItemToDamage,
+                plan.ToolDurabilityCost);
+        }
+
+        if (plan.ReplaceSlotItemAfterAction != null)
+        {
+            _inventoryController.TryReplaceSlotItem(plan.SlotIndex, plan.ReplaceSlotItemAfterAction);
+        }
+
         if (plan.HasInventoryConsume)
         {
             _inventoryController.TryConsumeFromSlot(
                 plan.SlotIndex,
                 plan.HydrationStateToConsume,
                 plan.CaloriesStateToConsume,
-                plan.AmountToConsume);
-        }
-
-        if (plan.ActionType == ItemPrimaryActionType.Action)
-        {
-            InventorySlot slot = _inventoryController.GetSlotAt(plan.SlotIndex);
-            string itemName = slot != null && slot.Item != null ? slot.Item.DisplayName : "item";
-            Debug.Log($"{DebugPrefix} Action completed for {itemName}.");
+                plan.AmountToConsume,
+                plan.ReplaceWhenDepleted);
         }
 
         SetUseProgressVisible(false);
         SetUseProgress(0f, string.Empty);
 
+        RefreshView();
+
+        if (plan.AutoUseReplacedItem)
+        {
+            InventorySlot nextSlot = _inventoryController.GetSlotAt(plan.SlotIndex);
+
+            if (nextSlot != null &&
+                nextSlot.Item != null &&
+                TryBuildUsePlan(plan.SlotIndex, nextSlot, out UsePlan nextPlan))
+            {
+                _useRoutine = StartCoroutine(ExecuteUseRoutine(nextPlan));
+                yield break;
+            }
+        }
+
         _isUsingItem = false;
         _useRoutine = null;
-
         RefreshView();
     }
 
@@ -844,6 +867,9 @@ public partial class InventoryUIController : MonoBehaviour
         if (slot == null || slot.Item == null)
             return false;
 
+        if (slot.Item.RequiresOpening)
+            return TryBuildOpenPlan(slotIndex, slot, out plan);
+
         plan.SlotIndex = slotIndex;
         plan.ActionType = slot.Item.PrimaryAction;
         plan.VerbText = ResolveUseVerb(slot);
@@ -860,6 +886,35 @@ public partial class InventoryUIController : MonoBehaviour
             default:
                 return false;
         }
+    }
+
+    private bool TryBuildOpenPlan(int slotIndex, InventorySlot slot, out UsePlan plan)
+    {
+        plan = default;
+
+        if (_inventoryController == null || slot == null || slot.Item == null)
+            return false;
+
+        ItemData item = slot.Item;
+
+        if (!item.RequiresOpening || item.AfterOpen == null)
+            return false;
+
+        if (!_inventoryController.ContainsUsableItem(item.NeedsToOpen))
+            return false;
+
+        plan.SlotIndex = slotIndex;
+        plan.ActionType = ItemPrimaryActionType.Action;
+        plan.VerbText = "открывает";
+        plan.Duration = _useDurationSeconds;
+
+        plan.ReplaceSlotItemAfterAction = item.AfterOpen;
+        plan.AutoUseReplacedItem = true;
+
+        plan.ToolItemToDamage = item.NeedsToOpen;
+        plan.ToolDurabilityCost = item.NeedsToOpenDurabilityCost;
+
+        return true;
     }
 
     private bool TryBuildConsumableUsePlan(InventorySlot slot, ref UsePlan plan)
@@ -908,6 +963,7 @@ public partial class InventoryUIController : MonoBehaviour
             plan.AmountToConsume = slot.CurrentAmount * useRatio;
         }
 
+        plan.ReplaceWhenDepleted = slot.Item.AfterUse;
         return plan.HasPlayerEffect || plan.HasInventoryConsume;
     }
 
@@ -1038,11 +1094,15 @@ public partial class InventoryUIController : MonoBehaviour
         if (slot == null || slot.Item == null || _playerNeedsController == null)
             return false;
 
+        if (slot.Item.RequiresOpening)
+            return CanUseClosedConsumableSlot(slot);
+
         if (!PassesConsumableUseThresholds(slot))
             return false;
 
         if (IsVolumeDrink(slot))
-            return slot.CurrentAmount > ZeroTolerance && _playerNeedsController.MissingThirst > ZeroTolerance;
+            return slot.CurrentAmount > ZeroTolerance &&
+                   _playerNeedsController.MissingThirst > ZeroTolerance;
 
         bool hasHydrationEffect = Mathf.Abs(slot.CurrentHydration) > ZeroTolerance;
         bool hasCaloriesEffect = Mathf.Abs(slot.CurrentCalories) > ZeroTolerance;
@@ -1090,6 +1150,14 @@ public partial class InventoryUIController : MonoBehaviour
     {
         if (slot == null || slot.Item == null || _playerNeedsController == null)
             return;
+
+        if (slot.Item.RequiresOpening &&
+            _inventoryController != null &&
+            !_inventoryController.Contains(slot.Item.NeedsToOpen))
+        {
+            Debug.Log($"{DebugPrefix} {slot.Item.DisplayName} requires {slot.Item.NeedsToOpen.DisplayName}.");
+            return;
+        }
 
         bool affectsHydration = DoesAffectHydration(slot);
         bool affectsCalories = DoesAffectCalories(slot);
@@ -1156,6 +1224,28 @@ public partial class InventoryUIController : MonoBehaviour
             if (_obectDisableWhileOpen[i] != null)
                 _obectDisableWhileOpen[i].SetActive(enabled);
         }
+    }
+
+    private bool CanUseClosedConsumableSlot(InventorySlot slot)
+    {
+        if (slot == null || slot.Item == null || _inventoryController == null)
+            return false;
+
+        ItemData item = slot.Item;
+
+        if (!item.RequiresOpening)
+            return false;
+
+        if (item.AfterOpen == null || item.AfterOpen == item || item.AfterOpen.RequiresOpening)
+            return false;
+
+        if (!_inventoryController.Contains(item.NeedsToOpen))
+            return false;
+
+        InventorySlot previewOpenedSlot = new();
+        previewOpenedSlot.Initialize(item.AfterOpen, 1);
+
+        return CanUseConsumableSlot(previewOpenedSlot);
     }
 
     private void SetCursorState(bool visible)

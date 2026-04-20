@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab4cbba0c9743748a35073d09f6b5c1, type: 3}
+  m_Name: Empty Can
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  _id: empty_can
+  _displayName: "\u041F\u0443\u0441\u0442\u0430\u044F \u0431\u0430\u043D\u043A\u0430"
+  _description: "\u041F\u0443\u0441\u0442\u0430\u044F \u0431\u0430\u043D\u043A\u0430."
+  _icon: {fileID: 21300000, guid: 6fef91c311ed00f498bb2c87d91808dd, type: 3}
+  _category: 5
+  _primaryAction: 0
+  _isStackable: 0
+  _maxStack: 1
+  _usesDurability: 1
+  _isUnbreakable: 0
+  _maxDurability: 100
+  _usesCustomAmount: 0
+  _amountUnit: 1
+  _maxAmount: 1
+  _baseWeightKg: 0.1
+  _weightDependsOnAmount: 0
+  _weightPerUnit: 0
+  _restoreHydration: 0
+  _restoreCalories: 0
+  _needsToOpen: {fileID: 0}
+  _afterOpen: {fileID: 0}
+  _afterUse: {fileID: 0}
+  _openDurationSeconds: 5

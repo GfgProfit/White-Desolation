@@ -18,6 +18,7 @@ public class InteractController : MonoBehaviour
     [Header("Inspect UI")]
     [SerializeField] private GameObject _inspectRoot;
     [SerializeField] private Image _inspectIcon;
+    [SerializeField] private Image _durabilityIcon;
     [SerializeField] private TMP_Text _nameText;
     [SerializeField] private TMP_Text _descriptionText;
     [SerializeField] private TMP_Text _durabilityText;
@@ -180,8 +181,18 @@ public class InteractController : MonoBehaviour
 
         _nameText.text = $"{worldItem.ItemData.DisplayName}";
         _descriptionText.text = $"{worldItem.ItemData.Description}";
-        _durabilityText.text = $"{FormatDurability(worldItem)}";
-        _weightText.text = $"{worldItem.CurrentWeightKg:0.##} кг";
+        _durabilityText.text = $"{FormatDurability(worldItem)}%";
+
+        Utils.SetDurabilityColor(worldItem, _durabilityText, _durabilityIcon);
+
+        if (worldItem.CurrentWeightKg >= 1)
+        {
+            _weightText.text = $"{worldItem.CurrentWeightKg:0.##} кг";
+        }
+        else
+        {
+            _weightText.text = $"{worldItem.CurrentWeightKg * 1000f:0} гр";
+        }
 
         SetHoverVisible(false);
         SetPlayerControlsEnabled(false);
@@ -218,7 +229,7 @@ public class InteractController : MonoBehaviour
         if (worldItem.ItemData.IsUnbreakable)
             return "Неразрушаемый";
 
-        return $"{worldItem.CurrentDurability:0.##} / {worldItem.ItemData.MaxDurability:0.##}";
+        return $"{worldItem.CurrentDurability:0.##}";
     }
 
     private void SetHoverVisible(bool visible)

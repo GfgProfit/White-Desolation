@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab4cbba0c9743748a35073d09f6b5c1, type: 3}
+  m_Name: Tomato Soup
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  _id: tomato_soup
+  _displayName: "\u0411\u0430\u043D\u043A\u0430 \u0442\u043E\u043C\u0430\u0442\u043D\u043E\u0433\u043E
+    \u0441\u0443\u043F\u0430"
+  _description: "\u0413\u0443\u0441\u0442\u043E\u0439 \u0441\u0443\u043F \u0441\u043E
+    \u0441\u043B\u0430\u0434\u043A\u043E\u0432\u0430\u0442\u044B\u043C \u0437\u0430\u043F\u0430\u0445\u043E\u043C.
+    \u041E\u043D \u0433\u043E\u0440\u044F\u0447\u0438\u0439 \u0438 \u0433\u0440\u0435\u0435\u0442
+    \u0434\u0430\u0436\u0435 \u0434\u0443\u0448\u0443. \u042D\u0442\u043E\u0442 \u0441\u0443\u043F
+    \u0438 \u0433\u043E\u043B\u043E\u0434 \u043F\u0440\u043E\u0433\u043E\u043D\u0438\u0442,
+    \u043F\u0443\u0441\u0442\u044C \u043D\u0435\u043D\u0430\u0434\u043E\u043B\u0433\u043E."
+  _icon: {fileID: 21300000, guid: b5a0c6aef0c163840bffb57e68ad413a, type: 3}
+  _category: 1
+  _primaryAction: 1
+  _isStackable: 0
+  _maxStack: 1
+  _usesDurability: 1
+  _isUnbreakable: 0
+  _maxDurability: 100
+  _usesCustomAmount: 0
+  _amountUnit: 1
+  _maxAmount: 1
+  _baseWeightKg: 0.25
+  _weightDependsOnAmount: 0
+  _weightPerUnit: 0
+  _restoreHydration: 0.08
+  _restoreCalories: 500
+  _needsToOpen: {fileID: 11400000, guid: 658355adeb15a774e904ad4b5319969f, type: 2}
+  _afterOpen: {fileID: 11400000, guid: ae95ea3b79bf96b4c82f83635bbd0f54, type: 2}
+  _afterUse: {fileID: 0}
+  _needsToOpenDurabilityCost: 2

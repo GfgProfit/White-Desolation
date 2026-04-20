@@ -175,6 +175,34 @@ public class InventoryController : MonoBehaviour
         return true;
     }
 
+    public bool TryReplaceSlotItem(int slotIndex, ItemData newItemData)
+    {
+        if (slotIndex < 0 || slotIndex >= _items.Count)
+        {
+            Debug.LogWarning($"{DebugPrefix} Invalid slot index: {slotIndex}.");
+            return false;
+        }
+
+        if (newItemData == null)
+        {
+            Debug.LogWarning($"{DebugPrefix} Cannot replace slot {slotIndex}: new ItemData is null.");
+            return false;
+        }
+
+        InventorySlot slot = _items[slotIndex];
+        if (slot == null || slot.IsEmpty)
+        {
+            Debug.LogWarning($"{DebugPrefix} Slot {slotIndex} is empty.");
+            return false;
+        }
+
+        int count = Mathf.Max(1, slot.Count);
+        slot.Initialize(newItemData, count);
+
+        NotifyChanged();
+        return true;
+    }
+
     public InventorySlot GetSlotAt(int slotIndex)
     {
         if (slotIndex < 0 || slotIndex >= _items.Count)
@@ -218,7 +246,8 @@ public class InventoryController : MonoBehaviour
         int slotIndex,
         float hydrationToConsume = 0f,
         float caloriesToConsume = 0f,
-        float amountToConsume = 0f)
+        float amountToConsume = 0f,
+        ItemData replaceWhenDepleted = null)
     {
         if (slotIndex < 0 || slotIndex >= _items.Count)
         {
@@ -236,7 +265,6 @@ public class InventoryController : MonoBehaviour
         if (!Mathf.Approximately(hydrationToConsume, 0f))
         {
             slot.CurrentHydration -= hydrationToConsume;
-
             if (Mathf.Abs(slot.CurrentHydration) <= ZeroTolerance)
                 slot.CurrentHydration = 0f;
         }
@@ -244,7 +272,6 @@ public class InventoryController : MonoBehaviour
         if (!Mathf.Approximately(caloriesToConsume, 0f))
         {
             slot.CurrentCalories -= caloriesToConsume;
-
             if (Mathf.Abs(slot.CurrentCalories) <= ZeroTolerance)
                 slot.CurrentCalories = 0f;
         }
@@ -256,11 +283,91 @@ public class InventoryController : MonoBehaviour
 
         if (ShouldRemoveSlotAfterConsume(slot))
         {
-            _items.RemoveAt(slotIndex);
+            if (replaceWhenDepleted != null)
+            {
+                int count = Mathf.Max(1, slot.Count);
+                slot.Initialize(replaceWhenDepleted, count);
+            }
+            else
+            {
+                _items.RemoveAt(slotIndex);
+            }
         }
 
         NotifyChanged();
         return true;
+    }
+
+    public bool ContainsUsableItem(ItemData itemData, int count = 1)
+    {
+        if (itemData == null || count <= 0)
+            return false;
+
+        int found = 0;
+
+        for (int i = 0; i < _items.Count; i++)
+        {
+            InventorySlot slot = _items[i];
+            if (slot == null || slot.IsEmpty || slot.Item == null)
+                continue;
+
+            if (!AreSameItem(slot.Item, itemData))
+                continue;
+
+            if (slot.HasDurability && slot.CurrentDurability <= ZeroTolerance)
+                continue;
+
+            found += slot.Count;
+            if (found >= count)
+                return true;
+        }
+
+        return false;
+    }
+
+    public bool TryConsumeDurabilityFromFirstMatchingItem(ItemData itemData, float durabilityCost)
+    {
+        if (itemData == null)
+        {
+            Debug.LogWarning($"{DebugPrefix} Cannot consume durability: ItemData is null.");
+            return false;
+        }
+
+        if (durabilityCost <= ZeroTolerance)
+            return Contains(itemData);
+
+        for (int i = 0; i < _items.Count; i++)
+        {
+            InventorySlot slot = _items[i];
+            if (slot == null || slot.IsEmpty || slot.Item == null)
+                continue;
+
+            if (!AreSameItem(slot.Item, itemData))
+                continue;
+
+            if (!slot.HasDurability)
+            {
+                // Инструмент есть, но у него нет системы прочности.
+                return true;
+            }
+
+            if (slot.CurrentDurability <= ZeroTolerance)
+                continue;
+
+            slot.CurrentDurability = Mathf.Max(0f, slot.CurrentDurability - durabilityCost);
+
+            if (slot.CurrentDurability <= ZeroTolerance)
+            {
+                Debug.Log($"{DebugPrefix} {slot.Item.DisplayName} broke.");
+                _items.RemoveAt(i);
+            }
+
+            NotifyChanged();
+            return true;
+        }
+
+        Debug.LogWarning($"{DebugPrefix} No usable tool found for {itemData.DisplayName}.");
+        return false;
     }
 
     public int GetTotalCount(ItemData itemData)

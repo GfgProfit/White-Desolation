@@ -11,6 +11,7 @@ public class InventoryItemCellView : MonoBehaviour, IPointerEnterHandler, IPoint
     [SerializeField] private Image _iconImage;
     [SerializeField] private TMP_Text _countText;
     [SerializeField] private TMP_Text _durabilityText;
+    [SerializeField] private Image _durabilityIcon;
     [SerializeField] private TMP_Text _weightText;
     [SerializeField] private CanvasGroup _selectionFrame;
 
@@ -50,6 +51,8 @@ public class InventoryItemCellView : MonoBehaviour, IPointerEnterHandler, IPoint
                 bool showDurability = slot.Item.UsesDurability;
                 _durabilityText.gameObject.SetActive(showDurability);
                 _durabilityText.text = showDurability ? InventoryDisplayFormatter.FormatDurabilityShort(slot) : string.Empty;
+
+                Utils.SetDurabilityColor(slot, _durabilityText, _durabilityIcon);
             }
 
             if (_weightText != null)

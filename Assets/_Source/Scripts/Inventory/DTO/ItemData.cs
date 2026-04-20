@@ -40,6 +40,23 @@ public class ItemData : ScriptableObject
     [SerializeField] private float _restoreHydration;
     [SerializeField] private int _restoreCalories;
 
+    [Header("Transformations")]
+    [SerializeField] private ItemData _needsToOpen;
+    [SerializeField] private ItemData _afterOpen;
+    [SerializeField] private ItemData _afterUse;
+
+    [SerializeField, ShowIf(nameof(ShowNeedsToOpenDurabilityCost)), Min(0f)]
+    private float _needsToOpenDurabilityCost = 1f;
+
+    public ItemData NeedsToOpen => _needsToOpen;
+    public ItemData AfterOpen => _afterOpen;
+    public ItemData AfterUse => _afterUse;
+    public float NeedsToOpenDurabilityCost => _needsToOpenDurabilityCost;
+
+    public bool RequiresOpening => _needsToOpen != null && _afterOpen != null;
+
+    private bool ShowNeedsToOpenDurabilityCost() => _needsToOpen != null;
+
     public string Id => _id;
     public string DisplayName => _displayName;
     public string Description => _description;

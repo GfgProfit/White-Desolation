@@ -58,7 +58,15 @@ public static class InventoryDisplayFormatter
         if (currentWeight <= 0f)
             return false;
 
-        text = $"{currentWeight:0.##} кг";
+        if (currentWeight >= 1)
+        {
+            text = $"{currentWeight:0.##} кг";
+        }
+        else
+        {
+            text = $"{currentWeight * 1000f:0} гр";
+        }
+
         return true;
     }
 
@@ -100,6 +108,15 @@ public static class InventoryDisplayFormatter
     {
         if (slot == null || slot.Item == null)
             return "Использовать";
+
+         if (slot.Item.Category == ItemCategory.Food && !slot.Item.RequiresOpening)
+            return "Съесть";
+
+            if (slot.Item.Category == ItemCategory.Water && slot.Item.PrimaryAction == ItemPrimaryActionType.Use)
+            return "Выпить";
+
+        if (slot.Item.RequiresOpening)
+            return "Открыть";
 
         return slot.Item.PrimaryAction switch
         {
