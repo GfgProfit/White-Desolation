@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[ExecuteAlways]
 public class DayNightCycle : MonoBehaviour
 {
     [Header("Time")]
@@ -21,16 +22,7 @@ public class DayNightCycle : MonoBehaviour
 
     [Space]
     [SerializeField] private bool _controlSkyboxExposure = true;
-    [SerializeField]
-    private AnimationCurve _skyboxExposureCurve = new(
-        new Keyframe(0.00f, 0.45f),
-        new Keyframe(0.22f, 0.55f),
-        new Keyframe(0.28f, 0.95f),
-        new Keyframe(0.50f, 1.00f),
-        new Keyframe(0.72f, 0.95f),
-        new Keyframe(0.80f, 0.55f),
-        new Keyframe(1.00f, 0.45f)
-    );
+    [SerializeField] private AnimationCurve _skyboxExposureCurve = new(new Keyframe(0.00f, 0.45f), new Keyframe(0.22f, 0.55f), new Keyframe(0.28f, 0.95f), new Keyframe(0.50f, 1.00f), new Keyframe(0.72f, 0.95f), new Keyframe(0.80f, 0.55f), new Keyframe(1.00f, 0.45f));
 
     [Header("Sun")]
     [SerializeField] private Light _sunLight;
@@ -46,32 +38,18 @@ public class DayNightCycle : MonoBehaviour
 
     [Header("Day / Night Blend")]
     [SerializeField, Range(0f, 1f)] private float _sunriseStart = 0.20f; // ~04:48
-    [SerializeField, Range(0f, 1f)] private float _sunriseEnd = 0.28f;   // ~06:43
-    [SerializeField, Range(0f, 1f)] private float _sunsetStart = 0.72f;  // ~17:17
-    [SerializeField, Range(0f, 1f)] private float _sunsetEnd = 0.80f;    // ~19:12
+    [SerializeField, Range(0f, 1f)] private float _sunriseEnd = 0.28f; // ~06:43
+    [SerializeField, Range(0f, 1f)] private float _sunsetStart = 0.72f; // ~17:17
+    [SerializeField, Range(0f, 1f)] private float _sunsetEnd = 0.80f; // ~19:12
 
     [Header("Ambient")]
     [SerializeField] private Gradient _ambientColorGradient;
-    [SerializeField]
-    private AnimationCurve _ambientIntensityCurve = new(
-        new Keyframe(0.00f, 0.20f),
-        new Keyframe(0.25f, 0.35f),
-        new Keyframe(0.50f, 1.00f),
-        new Keyframe(0.75f, 0.35f),
-        new Keyframe(1.00f, 0.20f)
-    );
+    [SerializeField] private AnimationCurve _ambientIntensityCurve = new(new Keyframe(0.00f, 0.20f), new Keyframe(0.25f, 0.35f), new Keyframe(0.50f, 1.00f), new Keyframe(0.75f, 0.35f), new Keyframe(1.00f, 0.20f));
 
     [Header("Fog")]
     [SerializeField] private bool _controlFog = true;
     [SerializeField] private Gradient _fogColorGradient;
-    [SerializeField]
-    private AnimationCurve _fogDensityCurve = new(
-        new Keyframe(0.00f, 0.015f),
-        new Keyframe(0.25f, 0.010f),
-        new Keyframe(0.50f, 0.004f),
-        new Keyframe(0.75f, 0.010f),
-        new Keyframe(1.00f, 0.015f)
-    );
+    [SerializeField] private AnimationCurve _fogDensityCurve = new(new Keyframe(0.00f, 0.015f), new Keyframe(0.25f, 0.010f), new Keyframe(0.50f, 0.004f), new Keyframe(0.75f, 0.010f), new Keyframe(1.00f, 0.015f));
 
     public int CurrentDay { get; private set; }
     public int CurrentHour => Mathf.FloorToInt(_timeOfDayMinutes / 60f) % 24;
@@ -87,7 +65,6 @@ public class DayNightCycle : MonoBehaviour
     private float _timeOfDayMinutes;
     private int _lastReportedWholeMinute = -1;
     private bool _isRunning;
-    private static readonly int CubemapTransitionId = Shader.PropertyToID("_CubemapTransition");
     private float _nextEnvironmentUpdateTime;
 
     private void Awake()
@@ -97,13 +74,19 @@ public class DayNightCycle : MonoBehaviour
         _isRunning = _autoStart;
 
         if (_sunLight != null)
+        {
             RenderSettings.sun = _sunLight;
+        }
 
         if (_skyboxMaterial == null)
+        {
             _skyboxMaterial = RenderSettings.skybox;
+        }
 
         if (_moonLight != null)
+        {
             _moonLight.color = _moonLightColor;
+        }
 
         _lastReportedWholeMinute = Mathf.FloorToInt(_timeOfDayMinutes);
         ApplyVisuals();
@@ -112,7 +95,9 @@ public class DayNightCycle : MonoBehaviour
     private void Update()
     {
         if (_isRunning)
+        {
             AdvanceTime(Time.deltaTime);
+        }
 
         ApplyVisuals();
         ReportMinuteChangeIfNeeded();
@@ -169,7 +154,9 @@ public class DayNightCycle : MonoBehaviour
     private void AdvanceTime(float deltaTime)
     {
         if (_realSecondsPerGameDay <= 0.01f)
+        {
             return;
+        }
 
         float gameMinutesPerSecond = 1440f / _realSecondsPerGameDay;
         _timeOfDayMinutes += gameMinutesPerSecond * deltaTime;
@@ -194,7 +181,9 @@ public class DayNightCycle : MonoBehaviour
         int wholeMinute = Mathf.FloorToInt(_timeOfDayMinutes);
 
         if (wholeMinute == _lastReportedWholeMinute)
+        {
             return;
+        }
 
         _lastReportedWholeMinute = wholeMinute;
         OnTimeChanged?.Invoke(CurrentDay, CurrentHour, CurrentMinute);
@@ -218,7 +207,9 @@ public class DayNightCycle : MonoBehaviour
     private void ApplyMoon(float t, float nightFactor)
     {
         if (_moonLight == null)
+        {
             return;
+        }
 
         float moonAngle = t * 360f;
         _moonLight.transform.rotation =
@@ -229,16 +220,22 @@ public class DayNightCycle : MonoBehaviour
 
         bool enabled = _moonLight.intensity > 0.001f;
         if (_moonLight.enabled != enabled)
+        {
             _moonLight.enabled = enabled;
+        }
     }
 
     private void UpdateMainDirectionalLight(float dayFactor, float nightFactor)
     {
         if (!_switchMainLightBetweenSunAndMoon)
+        {
             return;
+        }
 
         if (_sunLight == null && _moonLight == null)
+        {
             return;
+        }
 
         if (_sunLight != null && _moonLight == null)
         {
@@ -258,17 +255,26 @@ public class DayNightCycle : MonoBehaviour
     private void ApplySkybox(float t, float nightFactor)
     {
         Material skybox = _skyboxMaterial != null ? _skyboxMaterial : RenderSettings.skybox;
+
         if (skybox == null)
+        {
             return;
+        }
 
         if (skybox.HasProperty("_CubemapTransition"))
+        {
             skybox.SetFloat("_CubemapTransition", Mathf.Clamp01(nightFactor));
+        }
 
         if (_controlSkyboxTint && skybox.HasProperty("_TintColor"))
+        {
             skybox.SetColor("_TintColor", _skyboxTintGradient.Evaluate(t));
+        }
 
         if (_controlSkyboxExposure && skybox.HasProperty("_Exposure"))
+        {
             skybox.SetFloat("_Exposure", _skyboxExposureCurve.Evaluate(t));
+        }
 
         if (_updateEnvironmentLighting && Time.unscaledTime >= _nextEnvironmentUpdateTime)
         {
@@ -280,12 +286,13 @@ public class DayNightCycle : MonoBehaviour
     private void ApplySun(float t, float dayFactor)
     {
         if (_sunLight == null)
+        {
             return;
+        }
 
         float sunAngle = t * 360f;
-        _sunLight.transform.rotation =
-            Quaternion.Euler(_sunRotationOffset + new Vector3(sunAngle, 0f, 0f));
 
+        _sunLight.transform.rotation = Quaternion.Euler(_sunRotationOffset + new Vector3(sunAngle, 0f, 0f));
         _sunLight.intensity = _sunMaxIntensity * dayFactor;
     }
 
@@ -299,7 +306,9 @@ public class DayNightCycle : MonoBehaviour
     private void ApplyFog(float t)
     {
         if (!_controlFog)
+        {
             return;
+        }
 
         RenderSettings.fogColor = _fogColorGradient.Evaluate(t);
         RenderSettings.fogDensity = _fogDensityCurve.Evaluate(t);
@@ -315,7 +324,9 @@ public class DayNightCycle : MonoBehaviour
     private static float SmoothStep01(float start, float end, float value)
     {
         if (Mathf.Approximately(start, end))
+        {
             return value >= end ? 1f : 0f;
+        }
 
         float x = Mathf.InverseLerp(start, end, value);
         return x * x * (3f - 2f * x);

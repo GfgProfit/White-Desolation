@@ -33,12 +33,11 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Private Fields
-    [Inject] private IPlayerInput _playerInput;
+    [Inject] private readonly IPlayerInput _playerInput;
 
     private float _xRotation;
     private float _currentSpeed;
     private Vector3 _rawInput;
-    private float _verticalVelocity;
     private Vector3 _cameraTargetLocalPos;
     private Vector3 _cameraDefaultLocalPos;
     #endregion
@@ -115,9 +114,13 @@ public class PlayerController : MonoBehaviour
         float targetSpeed;
 
         if (IsCrouching)
+        {
             targetSpeed = _crouchSpeed;
+        }
         else
+        {
             targetSpeed = IsSprinting ? _sprintSpeed : _walkSpeed;
+        }
 
         _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, _fieldOfViewSmooth * Time.deltaTime);
 

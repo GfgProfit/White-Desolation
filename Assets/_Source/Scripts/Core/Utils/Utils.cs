@@ -60,10 +60,10 @@ public static class Utils
 
         List<char> chars = new();
 
-        var stringValue = value.ToString();
-        var offset = 0;
+        string stringValue = value.ToString();
+        int offset = 0;
 
-        for (var i = stringValue.Length - 1; i >= 0; i--)
+        for (int i = stringValue.Length - 1; i >= 0; i--)
         {
             chars.Add(stringValue[i]);
 
@@ -96,7 +96,9 @@ public static class Utils
             durabilityText.color = Color.white;
 
             if (durabilityIcon != null)
+            {
                 durabilityIcon.color = ParseHexColor("#61766F");
+            }
         }
         else if (durability >= 33 && durability < 66)
         {
@@ -104,7 +106,9 @@ public static class Utils
             durabilityText.color = a;
 
             if (durabilityIcon != null)
+            {
                 durabilityIcon.color = a;
+            }
         }
         else
         {
@@ -112,7 +116,9 @@ public static class Utils
             durabilityText.color = a;
 
             if (durabilityIcon != null)
+            {
                 durabilityIcon.color = a;
+            }
         }
     }
 }

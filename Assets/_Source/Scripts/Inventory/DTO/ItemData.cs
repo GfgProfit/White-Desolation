@@ -4,8 +4,6 @@ using NaughtyAttributes;
 [CreateAssetMenu(fileName = "New Item Data", menuName = "Inventory/Item Data")]
 public class ItemData : ScriptableObject
 {
-    private const string DebugPrefix = "[ItemData]";
-
     [Header("Base")]
     [SerializeField] private string _id;
     [SerializeField] private string _displayName;
@@ -95,10 +93,14 @@ public class ItemData : ScriptableObject
         }
 
         if (!_isStackable)
+        {
             _maxStack = 1;
+        }
 
         if (_maxStack < 1)
+        {
             _maxStack = 1;
+        }
 
         if (!_usesDurability)
         {
@@ -107,24 +109,28 @@ public class ItemData : ScriptableObject
         }
         else if (!_isUnbreakable && _maxDurability < 1f)
         {
-            Debug.LogWarning($"{DebugPrefix} MaxDurability for {_displayName} was < 1. Reset to 100.");
             _maxDurability = 100f;
         }
 
         if (_usesCustomAmount && _maxAmount < 0.01f)
         {
-            Debug.LogWarning($"{DebugPrefix} MaxAmount for {_displayName} was too small. Reset to 1.");
             _maxAmount = 1f;
         }
 
         if (_baseWeightKg < 0f)
+        {
             _baseWeightKg = 0f;
+        }
 
         if (_weightPerUnit < 0f)
+        {
             _weightPerUnit = 0f;
+        }
 
         if (!_usesCustomAmount)
+        {
             _weightDependsOnAmount = false;
+        }
     }
 
     [Button]
@@ -132,7 +138,6 @@ public class ItemData : ScriptableObject
     {
         if (string.IsNullOrWhiteSpace(_displayName))
         {
-            Debug.LogWarning($"{DebugPrefix} Display name is empty. Cannot build ID.");
             return;
         }
 

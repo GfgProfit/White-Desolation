@@ -50,18 +50,14 @@ public class InventoryItemCellView : MonoBehaviour, IPointerEnterHandler, IPoint
             {
                 bool showDurability = slot.Item.UsesDurability;
                 _durabilityText.gameObject.SetActive(showDurability);
-                _durabilityText.text = showDurability
-                    ? InventoryDisplayFormatter.FormatDurabilityShort(slot)
-                    : string.Empty;
+                _durabilityText.text = showDurability ? InventoryDisplayFormatter.FormatDurabilityShort(slot) : string.Empty;
 
                 Utils.SetDurabilityColor(slot, _durabilityText, _durabilityIcon);
             }
 
             if (_weightText != null)
             {
-                _weightText.text = InventoryDisplayFormatter.TryGetWeightText(slot, out string weightText)
-                    ? weightText
-                    : string.Empty;
+                _weightText.text = InventoryDisplayFormatter.TryGetWeightText(slot, out string weightText) ? weightText : string.Empty;
             }
 
             if (_brokenOverlay != null)
@@ -122,9 +118,13 @@ public class InventoryItemCellView : MonoBehaviour, IPointerEnterHandler, IPoint
     public void SetSelected(bool isSelected)
     {
         if (isSelected)
+        {
             _selectionFrame.DOFade(1, 0.2f).SetEase(Ease.OutBack);
+        }
         else
+        {
             _selectionFrame.DOFade(0, 0.2f).SetEase(Ease.OutBack);
+        }
     }
 
     private void HandleClick()

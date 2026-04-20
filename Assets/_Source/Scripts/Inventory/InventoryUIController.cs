@@ -8,10 +8,9 @@ using UnityEngine.UI;
 
 public partial class InventoryUIController : MonoBehaviour
 {
-    private const string DebugPrefix = "[InventoryUI]";
     private const float ZeroTolerance = 0.0001f;
 
-    private static readonly Color SelectedCategoryButtonColor = new Color32(0x30, 0x3B, 0x37, 0xFF);   // #303B37
+    private static readonly Color SelectedCategoryButtonColor = new Color32(0x30, 0x3B, 0x37, 0xFF); // #303B37
     private static readonly Color UnselectedCategoryButtonColor = new Color32(0x19, 0x1D, 0x1E, 0xFF); // #191D1E
 
     [Header("Root")]
@@ -71,8 +70,8 @@ public partial class InventoryUIController : MonoBehaviour
     [SerializeField] private Behaviour[] _disableWhileOpen;
     [SerializeField] private GameObject[] _obectDisableWhileOpen;
 
-    [Inject] private InventoryController _inventoryController;
-    [Inject] private IPlayerInput _playerInput;
+    [Inject] private readonly InventoryController _inventoryController;
+    [Inject] private readonly IPlayerInput _playerInput;
 
     private bool _isOpen;
     private bool _isUsingItem;
@@ -88,16 +87,22 @@ public partial class InventoryUIController : MonoBehaviour
     private void Awake()
     {
         if (_inventoryRoot != null)
+        {
             _inventoryRoot.SetActive(false);
+        }
 
         SetUseProgressVisible(false);
         SetUseProgress(0f, string.Empty);
 
         if (_useButton != null)
+        {
             _useButton.onClick.AddListener(HandleUseClicked);
+        }
 
         if (_dropOneButton != null)
+        {
             _dropOneButton.onClick.AddListener(HandleDropOneClicked);
+        }
 
         InitializeCategoryFilterButtons();
         RefreshCategoryFilterButtonVisuals();
@@ -114,7 +119,6 @@ public partial class InventoryUIController : MonoBehaviour
     {
         if (_inventoryController == null)
         {
-            Debug.LogError($"{DebugPrefix} InventoryController is null.");
             return;
         }
 
@@ -125,27 +129,39 @@ public partial class InventoryUIController : MonoBehaviour
     private void OnDestroy()
     {
         if (_inventoryController != null)
+        {
             _inventoryController.OnInventoryChanged -= RefreshView;
+        }
 
         if (_useButton != null)
+        {
             _useButton.onClick.RemoveListener(HandleUseClicked);
+        }
 
         if (_dropOneButton != null)
+        {
             _dropOneButton.onClick.RemoveListener(HandleDropOneClicked);
+        }
 
         CleanupSortButtons();
 
         if (_useRoutine != null)
+        {
             StopCoroutine(_useRoutine);
+        }
     }
 
     private void Update()
     {
         if (_playerInput == null)
+        {
             return;
+        }
 
         if (_isUsingItem)
+        {
             return;
+        }
 
         if (!_isOpen && _playerInput.IsInventoryPressed())
         {
@@ -164,7 +180,9 @@ public partial class InventoryUIController : MonoBehaviour
         _isOpen = true;
 
         if (_inventoryRoot != null)
+        {
             _inventoryRoot.SetActive(true);
+        }
 
         SetBlockedBehaviours(false);
         SetBlockedObjects(false);
@@ -175,12 +193,16 @@ public partial class InventoryUIController : MonoBehaviour
     private void Close()
     {
         if (_isUsingItem)
+        {
             return;
+        }
 
         _isOpen = false;
 
         if (_inventoryRoot != null)
+        {
             _inventoryRoot.SetActive(false);
+        }
 
         SetBlockedBehaviours(true);
         SetBlockedObjects(true);
@@ -190,7 +212,9 @@ public partial class InventoryUIController : MonoBehaviour
     private void RefreshView()
     {
         if (_inventoryController == null)
+        {
             return;
+        }
 
         RefreshCarryWeight();
         RebuildVisibleSlotIndices();
@@ -207,17 +231,21 @@ public partial class InventoryUIController : MonoBehaviour
         CleanupSortButtons();
 
         if (_sortButtons == null)
+        {
             return;
+        }
 
         for (int i = 0; i < _sortButtons.Length; i++)
         {
             SortButtonConfig config = _sortButtons[i];
 
             if (config.Button == null)
+            {
                 continue;
+            }
 
             InventorySortMode mode = config.Mode;
-            UnityAction action = () => HandleSortButtonClicked(mode);
+            void action() => HandleSortButtonClicked(mode);
 
             config.Button.onClick.AddListener(action);
             _sortButtonBindings.Add(new SortButtonBinding(config.Button, action));
@@ -231,7 +259,9 @@ public partial class InventoryUIController : MonoBehaviour
             SortButtonBinding binding = _sortButtonBindings[i];
 
             if (binding.Button != null && binding.Action != null)
+            {
                 binding.Button.onClick.RemoveListener(binding.Action);
+            }
         }
 
         _sortButtonBindings.Clear();
@@ -240,13 +270,13 @@ public partial class InventoryUIController : MonoBehaviour
     private void HandleSortButtonClicked(InventorySortMode mode)
     {
         if (mode == InventorySortMode.None)
+        {
             return;
+        }
 
         if (_activeSortMode == mode)
         {
-            _activeSortDirection = _activeSortDirection == InventorySortDirection.Ascending
-                ? InventorySortDirection.Descending
-                : InventorySortDirection.Ascending;
+            _activeSortDirection = _activeSortDirection == InventorySortDirection.Ascending ? InventorySortDirection.Descending : InventorySortDirection.Ascending;
         }
         else
         {
@@ -260,7 +290,9 @@ public partial class InventoryUIController : MonoBehaviour
     private void RefreshSortButtonVisuals()
     {
         if (_sortButtons == null)
+        {
             return;
+        }
 
         for (int i = 0; i < _sortButtons.Length; i++)
         {
@@ -268,22 +300,28 @@ public partial class InventoryUIController : MonoBehaviour
             bool isSelected = _activeSortMode != InventorySortMode.None && config.Mode == _activeSortMode;
 
             if (config.CanvasGroup != null)
-                config.CanvasGroup.alpha = isSelected
-                    ? _selectedSortButtonAlpha
-                    : _unselectedSortButtonAlpha;
+            {
+                config.CanvasGroup.alpha = isSelected ? _selectedSortButtonAlpha : _unselectedSortButtonAlpha;
+            }
         }
     }
 
     private void SortVisibleSlotIndices()
     {
         if (_inventoryController == null)
+        {
             return;
+        }
 
         if (_activeSortMode == InventorySortMode.None)
+        {
             return;
+        }
 
         if (_visibleSlotIndices.Count <= 1)
+        {
             return;
+        }
 
         _visibleSlotIndices.Sort(CompareVisibleSlotIndices);
     }
@@ -291,19 +329,27 @@ public partial class InventoryUIController : MonoBehaviour
     private int CompareVisibleSlotIndices(int leftSourceIndex, int rightSourceIndex)
     {
         if (_inventoryController == null)
+        {
             return leftSourceIndex.CompareTo(rightSourceIndex);
+        }
 
         InventorySlot leftSlot = _inventoryController.GetSlotAt(leftSourceIndex);
         InventorySlot rightSlot = _inventoryController.GetSlotAt(rightSourceIndex);
 
         if (leftSlot == null && rightSlot == null)
+        {
             return leftSourceIndex.CompareTo(rightSourceIndex);
+        }
 
         if (leftSlot == null)
+        {
             return 1;
+        }
 
         if (rightSlot == null)
+        {
             return -1;
+        }
 
         switch (_activeSortMode)
         {
@@ -315,17 +361,12 @@ public partial class InventoryUIController : MonoBehaviour
 
             case InventorySortMode.Weight:
                 return CompareSlotsByWeight(leftSlot, leftSourceIndex, rightSlot, rightSourceIndex);
-
             default:
                 return leftSourceIndex.CompareTo(rightSourceIndex);
         }
     }
 
-    private int CompareSlotsByName(
-        InventorySlot leftSlot,
-        int leftSourceIndex,
-        InventorySlot rightSlot,
-        int rightSourceIndex)
+    private int CompareSlotsByName(InventorySlot leftSlot, int leftSourceIndex, InventorySlot rightSlot, int rightSourceIndex)
     {
         string leftName = leftSlot.Item != null ? leftSlot.Item.DisplayName : string.Empty;
         string rightName = rightSlot.Item != null ? rightSlot.Item.DisplayName : string.Empty;
@@ -333,49 +374,47 @@ public partial class InventoryUIController : MonoBehaviour
         int compare = string.Compare(leftName, rightName, StringComparison.CurrentCultureIgnoreCase);
 
         if (_activeSortDirection == InventorySortDirection.Descending)
+        {
             compare = -compare;
+        }
 
         if (compare != 0)
+        {
             return compare;
+        }
 
         return leftSourceIndex.CompareTo(rightSourceIndex);
     }
 
-    private int CompareSlotsByDurability(
-        InventorySlot leftSlot,
-        int leftSourceIndex,
-        InventorySlot rightSlot,
-        int rightSourceIndex)
+    private int CompareSlotsByDurability(InventorySlot leftSlot, int leftSourceIndex, InventorySlot rightSlot, int rightSourceIndex)
     {
         bool leftHasDurability = leftSlot.HasDurability;
         bool rightHasDurability = rightSlot.HasDurability;
 
-        // Предметы без прочности всегда отправляем в конец,
-        // независимо от направления сортировки.
         if (leftHasDurability != rightHasDurability)
+        {
             return leftHasDurability ? -1 : 1;
+        }
 
         if (leftHasDurability && rightHasDurability)
         {
-            // Сортируем по нормализованной прочности 0..1,
-            // чтобы разные max durability сравнивались корректно.
             int compare = leftSlot.Durability01.CompareTo(rightSlot.Durability01);
 
             if (_activeSortDirection == InventorySortDirection.Descending)
+            {
                 compare = -compare;
+            }
 
             if (compare != 0)
+            {
                 return compare;
+            }
         }
 
         return CompareByNameThenSourceIndex(leftSlot, leftSourceIndex, rightSlot, rightSourceIndex);
     }
 
-    private int CompareSlotsByWeight(
-        InventorySlot leftSlot,
-        int leftSourceIndex,
-        InventorySlot rightSlot,
-        int rightSourceIndex)
+    private int CompareSlotsByWeight(InventorySlot leftSlot, int leftSourceIndex, InventorySlot rightSlot, int rightSourceIndex)
     {
         float leftWeight = InventoryWeightCalculator.GetSlotWeightKg(leftSlot);
         float rightWeight = InventoryWeightCalculator.GetSlotWeightKg(rightSlot);
@@ -383,19 +422,19 @@ public partial class InventoryUIController : MonoBehaviour
         int compare = leftWeight.CompareTo(rightWeight);
 
         if (_activeSortDirection == InventorySortDirection.Descending)
+        {
             compare = -compare;
+        }
 
         if (compare != 0)
+        {
             return compare;
+        }
 
         return CompareByNameThenSourceIndex(leftSlot, leftSourceIndex, rightSlot, rightSourceIndex);
     }
 
-    private int CompareByNameThenSourceIndex(
-        InventorySlot leftSlot,
-        int leftSourceIndex,
-        InventorySlot rightSlot,
-        int rightSourceIndex)
+    private int CompareByNameThenSourceIndex(InventorySlot leftSlot, int leftSourceIndex, InventorySlot rightSlot, int rightSourceIndex)
     {
         string leftName = leftSlot.Item != null ? leftSlot.Item.DisplayName : string.Empty;
         string rightName = rightSlot.Item != null ? rightSlot.Item.DisplayName : string.Empty;
@@ -403,7 +442,9 @@ public partial class InventoryUIController : MonoBehaviour
         int compare = string.Compare(leftName, rightName, StringComparison.CurrentCultureIgnoreCase);
 
         if (compare != 0)
+        {
             return compare;
+        }
 
         return leftSourceIndex.CompareTo(rightSourceIndex);
     }
@@ -411,17 +452,15 @@ public partial class InventoryUIController : MonoBehaviour
     private void RefreshCarryWeight()
     {
         if (_carryWeightText == null || _inventoryController == null)
+        {
             return;
+        }
 
-        _carryWeightText.text = InventoryDisplayFormatter.FormatCarryWeight(
-            _inventoryController.CurrentCarryWeightKg,
-            _inventoryController.MaxCarryWeightKg);
+        _carryWeightText.text = InventoryDisplayFormatter.FormatCarryWeight(_inventoryController.CurrentCarryWeightKg, _inventoryController.MaxCarryWeightKg);
 
         if (_currentWeightText != null)
         {
-            _currentWeightText.text = InventoryDisplayFormatter.FormatCarryWeight(
-                _inventoryController.CurrentCarryWeightKg,
-                0f);
+            _currentWeightText.text = InventoryDisplayFormatter.FormatCarryWeight(_inventoryController.CurrentCarryWeightKg, 0f);
         }
 
         if (_carryWeightSlider != null)
@@ -436,13 +475,17 @@ public partial class InventoryUIController : MonoBehaviour
         for (int i = 0; i < _spawnedCells.Count; i++)
         {
             if (_spawnedCells[i] != null)
+            {
                 Destroy(_spawnedCells[i].gameObject);
+            }
         }
 
         _spawnedCells.Clear();
 
         if (_inventoryController == null || _cellPrefab == null || _gridRoot == null)
+        {
             return;
+        }
 
         for (int i = 0; i < _visibleSlotIndices.Count; i++)
         {
@@ -458,7 +501,9 @@ public partial class InventoryUIController : MonoBehaviour
     private void HandleSlotSelected(int slotIndex)
     {
         if (_isUsingItem)
+        {
             return;
+        }
 
         _selectedIndex = slotIndex;
 
@@ -474,14 +519,18 @@ public partial class InventoryUIController : MonoBehaviour
     private void InitializeCategoryFilterButtons()
     {
         if (_categoryFilterButtons == null)
+        {
             return;
+        }
 
         for (int i = 0; i < _categoryFilterButtons.Length; i++)
         {
             CategoryFilterButton config = _categoryFilterButtons[i];
 
             if (config.Button == null)
+            {
                 continue;
+            }
 
             InventoryCategoryFilter filter = config.Filter;
             config.Button.onClick.AddListener(() => HandleCategoryFilterClicked(filter));
@@ -503,7 +552,9 @@ public partial class InventoryUIController : MonoBehaviour
     private void RefreshCategoryFilterButtonVisuals()
     {
         if (_categoryFilterButtons == null)
+        {
             return;
+        }
 
         for (int i = 0; i < _categoryFilterButtons.Length; i++)
         {
@@ -511,12 +562,14 @@ public partial class InventoryUIController : MonoBehaviour
             bool isSelected = config.Filter == _activeFilter;
 
             if (config.RootImage != null)
-                config.RootImage.color = isSelected
-                    ? SelectedCategoryButtonColor
-                    : UnselectedCategoryButtonColor;
+            {
+                config.RootImage.color = isSelected ? SelectedCategoryButtonColor : UnselectedCategoryButtonColor;
+            }
 
             if (config.IconCanvasGroup != null)
+            {
                 config.IconCanvasGroup.alpha = isSelected ? 1f : 0.2f;
+            }
         }
     }
 
@@ -525,14 +578,18 @@ public partial class InventoryUIController : MonoBehaviour
         _visibleSlotIndices.Clear();
 
         if (_inventoryController == null)
+        {
             return;
+        }
 
         for (int i = 0; i < _inventoryController.SlotCount; i++)
         {
             InventorySlot slot = _inventoryController.GetSlotAt(i);
 
             if (ShouldShowSlotForCurrentFilter(slot))
+            {
                 _visibleSlotIndices.Add(i);
+            }
         }
     }
 
@@ -545,7 +602,9 @@ public partial class InventoryUIController : MonoBehaviour
         }
 
         if (_selectedIndex >= 0 && _visibleSlotIndices.Contains(_selectedIndex))
+        {
             return;
+        }
 
         _selectedIndex = _visibleSlotIndices[0];
     }
@@ -553,7 +612,9 @@ public partial class InventoryUIController : MonoBehaviour
     private bool ShouldShowSlotForCurrentFilter(InventorySlot slot)
     {
         if (slot == null || slot.IsEmpty || slot.Item == null)
+        {
             return false;
+        }
 
         return IsCategoryAllowedByCurrentFilter(slot.Item.Category);
     }
@@ -564,29 +625,18 @@ public partial class InventoryUIController : MonoBehaviour
         {
             case InventoryCategoryFilter.All:
                 return true;
-
             case InventoryCategoryFilter.MiscAndFuel:
-                return category == ItemCategory.Misc
-                    || category == ItemCategory.Fuel;
-
+                return category == ItemCategory.Misc || category == ItemCategory.Fuel;
             case InventoryCategoryFilter.Medical:
                 return category == ItemCategory.Medical;
-
             case InventoryCategoryFilter.Clothing:
                 return category == ItemCategory.Clothing;
-
             case InventoryCategoryFilter.FoodAndWater:
-                return category == ItemCategory.Food
-                    || category == ItemCategory.Water;
-
+                return category == ItemCategory.Food || category == ItemCategory.Water;
             case InventoryCategoryFilter.ToolWeaponAndAmmo:
-                return category == ItemCategory.Tool
-                    || category == ItemCategory.Weapon
-                    || category == ItemCategory.Ammo;
-
+                return category == ItemCategory.Tool || category == ItemCategory.Weapon || category == ItemCategory.Ammo;
             case InventoryCategoryFilter.Resources:
                 return category == ItemCategory.Resource;
-
             default:
                 return true;
         }
@@ -594,24 +644,26 @@ public partial class InventoryUIController : MonoBehaviour
 
     private void RefreshDetails()
     {
-        InventorySlot slot = _inventoryController != null
-            ? _inventoryController.GetSlotAt(_selectedIndex)
-            : null;
+        InventorySlot slot = _inventoryController != null ? _inventoryController.GetSlotAt(_selectedIndex) : null;
 
         bool hasSelection = slot != null && !slot.IsEmpty && slot.Item != null;
         bool canUseSelected = hasSelection && CanUseSlot(slot);
         bool canDrop = hasSelection && !_isUsingItem;
 
         if (_useButton != null)
+        {
             _useButton.interactable = canUseSelected;
+        }
 
         if (_dropOneButton != null)
+        {
             _dropOneButton.interactable = canDrop;
+        }
 
         if (_useButtonLabel != null)
-            _useButtonLabel.text = hasSelection
-                ? InventoryDisplayFormatter.FormatPrimaryActionLabel(slot)
-                : "Использовать";
+        {
+            _useButtonLabel.text = hasSelection ? InventoryDisplayFormatter.FormatPrimaryActionLabel(slot) : "Использовать";
+        }
 
         if (!hasSelection)
         {
@@ -622,13 +674,19 @@ public partial class InventoryUIController : MonoBehaviour
             }
 
             if (_itemNameText != null)
+            {
                 _itemNameText.text = "Не выбран предмет.";
+            }
 
             if (_itemDescriptionText != null)
+            {
                 _itemDescriptionText.text = string.Empty;
+            }
 
             if (_itemCountText != null)
+            {
                 _itemCountText.text = string.Empty;
+            }
 
             ClearStats();
             return;
@@ -641,44 +699,34 @@ public partial class InventoryUIController : MonoBehaviour
         }
 
         if (_itemNameText != null)
+        {
             _itemNameText.text = slot.Item.DisplayName;
+        }
 
         if (_itemDescriptionText != null)
+        {
             _itemDescriptionText.text = slot.Item.Description;
+        }
 
         if (_itemCountText != null)
+        {
             _itemCountText.text = InventoryDisplayFormatter.FormatPrimaryValue(slot);
+        }
 
         RefreshStats(slot);
     }
 
     private void RefreshStats(InventorySlot slot)
     {
-        SetStatRow(
-            _durabilityHolder,
-            _durabilityText,
-            InventoryDisplayFormatter.TryGetDurabilityText(slot, out string durabilityText),
-            durabilityText);
+        SetStatRow(_durabilityHolder, _durabilityText, InventoryDisplayFormatter.TryGetDurabilityText(slot, out string durabilityText), durabilityText);
 
         Utils.SetDurabilityColor(slot, _durabilityText, _durabilityIcon);
 
-        SetStatRow(
-            _weightHolder,
-            _weightText,
-            InventoryDisplayFormatter.TryGetWeightText(slot, out string weightText),
-            weightText);
+        SetStatRow(_weightHolder, _weightText, InventoryDisplayFormatter.TryGetWeightText(slot, out string weightText), weightText);
 
-        SetStatRow(
-            _caloriesHolder,
-            _caloriesText,
-            InventoryDisplayFormatter.TryGetCaloriesText(slot, out string caloriesText),
-            caloriesText);
+        SetStatRow(_caloriesHolder, _caloriesText, InventoryDisplayFormatter.TryGetCaloriesText(slot, out string caloriesText), caloriesText);
 
-        SetStatRow(
-            _hydrationHolder,
-            _hydrationText,
-            InventoryDisplayFormatter.TryGetHydrationText(slot, out string hydrationText),
-            hydrationText);
+        SetStatRow(_hydrationHolder, _hydrationText, InventoryDisplayFormatter.TryGetHydrationText(slot, out string hydrationText), hydrationText);
     }
 
     private void ClearStats()
@@ -692,20 +740,29 @@ public partial class InventoryUIController : MonoBehaviour
     private void SetStatRow(GameObject holder, TMP_Text textComponent, bool visible, string value)
     {
         if (holder != null)
+        {
             holder.SetActive(visible);
+        }
 
         if (textComponent != null)
+        {
             textComponent.text = visible ? value : string.Empty;
+        }
     }
 
     private void HandleUseClicked()
     {
         if (_inventoryController == null || _isUsingItem)
+        {
             return;
+        }
 
         InventorySlot slot = _inventoryController.GetSlotAt(_selectedIndex);
+
         if (slot == null || slot.Item == null)
+        {
             return;
+        }
 
         if (!CanUseSlot(slot))
         {
@@ -715,7 +772,6 @@ public partial class InventoryUIController : MonoBehaviour
 
         if (!TryBuildUsePlan(_selectedIndex, slot, out UsePlan plan))
         {
-            Debug.Log($"{DebugPrefix} {slot.Item.DisplayName} cannot be used right now.");
             return;
         }
 
@@ -765,14 +821,10 @@ public partial class InventoryUIController : MonoBehaviour
 
         if (plan.HasToolDurabilityConsume)
         {
-            bool toolConsumed = _inventoryController.TryConsumeDurabilityFromFirstMatchingItem(
-                plan.ToolItemToDamage,
-                plan.ToolDurabilityCost);
+            bool toolConsumed = _inventoryController.TryConsumeDurabilityFromFirstMatchingItem(plan.ToolItemToDamage, plan.ToolDurabilityCost);
 
             if (!toolConsumed)
             {
-                Debug.LogWarning($"{DebugPrefix} Failed to consume tool durability. Action cancelled.");
-
                 SetUseProgressVisible(false);
                 SetUseProgress(0f, string.Empty);
 
@@ -790,12 +842,7 @@ public partial class InventoryUIController : MonoBehaviour
 
         if (plan.HasInventoryConsume)
         {
-            _inventoryController.TryConsumeFromSlot(
-                plan.SlotIndex,
-                plan.HydrationStateToConsume,
-                plan.CaloriesStateToConsume,
-                plan.AmountToConsume,
-                plan.ReplaceWhenDepleted);
+            _inventoryController.TryConsumeFromSlot(plan.SlotIndex, plan.HydrationStateToConsume, plan.CaloriesStateToConsume, plan.AmountToConsume, plan.ReplaceWhenDepleted);
         }
 
         SetUseProgressVisible(false);
@@ -805,6 +852,7 @@ public partial class InventoryUIController : MonoBehaviour
         if (plan.AutoUseReplacedItem)
         {
             InventorySlot nextSlot = _inventoryController.GetSlotAt(plan.SlotIndex);
+
             if (nextSlot != null && nextSlot.Item != null && TryBuildUsePlan(plan.SlotIndex, nextSlot, out UsePlan nextPlan))
             {
                 _useRoutine = StartCoroutine(ExecuteUseRoutine(nextPlan));
@@ -820,13 +868,19 @@ public partial class InventoryUIController : MonoBehaviour
     private float ApplyHydrationDelta(float hydrationDelta)
     {
         if (_playerNeedsController == null)
+        {
             return 0f;
+        }
 
         if (Mathf.Abs(hydrationDelta) <= ZeroTolerance)
+        {
             return 0f;
+        }
 
         if (hydrationDelta > 0f)
+        {
             return _playerNeedsController.RestoreThirstUpTo(hydrationDelta);
+        }
 
         float before = _playerNeedsController.Thirst;
         _playerNeedsController.AddThirst(hydrationDelta);
@@ -836,13 +890,19 @@ public partial class InventoryUIController : MonoBehaviour
     private float ApplyCaloriesDelta(float caloriesDelta)
     {
         if (_playerNeedsController == null)
+        {
             return 0f;
+        }
 
         if (Mathf.Abs(caloriesDelta) <= ZeroTolerance)
+        {
             return 0f;
+        }
 
         if (caloriesDelta > 0f)
+        {
             return _playerNeedsController.RestoreHungerUpTo(caloriesDelta);
+        }
 
         float before = _playerNeedsController.Hunger;
         _playerNeedsController.AddHunger(caloriesDelta);
@@ -852,7 +912,9 @@ public partial class InventoryUIController : MonoBehaviour
     private float RestoreHydrationDelta(float hydrationDelta)
     {
         if (_playerNeedsController == null)
+        {
             return 0f;
+        }
 
         return _playerNeedsController.RestoreThirstUpTo(hydrationDelta);
     }
@@ -860,7 +922,9 @@ public partial class InventoryUIController : MonoBehaviour
     private float RestoreCaloriesDelta(float caloriesDelta)
     {
         if (_playerNeedsController == null)
+        {
             return 0f;
+        }
 
         return _playerNeedsController.RestoreHungerUpTo(caloriesDelta);
     }
@@ -870,10 +934,14 @@ public partial class InventoryUIController : MonoBehaviour
         plan = default;
 
         if (slot == null || slot.Item == null)
+        {
             return false;
+        }
 
         if (slot.Item.RequiresOpening)
+        {
             return TryBuildOpenPlan(slotIndex, slot, out plan);
+        }
 
         plan.SlotIndex = slotIndex;
         plan.ActionType = slot.Item.PrimaryAction;
@@ -884,10 +952,8 @@ public partial class InventoryUIController : MonoBehaviour
         {
             case ItemPrimaryActionType.Use:
                 return TryBuildConsumableUsePlan(slot, ref plan);
-
             case ItemPrimaryActionType.Action:
                 return true;
-
             default:
                 return false;
         }
@@ -898,15 +964,21 @@ public partial class InventoryUIController : MonoBehaviour
         plan = default;
 
         if (_inventoryController == null || slot == null || slot.Item == null)
+        {
             return false;
+        }
 
         ItemData item = slot.Item;
 
         if (!item.RequiresOpening || item.AfterOpen == null)
+        {
             return false;
+        }
 
         if (!_inventoryController.ContainsUsableItem(item.NeedsToOpen))
+        {
             return false;
+        }
 
         plan.SlotIndex = slotIndex;
         plan.ActionType = ItemPrimaryActionType.Action;
@@ -918,7 +990,6 @@ public partial class InventoryUIController : MonoBehaviour
 
         plan.ToolItemToDamage = item.NeedsToOpen;
         plan.ToolDurabilityCost = item.NeedsToOpenDurabilityCost;
-
         return true;
     }
 
@@ -926,16 +997,17 @@ public partial class InventoryUIController : MonoBehaviour
     {
         if (_playerNeedsController == null)
         {
-            Debug.LogWarning($"{DebugPrefix} PlayerNeedsController is null.");
             return false;
         }
 
-        // Чистая вода по объёму
         if (IsVolumeDrink(slot))
         {
             float hydrationToApply = Mathf.Min(slot.CurrentAmount, _playerNeedsController.MissingThirst);
+
             if (hydrationToApply <= ZeroTolerance)
+            {
                 return false;
+            }
 
             plan.HydrationToApply = hydrationToApply;
             plan.AmountToConsume = hydrationToApply;
@@ -943,8 +1015,11 @@ public partial class InventoryUIController : MonoBehaviour
         }
 
         float useRatio = CalculateConsumableUseRatio(slot);
+
         if (useRatio <= ZeroTolerance)
+        {
             return false;
+        }
 
         if (Mathf.Abs(slot.CurrentHydration) > ZeroTolerance)
         {
@@ -972,7 +1047,9 @@ public partial class InventoryUIController : MonoBehaviour
     private float CalculateConsumableUseRatio(InventorySlot slot)
     {
         if (slot == null || slot.Item == null || _playerNeedsController == null)
+        {
             return 0f;
+        }
 
         float ratio = 1f;
         bool hasPositiveEffect = false;
@@ -1001,10 +1078,14 @@ public partial class InventoryUIController : MonoBehaviour
         }
 
         if (!hasAnyEffect)
+        {
             return 0f;
+        }
 
         if (!hasPositiveEffect)
+        {
             return 1f;
+        }
 
         return Mathf.Clamp01(ratio);
     }
@@ -1012,19 +1093,29 @@ public partial class InventoryUIController : MonoBehaviour
     private string ResolveUseVerb(InventorySlot slot)
     {
         if (slot == null || slot.Item == null)
+        {
             return "использует";
+        }
 
         if (slot.Item.Category == ItemCategory.Water)
+        {
             return "пьет";
+        }
 
         if (slot.Item.Category == ItemCategory.Food)
+        {
             return "ест";
+        }
 
         if (slot.Item.Category == ItemCategory.Resource)
+        {
             return "собирает";
+        }
 
         if (slot.Item.Category == ItemCategory.Tool)
+        {
             return "ремонтирует";
+        }
 
         return "открывает";
     }
@@ -1032,30 +1123,44 @@ public partial class InventoryUIController : MonoBehaviour
     private static bool IsVolumeDrink(InventorySlot slot)
     {
         if (slot == null || slot.Item == null)
+        {
             return false;
+        }
 
         if (slot.Item.PrimaryAction != ItemPrimaryActionType.Use)
+        {
             return false;
+        }
 
         if (slot.Item.Category != ItemCategory.Water)
+        {
             return false;
+        }
 
         if (!slot.HasAmount)
+        {
             return false;
+        }
 
         if (slot.Item.AmountUnit != ItemAmountUnit.Liter)
+        {
             return false;
+        }
 
         if (slot.CurrentAmount <= ZeroTolerance)
+        {
             return false;
+        }
 
-        // Ветка "чистая вода" должна работать только для предметов,
-        // у которых нет калорий вообще.
         if (slot.Item.RestoreCalories > 0)
+        {
             return false;
+        }
 
         if (slot.CurrentCalories > ZeroTolerance)
+        {
             return false;
+        }
 
         return true;
     }
@@ -1063,25 +1168,35 @@ public partial class InventoryUIController : MonoBehaviour
     private void SetUseProgressVisible(bool visible)
     {
         if (_useProgressModalRoot != null)
+        {
             _useProgressModalRoot.SetActive(visible);
+        }
     }
 
     private void SetUseProgress(float progress01, string text)
     {
         if (_useProgressFillImage != null)
+        {
             _useProgressFillImage.fillAmount = Mathf.Clamp01(progress01);
+        }
 
         if (_useProgressText != null)
+        {
             _useProgressText.text = text;
+        }
     }
 
     private bool CanUseSlot(InventorySlot slot)
     {
         if (slot == null || slot.Item == null)
+        {
             return false;
+        }
 
         if (_isUsingItem)
+        {
             return false;
+        }
 
         if (slot.IsBroken)
         {
@@ -1099,13 +1214,19 @@ public partial class InventoryUIController : MonoBehaviour
     private bool CanUseConsumableSlot(InventorySlot slot)
     {
         if (slot == null || slot.Item == null || _playerNeedsController == null)
+        {
             return false;
+        }
 
         if (slot.Item.RequiresOpening)
+        {
             return CanUseClosedConsumableSlot(slot);
+        }
 
         if (IsVolumeDrink(slot))
+        {
             return slot.CurrentAmount > ZeroTolerance && _playerNeedsController.MissingThirst > ZeroTolerance;
+        }
 
         bool hasHydrationEffect = Mathf.Abs(slot.CurrentHydration) > ZeroTolerance;
         bool hasCaloriesEffect = Mathf.Abs(slot.CurrentCalories) > ZeroTolerance;
@@ -1116,10 +1237,14 @@ public partial class InventoryUIController : MonoBehaviour
     private bool DoesAffectHydration(InventorySlot slot)
     {
         if (slot == null || slot.Item == null)
+        {
             return false;
+        }
 
         if (IsVolumeDrink(slot))
+        {
             return true;
+        }
 
         return Mathf.Abs(slot.CurrentHydration) > ZeroTolerance;
     }
@@ -1127,7 +1252,9 @@ public partial class InventoryUIController : MonoBehaviour
     private bool DoesAffectCalories(InventorySlot slot)
     {
         if (slot == null || slot.Item == null)
+        {
             return false;
+        }
 
         return Mathf.Abs(slot.CurrentCalories) > ZeroTolerance;
     }
@@ -1135,36 +1262,39 @@ public partial class InventoryUIController : MonoBehaviour
     private void LogUseBlockedReason(InventorySlot slot)
     {
         if (slot == null || slot.Item == null)
+        {
             return;
+        }
 
         if (slot.IsBroken)
         {
-            Debug.Log($"{DebugPrefix} {slot.Item.DisplayName} is broken.");
             return;
         }
 
         if (_playerNeedsController == null)
-            return;
-
-        if (slot.Item.RequiresOpening &&
-            _inventoryController != null &&
-            !_inventoryController.ContainsUsableItem(slot.Item.NeedsToOpen))
         {
-            Debug.Log($"{DebugPrefix} {slot.Item.DisplayName} requires usable {slot.Item.NeedsToOpen.DisplayName}.");
             return;
         }
 
-        Debug.Log($"{DebugPrefix} {slot.Item.DisplayName} cannot be used right now.");
+        if (slot.Item.RequiresOpening && _inventoryController != null && !_inventoryController.ContainsUsableItem(slot.Item.NeedsToOpen))
+        {
+            return;
+        }
     }
 
     private void HandleDropOneClicked()
     {
         if (_isUsingItem)
+        {
             return;
+        }
 
         InventorySlot slot = _inventoryController.GetSlotAt(_selectedIndex);
+
         if (slot == null || slot.Item == null)
+        {
             return;
+        }
 
         _inventoryController.TryRemoveFromSlot(_selectedIndex, 1);
     }
@@ -1172,42 +1302,58 @@ public partial class InventoryUIController : MonoBehaviour
     private void SetBlockedBehaviours(bool enabled)
     {
         if (_disableWhileOpen == null)
+        {
             return;
+        }
 
         for (int i = 0; i < _disableWhileOpen.Length; i++)
         {
             if (_disableWhileOpen[i] != null)
+            {
                 _disableWhileOpen[i].enabled = enabled;
+            }
         }
     }
 
     private void SetBlockedObjects(bool enabled)
     {
         if (_obectDisableWhileOpen == null)
+        {
             return;
+        }
 
         for (int i = 0; i < _obectDisableWhileOpen.Length; i++)
         {
             if (_obectDisableWhileOpen[i] != null)
+            {
                 _obectDisableWhileOpen[i].SetActive(enabled);
+            }
         }
     }
 
     private bool CanUseClosedConsumableSlot(InventorySlot slot)
     {
         if (slot == null || slot.Item == null || _inventoryController == null)
+        {
             return false;
+        }
 
         ItemData item = slot.Item;
 
         if (!item.RequiresOpening)
+        {
             return false;
+        }
 
         if (item.AfterOpen == null || item.AfterOpen == item || item.AfterOpen.RequiresOpening)
+        {
             return false;
+        }
 
         if (!_inventoryController.ContainsUsableItem(item.NeedsToOpen))
+        {
             return false;
+        }
 
         InventorySlot previewOpenedSlot = new();
         previewOpenedSlot.Initialize(item.AfterOpen, 1);

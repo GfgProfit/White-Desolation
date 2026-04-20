@@ -43,43 +43,34 @@ public class PlayerNeedsController : MonoBehaviour
     [SerializeField] private float _hungerWalkMultiplier = 1f;
     [SerializeField] private float _hungerRunMultiplier = 2f;
 
-    private float _temperature;
-    private float _fatigue;
-    private float _thirst;
-    private float _hunger;
-
-    private PlayerLocomotionState _locomotionState = PlayerLocomotionState.Idle;
-
-    public float Temperature => _temperature;
-    public float Fatigue => _fatigue;
-    public float Thirst => _thirst;
-    public float Hunger => _hunger;
-
     public float MaxTemperature => _maxTemperature;
     public float MaxFatigue => _maxFatigue;
     public float MaxThirst => _maxThirst;
     public float MaxHunger => _maxHunger;
-
-    public float TemperatureNormalized => Mathf.Clamp01(_temperature / _maxTemperature);
-    public float FatigueNormalized => Mathf.Clamp01(_fatigue / _maxFatigue);
-    public float ThirstNormalized => Mathf.Clamp01(_thirst / _maxThirst);
-    public float HungerNormalized => Mathf.Clamp01(_hunger / _maxHunger);
 
     public PlayerTemperatureState TemperatureState
     {
         get
         {
             if (_temperature <= 0f)
+            {
                 return PlayerTemperatureState.FatalHypothermia;
+            }
 
             if (_temperature <= 25f)
+            {
                 return PlayerTemperatureState.Hypothermia;
+            }
 
             if (_temperature <= 50f)
+            {
                 return PlayerTemperatureState.Cold;
+            }
 
             if (_temperature <= 75f)
+            {
                 return PlayerTemperatureState.Cool;
+            }
 
             return PlayerTemperatureState.Warm;
         }
@@ -94,6 +85,23 @@ public class PlayerNeedsController : MonoBehaviour
     public float MissingThirst => Mathf.Max(0f, _maxThirst - _thirst);
     public float MissingHunger => Mathf.Max(0f, _maxHunger - _hunger);
 
+    public float Temperature => _temperature;
+    public float Fatigue => _fatigue;
+    public float Thirst => _thirst;
+    public float Hunger => _hunger;
+
+    public float TemperatureNormalized => Mathf.Clamp01(_temperature / _maxTemperature);
+    public float FatigueNormalized => Mathf.Clamp01(_fatigue / _maxFatigue);
+    public float ThirstNormalized => Mathf.Clamp01(_thirst / _maxThirst);
+    public float HungerNormalized => Mathf.Clamp01(_hunger / _maxHunger);
+
+    private PlayerLocomotionState _locomotionState = PlayerLocomotionState.Idle;
+
+    private float _temperature;
+    private float _fatigue;
+    private float _thirst;
+    private float _hunger;
+
     private void Awake()
     {
         _temperature = Mathf.Clamp(_startTemperature, 0f, _maxTemperature);
@@ -106,12 +114,12 @@ public class PlayerNeedsController : MonoBehaviour
 
     private void Update()
     {
-        float dt = Time.deltaTime;
+        float deltaTime = Time.deltaTime;
 
-        TickTemperature(dt);
-        TickFatigue(dt);
-        TickThirst(dt);
-        TickHunger(dt);
+        TickTemperature(deltaTime);
+        TickFatigue(deltaTime);
+        TickThirst(deltaTime);
+        TickHunger(deltaTime);
 
         RefreshUI();
     }
@@ -153,11 +161,15 @@ public class PlayerNeedsController : MonoBehaviour
     public float RestoreThirstUpTo(float availableHydration)
     {
         if (availableHydration <= 0f)
+        {
             return 0f;
+        }
 
         float restored = Mathf.Min(MissingThirst, availableHydration);
         if (restored <= 0f)
+        {
             return 0f;
+        }
 
         AddThirst(restored);
         return restored;
@@ -166,11 +178,16 @@ public class PlayerNeedsController : MonoBehaviour
     public float RestoreHungerUpTo(float availableCalories)
     {
         if (availableCalories <= 0f)
+        {
             return 0f;
+        }
 
         float restored = Mathf.Min(MissingHunger, availableCalories);
+
         if (restored <= 0f)
+        {
             return 0f;
+        }
 
         AddHunger(restored);
         return restored;
@@ -185,12 +202,11 @@ public class PlayerNeedsController : MonoBehaviour
     private void TickTemperature(float dt)
     {
         if (Mathf.Approximately(_temperatureDeltaPerSecond, 0f))
+        {
             return;
+        }
 
-        _temperature = Mathf.Clamp(
-            _temperature + (_temperatureDeltaPerSecond * dt),
-            0f,
-            _maxTemperature);
+        _temperature = Mathf.Clamp(_temperature + (_temperatureDeltaPerSecond * dt), 0f, _maxTemperature);
     }
 
     private void TickFatigue(float dt)
@@ -203,10 +219,7 @@ public class PlayerNeedsController : MonoBehaviour
             _ => 1f
         };
 
-        _fatigue = Mathf.Clamp(
-            _fatigue - (_fatigueDrainPerSecond * multiplier * dt),
-            0f,
-            _maxFatigue);
+        _fatigue = Mathf.Clamp(_fatigue - (_fatigueDrainPerSecond * multiplier * dt), 0f, _maxFatigue);
     }
 
     private void TickThirst(float dt)
@@ -219,10 +232,7 @@ public class PlayerNeedsController : MonoBehaviour
             _ => 1f
         };
 
-        _thirst = Mathf.Clamp(
-            _thirst - (_thirstDrainPerSecond * multiplier * dt),
-            0f,
-            _maxThirst);
+        _thirst = Mathf.Clamp(_thirst - (_thirstDrainPerSecond * multiplier * dt), 0f, _maxThirst);
     }
 
     private void TickHunger(float dt)
@@ -235,24 +245,29 @@ public class PlayerNeedsController : MonoBehaviour
             _ => 1f
         };
 
-        _hunger = Mathf.Clamp(
-            _hunger - (_hungerDrainPerSecond * multiplier * dt),
-            0f,
-            _maxHunger);
+        _hunger = Mathf.Clamp(_hunger - (_hungerDrainPerSecond * multiplier * dt), 0f, _maxHunger);
     }
 
     private void RefreshUI()
     {
         if (_temperatureFill != null)
+        {
             _temperatureFill.fillAmount = TemperatureNormalized;
+        }
 
         if (_fatigueFill != null)
+        {
             _fatigueFill.fillAmount = FatigueNormalized;
+        }
 
         if (_thirstFill != null)
+        {
             _thirstFill.fillAmount = ThirstNormalized;
+        }
 
         if (_hungerFill != null)
+        {
             _hungerFill.fillAmount = HungerNormalized;
+        }
     }
 }

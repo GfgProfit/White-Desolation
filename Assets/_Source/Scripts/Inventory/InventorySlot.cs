@@ -10,22 +10,17 @@ public class InventorySlot
     public int Count = 1;
     public float CurrentDurability = 100f;
     public float CurrentAmount = 0f;
-
-    // Остатки consumable-эффектов
     public float CurrentHydration = 0f;
     public float CurrentCalories = 0f;
 
     public int MaxStack => Item != null ? Item.MaxStack : 1;
     public bool IsEmpty => Item == null || Count <= 0;
     public bool IsFull => !IsEmpty && !HasAmount && !UsesPerInstanceConsumableState && Count >= MaxStack;
-
     public bool HasDurability => Item != null && Item.UsesDurability && !Item.IsUnbreakable;
     public bool HasAmount => Item != null && Item.UsesCustomAmount;
     public bool HasConsumableState => Item != null && (!Mathf.Approximately(Item.RestoreHydration, 0f) || Item.RestoreCalories != 0);
     public bool UsesPerInstanceConsumableState => HasConsumableState;
-
     public bool IsBroken => HasDurability && CurrentDurability <= ZeroTolerance;
-
     public float Durability01 => HasDurability ? Mathf.Clamp01(CurrentDurability / Item.MaxDurability) : 1f;
     public float Amount01 => HasAmount ? Mathf.Clamp01(CurrentAmount / Item.MaxAmount) : 0f;
 
@@ -33,31 +28,34 @@ public class InventorySlot
     {
         get
         {
-            if (!HasConsumableState) return 1f;
+            if (!HasConsumableState)
+            {
+                return 1f;
+            }
 
             float hydration01 = -1f;
             float calories01 = -1f;
 
             if (Item.RestoreHydration > ZeroTolerance)
+            {
                 hydration01 = Mathf.Clamp01(CurrentHydration / Item.RestoreHydration);
+            }
 
             if (Item.RestoreCalories > 0)
+            {
                 calories01 = Mathf.Clamp01(CurrentCalories / Item.RestoreCalories);
+            }
 
             if (hydration01 < 0f && calories01 < 0f)
+            {
                 return 1f;
+            }
 
             return Mathf.Max(0f, hydration01, calories01);
         }
     }
 
-    public void Initialize(
-        ItemData item,
-        int count,
-        float? currentDurabilityOverride = null,
-        float? currentAmountOverride = null,
-        float? currentHydrationOverride = null,
-        float? currentCaloriesOverride = null)
+    public void Initialize(ItemData item, int count, float? currentDurabilityOverride = null, float? currentAmountOverride = null, float? currentHydrationOverride = null, float? currentCaloriesOverride = null)
     {
         Item = item;
         Count = Mathf.Max(1, count);
@@ -79,10 +77,7 @@ public class InventorySlot
             }
             else
             {
-                CurrentDurability = Mathf.Clamp(
-                    currentDurabilityOverride ?? Item.MaxDurability,
-                    0f,
-                    Item.MaxDurability);
+                CurrentDurability = Mathf.Clamp(currentDurabilityOverride ?? Item.MaxDurability, 0f, Item.MaxDurability);
             }
         }
         else

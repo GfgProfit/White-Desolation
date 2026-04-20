@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [ExecuteAlways]
+[RequireComponent(typeof(SpriteRenderer))]
 public class MoonPhaseObject : MonoBehaviour
 {
     [Header("References")]
@@ -33,13 +34,16 @@ public class MoonPhaseObject : MonoBehaviour
     private void LateUpdate()
     {
         if (_dayNightCycle == null || _moonLight == null || _spriteRenderer == null)
+        {
             return;
+        }
 
-        Camera cam = _targetCamera != null ? _targetCamera : Camera.main;
-        if (cam == null)
+        if (_targetCamera == null)
+        {
             return;
+        }
 
-        UpdateTransform(cam);
+        UpdateTransform(_targetCamera);
         UpdatePhase();
         UpdateVisibility();
     }
@@ -48,15 +52,16 @@ public class MoonPhaseObject : MonoBehaviour
     {
         float distance = Mathf.Min(_distanceFromCamera, cam.farClipPlane * 0.9f);
 
-        // Для directional light источник света визуально находится в направлении -forward
         Vector3 moonDirection = -_moonLight.transform.forward.normalized;
 
         transform.position = cam.transform.position + moonDirection * distance + _positionOffset;
 
-        // Поворачиваем плоскость луны к камере
         Vector3 toCamera = cam.transform.position - transform.position;
+
         if (toCamera.sqrMagnitude > 0.0001f)
+        {
             transform.rotation = Quaternion.LookRotation(toCamera.normalized, cam.transform.up);
+        }
 
         transform.localScale = Vector3.one * _scale;
     }
@@ -64,30 +69,29 @@ public class MoonPhaseObject : MonoBehaviour
     private void UpdatePhase()
     {
         if (_phaseSprites == null || _phaseSprites.Length == 0)
+        {
             return;
+        }
 
         int dayZeroBased = Mathf.Max(0, _dayNightCycle.CurrentDay - 1);
         int cycleDay = Mathf.FloorToInt(Mathf.Repeat(dayZeroBased + _phaseOffsetDays, _daysPerMoonCycle));
 
         float phase01 = cycleDay / (float)_daysPerMoonCycle;
-        int phaseIndex = Mathf.Clamp(
-            Mathf.FloorToInt(phase01 * _phaseSprites.Length),
-            0,
-            _phaseSprites.Length - 1
-        );
+        int phaseIndex = Mathf.Clamp(Mathf.FloorToInt(phase01 * _phaseSprites.Length), 0, _phaseSprites.Length - 1);
 
         Sprite targetSprite = _phaseSprites[phaseIndex];
+
         if (_spriteRenderer.sprite != targetSprite)
+        {
             _spriteRenderer.sprite = targetSprite;
+        }
     }
 
     private void UpdateVisibility()
     {
         float nightFactor = _dayNightCycle.NightFactor;
 
-        float alpha = _hideDuringDay
-            ? Mathf.Clamp01(Mathf.InverseLerp(_dayFadeThreshold, 1f, nightFactor))
-            : Mathf.Clamp01(nightFactor);
+        float alpha = _hideDuringDay ? Mathf.Clamp01(Mathf.InverseLerp(_dayFadeThreshold, 1f, nightFactor)) : Mathf.Clamp01(nightFactor);
 
         Color color = _moonColor;
         color.a *= alpha * _maxAlpha;
