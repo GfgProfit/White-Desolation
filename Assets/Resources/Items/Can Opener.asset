@@ -17,7 +17,7 @@ MonoBehaviour:
   _description: "\u041A\u043E\u043D\u0441\u0435\u0440\u0432\u043D\u044B\u0439 \u043D\u043E\u0436"
   _icon: {fileID: 21300000, guid: c12ae38ec8c80544e933a4a19351d708, type: 3}
   _category: 5
-  _primaryAction: 0
+  _primaryAction: 2
   _isStackable: 0
   _maxStack: 1
   _usesDurability: 1
@@ -31,3 +31,7 @@ MonoBehaviour:
   _weightPerUnit: 0
   _restoreHydration: 0
   _restoreCalories: 0
+  _needsToOpen: {fileID: 0}
+  _afterOpen: {fileID: 0}
+  _afterUse: {fileID: 0}
+  _needsToOpenDurabilityCost: 1

@@ -314,10 +314,11 @@ public class InventoryController : MonoBehaviour
             if (!AreSameItem(slot.Item, itemData))
                 continue;
 
-            if (slot.HasDurability && slot.CurrentDurability <= ZeroTolerance)
+            if (slot.HasDurability && slot.IsBroken)
                 continue;
 
             found += slot.Count;
+
             if (found >= count)
                 return true;
         }
@@ -347,19 +348,17 @@ public class InventoryController : MonoBehaviour
 
             if (!slot.HasDurability)
             {
-                // Инструмент есть, но у него нет системы прочности.
                 return true;
             }
 
-            if (slot.CurrentDurability <= ZeroTolerance)
+            if (slot.IsBroken)
                 continue;
 
             slot.CurrentDurability = Mathf.Max(0f, slot.CurrentDurability - durabilityCost);
 
-            if (slot.CurrentDurability <= ZeroTolerance)
+            if (slot.IsBroken)
             {
                 Debug.Log($"{DebugPrefix} {slot.Item.DisplayName} broke.");
-                _items.RemoveAt(i);
             }
 
             NotifyChanged();

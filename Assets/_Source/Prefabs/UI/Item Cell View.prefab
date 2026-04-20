@@ -383,6 +383,7 @@ MonoBehaviour:
   _durabilityIcon: {fileID: 647576871007236364}
   _weightText: {fileID: 3237803792006604333}
   _selectionFrame: {fileID: 6935602099243241172}
+  _brokenOverlay: {fileID: 8378956230818252104}
 --- !u!1 &5649285949037491341
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,33 +21,19 @@ public class InventorySlot
 
     public bool HasDurability => Item != null && Item.UsesDurability && !Item.IsUnbreakable;
     public bool HasAmount => Item != null && Item.UsesCustomAmount;
-
-    public bool HasConsumableState => Item != null &&
-                                      (!Mathf.Approximately(Item.RestoreHydration, 0f) ||
-                                       Item.RestoreCalories != 0);
-
+    public bool HasConsumableState => Item != null && (!Mathf.Approximately(Item.RestoreHydration, 0f) || Item.RestoreCalories != 0);
     public bool UsesPerInstanceConsumableState => HasConsumableState;
 
-    public float Durability01 => HasDurability
-        ? Mathf.Clamp01(CurrentDurability / Item.MaxDurability)
-        : 1f;
+    public bool IsBroken => HasDurability && CurrentDurability <= ZeroTolerance;
 
-    public float Amount01 => HasAmount
-        ? Mathf.Clamp01(CurrentAmount / Item.MaxAmount)
-        : 0f;
+    public float Durability01 => HasDurability ? Mathf.Clamp01(CurrentDurability / Item.MaxDurability) : 1f;
+    public float Amount01 => HasAmount ? Mathf.Clamp01(CurrentAmount / Item.MaxAmount) : 0f;
 
-    /// <summary>
-    /// Нормализованный остаток consumable-содержимого.
-    /// Для предметов с двумя эффектами (например, сода) берём максимум из оставшихся долей,
-    /// чтобы вес не падал быстрее, чем реально опустошается предмет.
-    /// При корректном пропорциональном использовании оба значения обычно одинаковые.
-    /// </summary>
     public float ConsumableFill01
     {
         get
         {
-            if (!HasConsumableState)
-                return 1f;
+            if (!HasConsumableState) return 1f;
 
             float hydration01 = -1f;
             float calories01 = -1f;
@@ -106,10 +92,7 @@ public class InventorySlot
 
         if (Item.UsesCustomAmount)
         {
-            CurrentAmount = Mathf.Clamp(
-                currentAmountOverride ?? Item.MaxAmount,
-                0f,
-                Item.MaxAmount);
+            CurrentAmount = Mathf.Clamp(currentAmountOverride ?? Item.MaxAmount, 0f, Item.MaxAmount);
         }
         else
         {

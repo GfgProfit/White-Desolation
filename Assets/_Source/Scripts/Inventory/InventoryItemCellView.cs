@@ -14,6 +14,7 @@ public class InventoryItemCellView : MonoBehaviour, IPointerEnterHandler, IPoint
     [SerializeField] private Image _durabilityIcon;
     [SerializeField] private TMP_Text _weightText;
     [SerializeField] private CanvasGroup _selectionFrame;
+    [SerializeField] private GameObject _brokenOverlay;
 
     private int _slotIndex;
     private Action<int> _onClicked;
@@ -41,7 +42,6 @@ public class InventoryItemCellView : MonoBehaviour, IPointerEnterHandler, IPoint
             {
                 string countLabel = InventoryDisplayFormatter.FormatCellCount(slot);
                 bool showCount = !string.IsNullOrWhiteSpace(countLabel);
-
                 _countText.gameObject.SetActive(showCount);
                 _countText.text = countLabel;
             }
@@ -50,14 +50,23 @@ public class InventoryItemCellView : MonoBehaviour, IPointerEnterHandler, IPoint
             {
                 bool showDurability = slot.Item.UsesDurability;
                 _durabilityText.gameObject.SetActive(showDurability);
-                _durabilityText.text = showDurability ? InventoryDisplayFormatter.FormatDurabilityShort(slot) : string.Empty;
+                _durabilityText.text = showDurability
+                    ? InventoryDisplayFormatter.FormatDurabilityShort(slot)
+                    : string.Empty;
 
                 Utils.SetDurabilityColor(slot, _durabilityText, _durabilityIcon);
             }
 
             if (_weightText != null)
             {
-                _weightText.text = InventoryDisplayFormatter.TryGetWeightText(slot, out string weightText) ? weightText : string.Empty;
+                _weightText.text = InventoryDisplayFormatter.TryGetWeightText(slot, out string weightText)
+                    ? weightText
+                    : string.Empty;
+            }
+
+            if (_brokenOverlay != null)
+            {
+                _brokenOverlay.SetActive(slot.IsBroken);
             }
         }
         else
@@ -78,6 +87,16 @@ public class InventoryItemCellView : MonoBehaviour, IPointerEnterHandler, IPoint
             {
                 _durabilityText.gameObject.SetActive(false);
                 _durabilityText.text = string.Empty;
+            }
+
+            if (_weightText != null)
+            {
+                _weightText.text = string.Empty;
+            }
+
+            if (_brokenOverlay != null)
+            {
+                _brokenOverlay.SetActive(false);
             }
         }
 
@@ -103,13 +122,9 @@ public class InventoryItemCellView : MonoBehaviour, IPointerEnterHandler, IPoint
     public void SetSelected(bool isSelected)
     {
         if (isSelected)
-        {
             _selectionFrame.DOFade(1, 0.2f).SetEase(Ease.OutBack);
-        }
         else
-        {
             _selectionFrame.DOFade(0, 0.2f).SetEase(Ease.OutBack);
-        }
     }
 
     private void HandleClick()

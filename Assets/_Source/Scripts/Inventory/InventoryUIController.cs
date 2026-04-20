@@ -43,8 +43,8 @@ public partial class InventoryUIController : MonoBehaviour
     [SerializeField] private TMP_Text _itemCountText;
 
     [Header("Consumable Use Thresholds")]
-    [SerializeField, Min(0f)] private float _maxThirstToAllowConsumableUse = 0.7f;
-    [SerializeField, Min(0f)] private float _maxHungerToAllowConsumableUse = 2300f;
+    [SerializeField, Min(0f)] private float _maxThirstToAllowConsumableUse = 0;
+    [SerializeField, Min(0f)] private float _maxHungerToAllowConsumableUse = 0;
 
     [Header("Stats")]
     [SerializeField] private GameObject _durabilityHolder;
@@ -769,9 +769,22 @@ public partial class InventoryUIController : MonoBehaviour
 
         if (plan.HasToolDurabilityConsume)
         {
-            _inventoryController.TryConsumeDurabilityFromFirstMatchingItem(
+            bool toolConsumed = _inventoryController.TryConsumeDurabilityFromFirstMatchingItem(
                 plan.ToolItemToDamage,
                 plan.ToolDurabilityCost);
+
+            if (!toolConsumed)
+            {
+                Debug.LogWarning($"{DebugPrefix} Failed to consume tool durability. Action cancelled.");
+
+                SetUseProgressVisible(false);
+                SetUseProgress(0f, string.Empty);
+
+                _isUsingItem = false;
+                _useRoutine = null;
+                RefreshView();
+                yield break;
+            }
         }
 
         if (plan.ReplaceSlotItemAfterAction != null)
@@ -791,16 +804,12 @@ public partial class InventoryUIController : MonoBehaviour
 
         SetUseProgressVisible(false);
         SetUseProgress(0f, string.Empty);
-
         RefreshView();
 
         if (plan.AutoUseReplacedItem)
         {
             InventorySlot nextSlot = _inventoryController.GetSlotAt(plan.SlotIndex);
-
-            if (nextSlot != null &&
-                nextSlot.Item != null &&
-                TryBuildUsePlan(plan.SlotIndex, nextSlot, out UsePlan nextPlan))
+            if (nextSlot != null && nextSlot.Item != null && TryBuildUsePlan(plan.SlotIndex, nextSlot, out UsePlan nextPlan))
             {
                 _useRoutine = StartCoroutine(ExecuteUseRoutine(nextPlan));
                 yield break;
@@ -1081,6 +1090,11 @@ public partial class InventoryUIController : MonoBehaviour
         if (_isUsingItem)
             return false;
 
+        if (slot.IsBroken)
+        {
+            return slot.Item.PrimaryAction == ItemPrimaryActionType.Action;
+        }
+
         return slot.Item.PrimaryAction switch
         {
             ItemPrimaryActionType.Use => CanUseConsumableSlot(slot),
@@ -1148,14 +1162,23 @@ public partial class InventoryUIController : MonoBehaviour
 
     private void LogUseBlockedReason(InventorySlot slot)
     {
-        if (slot == null || slot.Item == null || _playerNeedsController == null)
+        if (slot == null || slot.Item == null)
+            return;
+
+        if (slot.IsBroken)
+        {
+            Debug.Log($"{DebugPrefix} {slot.Item.DisplayName} is broken.");
+            return;
+        }
+
+        if (_playerNeedsController == null)
             return;
 
         if (slot.Item.RequiresOpening &&
             _inventoryController != null &&
-            !_inventoryController.Contains(slot.Item.NeedsToOpen))
+            !_inventoryController.ContainsUsableItem(slot.Item.NeedsToOpen))
         {
-            Debug.Log($"{DebugPrefix} {slot.Item.DisplayName} requires {slot.Item.NeedsToOpen.DisplayName}.");
+            Debug.Log($"{DebugPrefix} {slot.Item.DisplayName} requires usable {slot.Item.NeedsToOpen.DisplayName}.");
             return;
         }
 
@@ -1239,7 +1262,7 @@ public partial class InventoryUIController : MonoBehaviour
         if (item.AfterOpen == null || item.AfterOpen == item || item.AfterOpen.RequiresOpening)
             return false;
 
-        if (!_inventoryController.Contains(item.NeedsToOpen))
+        if (!_inventoryController.ContainsUsableItem(item.NeedsToOpen))
             return false;
 
         InventorySlot previewOpenedSlot = new();

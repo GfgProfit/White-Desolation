@@ -6186,6 +6186,7 @@ MonoBehaviour:
   _maxHungerToAllowConsumableUse: 2300
   _durabilityHolder: {fileID: 1920129787}
   _durabilityText: {fileID: 1325860414}
+  _durabilityIcon: {fileID: 1647497370}
   _weightHolder: {fileID: 1993624784}
   _weightText: {fileID: 924933420}
   _caloriesHolder: {fileID: 398043754}
@@ -6198,7 +6199,7 @@ MonoBehaviour:
   _useProgressModalRoot: {fileID: 1893761921}
   _useProgressFillImage: {fileID: 1007497162}
   _useProgressText: {fileID: 337111549}
-  _useDurationSeconds: 3
+  _useDurationSeconds: 5
   _playerNeedsController: {fileID: 899315763}
   _disableWhileOpen:
   - {fileID: 899315760}

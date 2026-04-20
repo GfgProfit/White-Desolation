@@ -109,10 +109,17 @@ public static class InventoryDisplayFormatter
         if (slot == null || slot.Item == null)
             return "Использовать";
 
-         if (slot.Item.Category == ItemCategory.Food && !slot.Item.RequiresOpening)
+        if (slot.IsBroken)
+        {
+            return slot.Item.PrimaryAction == ItemPrimaryActionType.Action
+                ? "Действие"
+                : "Сломан";
+        }
+
+        if (slot.Item.Category == ItemCategory.Food && !slot.Item.RequiresOpening)
             return "Съесть";
 
-            if (slot.Item.Category == ItemCategory.Water && slot.Item.PrimaryAction == ItemPrimaryActionType.Use)
+        if (slot.Item.Category == ItemCategory.Water && slot.Item.PrimaryAction == ItemPrimaryActionType.Use)
             return "Выпить";
 
         if (slot.Item.RequiresOpening)
