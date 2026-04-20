@@ -42,10 +42,6 @@ public partial class InventoryUIController : MonoBehaviour
     [SerializeField] private TMP_Text _itemDescriptionText;
     [SerializeField] private TMP_Text _itemCountText;
 
-    [Header("Consumable Use Thresholds")]
-    [SerializeField, Min(0f)] private float _maxThirstToAllowConsumableUse = 0;
-    [SerializeField, Min(0f)] private float _maxHungerToAllowConsumableUse = 0;
-
     [Header("Stats")]
     [SerializeField] private GameObject _durabilityHolder;
     [SerializeField] private TMP_Text _durabilityText;
@@ -934,9 +930,6 @@ public partial class InventoryUIController : MonoBehaviour
             return false;
         }
 
-        if (!PassesConsumableUseThresholds(slot))
-            return false;
-
         // Чистая вода по объёму
         if (IsVolumeDrink(slot))
         {
@@ -1111,34 +1104,13 @@ public partial class InventoryUIController : MonoBehaviour
         if (slot.Item.RequiresOpening)
             return CanUseClosedConsumableSlot(slot);
 
-        if (!PassesConsumableUseThresholds(slot))
-            return false;
-
         if (IsVolumeDrink(slot))
-            return slot.CurrentAmount > ZeroTolerance &&
-                   _playerNeedsController.MissingThirst > ZeroTolerance;
+            return slot.CurrentAmount > ZeroTolerance && _playerNeedsController.MissingThirst > ZeroTolerance;
 
         bool hasHydrationEffect = Mathf.Abs(slot.CurrentHydration) > ZeroTolerance;
         bool hasCaloriesEffect = Mathf.Abs(slot.CurrentCalories) > ZeroTolerance;
 
         return hasHydrationEffect || hasCaloriesEffect;
-    }
-
-    private bool PassesConsumableUseThresholds(InventorySlot slot)
-    {
-        if (slot == null || slot.Item == null || _playerNeedsController == null)
-            return false;
-
-        bool affectsHydration = DoesAffectHydration(slot);
-        bool affectsCalories = DoesAffectCalories(slot);
-
-        if (affectsHydration && _playerNeedsController.Thirst > _maxThirstToAllowConsumableUse)
-            return false;
-
-        if (affectsCalories && _playerNeedsController.Hunger > _maxHungerToAllowConsumableUse)
-            return false;
-
-        return true;
     }
 
     private bool DoesAffectHydration(InventorySlot slot)
@@ -1182,35 +1154,7 @@ public partial class InventoryUIController : MonoBehaviour
             return;
         }
 
-        bool affectsHydration = DoesAffectHydration(slot);
-        bool affectsCalories = DoesAffectCalories(slot);
-
-        bool thirstBlocked = affectsHydration && _playerNeedsController.Thirst > _maxThirstToAllowConsumableUse;
-        bool hungerBlocked = affectsCalories && _playerNeedsController.Hunger > _maxHungerToAllowConsumableUse;
-
-        if (thirstBlocked && hungerBlocked)
-        {
-            Debug.Log(
-                $"{DebugPrefix} {slot.Item.DisplayName} blocked by thresholds. " +
-                $"Thirst={_playerNeedsController.Thirst:0.##}>{_maxThirstToAllowConsumableUse:0.##}, " +
-                $"Hunger={_playerNeedsController.Hunger:0.##}>{_maxHungerToAllowConsumableUse:0.##}");
-            return;
-        }
-
-        if (thirstBlocked)
-        {
-            Debug.Log(
-                $"{DebugPrefix} {slot.Item.DisplayName} blocked by thirst threshold. " +
-                $"Thirst={_playerNeedsController.Thirst:0.##}>{_maxThirstToAllowConsumableUse:0.##}");
-            return;
-        }
-
-        if (hungerBlocked)
-        {
-            Debug.Log(
-                $"{DebugPrefix} {slot.Item.DisplayName} blocked by hunger threshold. " +
-                $"Hunger={_playerNeedsController.Hunger:0.##}>{_maxHungerToAllowConsumableUse:0.##}");
-        }
+        Debug.Log($"{DebugPrefix} {slot.Item.DisplayName} cannot be used right now.");
     }
 
     private void HandleDropOneClicked()
