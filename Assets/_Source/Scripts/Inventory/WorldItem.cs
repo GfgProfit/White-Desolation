@@ -12,6 +12,9 @@ public class WorldItem : MonoBehaviour, IInteractable
     [SerializeField] private bool _overrideCurrentDurability;
     [SerializeField, Min(0.01f)] private float _currentDurability = 100f;
 
+    [Header("Sticking")]
+    [SerializeField] private float _stickingOffsetY = 0.1f;
+
     [Inject] private readonly InventoryController _inventoryController;
 
     public ItemData ItemData => _itemData;
@@ -20,6 +23,15 @@ public class WorldItem : MonoBehaviour, IInteractable
     public float CurrentDurability => _overrideCurrentDurability ? _currentDurability : (_itemData != null && _itemData.UsesDurability && !_itemData.IsUnbreakable ? _itemData.MaxDurability : 100f);
     public bool HasDurability => _itemData != null && _itemData.UsesDurability;
     public float CurrentWeightKg => InventoryWeightCalculator.CalculateIncomingWeightKg( _itemData, _count, _overrideCurrentAmount ? _currentAmount : null);
+
+    private void Awake()
+    {
+        if (Physics.Raycast(transform.localPosition, Vector3.down, out RaycastHit hit, Mathf.Infinity))
+        {
+            transform.localPosition = hit.point;
+            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - _stickingOffsetY, transform.localPosition.z);
+        }
+    }
 
     public void Interact()
     {
@@ -42,5 +54,11 @@ public class WorldItem : MonoBehaviour, IInteractable
 
         Destroy(gameObject);
         return true;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * _stickingOffsetY, 0.1f);
     }
 }

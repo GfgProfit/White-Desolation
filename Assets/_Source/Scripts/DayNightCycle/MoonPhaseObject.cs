@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[ExecuteAlways]
 [RequireComponent(typeof(SpriteRenderer))]
 public class MoonPhaseObject : MonoBehaviour
 {

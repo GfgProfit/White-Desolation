@@ -284,7 +284,6 @@ GameObject:
   - component: {fileID: 16256871}
   - component: {fileID: 16256870}
   - component: {fileID: 16256869}
-  - component: {fileID: 16256868}
   - component: {fileID: 16256867}
   m_Layer: 0
   m_Name: Empty Can (15)
@@ -326,33 +325,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &16256868
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 16256865}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &16256869
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2704,7 +2677,6 @@ GameObject:
   - component: {fileID: 254319099}
   - component: {fileID: 254319098}
   - component: {fileID: 254319097}
-  - component: {fileID: 254319096}
   - component: {fileID: 254319095}
   m_Layer: 0
   m_Name: Empty Can (7)
@@ -2746,33 +2718,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &254319096
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 254319093}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &254319097
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4178,7 +4124,6 @@ GameObject:
   - component: {fileID: 457670627}
   - component: {fileID: 457670626}
   - component: {fileID: 457670629}
-  - component: {fileID: 457670624}
   - component: {fileID: 457670623}
   m_Layer: 0
   m_Name: Rifle Ammo
@@ -4205,33 +4150,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &457670624
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 457670622}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!23 &457670626
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4792,7 +4711,6 @@ GameObject:
   - component: {fileID: 533700655}
   - component: {fileID: 533700654}
   - component: {fileID: 533700657}
-  - component: {fileID: 533700652}
   - component: {fileID: 533700651}
   m_Layer: 0
   m_Name: Bottle Of Water
@@ -4819,33 +4737,7 @@ MonoBehaviour:
   _currentAmount: 2.53
   _overrideCurrentDurability: 1
   _currentDurability: 100
---- !u!54 &533700652
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 533700650}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!23 &533700654
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5017,7 +4909,6 @@ GameObject:
   - component: {fileID: 549376229}
   - component: {fileID: 549376228}
   - component: {fileID: 549376227}
-  - component: {fileID: 549376226}
   - component: {fileID: 549376225}
   m_Layer: 0
   m_Name: Empty Can (4)
@@ -5059,33 +4950,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &549376226
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 549376223}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &549376227
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5766,7 +5631,6 @@ GameObject:
   - component: {fileID: 614310015}
   - component: {fileID: 614310014}
   - component: {fileID: 614310013}
-  - component: {fileID: 614310012}
   - component: {fileID: 614310011}
   m_Layer: 0
   m_Name: Tomato Soup
@@ -5793,33 +5657,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &614310012
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 614310010}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &614310013
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6935,7 +6773,6 @@ GameObject:
   - component: {fileID: 832992029}
   - component: {fileID: 832992028}
   - component: {fileID: 832992027}
-  - component: {fileID: 832992026}
   - component: {fileID: 832992025}
   m_Layer: 0
   m_Name: Empty Can (12)
@@ -6977,33 +6814,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &832992026
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 832992023}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &832992027
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9119,7 +8930,6 @@ GameObject:
   - component: {fileID: 942097606}
   - component: {fileID: 942097605}
   - component: {fileID: 942097608}
-  - component: {fileID: 942097603}
   - component: {fileID: 942097602}
   m_Layer: 0
   m_Name: Green Tea
@@ -9146,33 +8956,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &942097603
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 942097601}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!23 &942097605
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9278,7 +9062,6 @@ GameObject:
   - component: {fileID: 963974680}
   - component: {fileID: 963974679}
   - component: {fileID: 963974678}
-  - component: {fileID: 963974677}
   - component: {fileID: 963974676}
   m_Layer: 0
   m_Name: Empty Can (13)
@@ -9320,33 +9103,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &963974677
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963974674}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &963974678
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9653,7 +9410,6 @@ GameObject:
   - component: {fileID: 1016140136}
   - component: {fileID: 1016140135}
   - component: {fileID: 1016140134}
-  - component: {fileID: 1016140133}
   - component: {fileID: 1016140132}
   m_Layer: 0
   m_Name: Empty Can (5)
@@ -9695,33 +9451,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &1016140133
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1016140130}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &1016140134
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11117,7 +10847,6 @@ GameObject:
   - component: {fileID: 1122080178}
   - component: {fileID: 1122080177}
   - component: {fileID: 1122080176}
-  - component: {fileID: 1122080175}
   - component: {fileID: 1122080174}
   m_Layer: 0
   m_Name: Empty Can
@@ -11144,33 +10873,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &1122080175
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1122080173}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &1122080176
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11276,7 +10979,6 @@ GameObject:
   - component: {fileID: 1123090750}
   - component: {fileID: 1123090749}
   - component: {fileID: 1123090748}
-  - component: {fileID: 1123090747}
   - component: {fileID: 1123090746}
   m_Layer: 0
   m_Name: Empty Can (10)
@@ -11318,33 +11020,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &1123090747
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1123090744}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &1123090748
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11926,7 +11602,6 @@ GameObject:
   - component: {fileID: 1167761903}
   - component: {fileID: 1167761902}
   - component: {fileID: 1167761901}
-  - component: {fileID: 1167761900}
   - component: {fileID: 1167761899}
   m_Layer: 0
   m_Name: Empty Can (6)
@@ -11968,33 +11643,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &1167761900
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1167761897}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &1167761901
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12900,7 +12549,6 @@ GameObject:
   - component: {fileID: 1289173837}
   - component: {fileID: 1289173836}
   - component: {fileID: 1289173839}
-  - component: {fileID: 1289173834}
   - component: {fileID: 1289173833}
   m_Layer: 0
   m_Name: Soda Can
@@ -12927,33 +12575,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 1
   _currentDurability: 100
---- !u!54 &1289173834
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1289173832}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!23 &1289173836
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -13454,7 +13076,6 @@ GameObject:
   - component: {fileID: 1337550709}
   - component: {fileID: 1337550708}
   - component: {fileID: 1337550707}
-  - component: {fileID: 1337550706}
   - component: {fileID: 1337550705}
   m_Layer: 0
   m_Name: Empty Can (1)
@@ -13496,33 +13117,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &1337550706
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1337550703}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &1337550707
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13790,7 +13385,6 @@ GameObject:
   - component: {fileID: 1369023840}
   - component: {fileID: 1369023839}
   - component: {fileID: 1369023838}
-  - component: {fileID: 1369023837}
   - component: {fileID: 1369023836}
   m_Layer: 0
   m_Name: Empty Can (8)
@@ -13832,33 +13426,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &1369023837
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1369023834}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &1369023838
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14061,7 +13629,6 @@ GameObject:
   - component: {fileID: 1403345656}
   - component: {fileID: 1403345655}
   - component: {fileID: 1403345654}
-  - component: {fileID: 1403345653}
   - component: {fileID: 1403345652}
   m_Layer: 0
   m_Name: Empty Can (9)
@@ -14103,33 +13670,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &1403345653
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1403345650}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &1403345654
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14278,7 +13819,6 @@ GameObject:
   - component: {fileID: 1409316772}
   - component: {fileID: 1409316771}
   - component: {fileID: 1409316770}
-  - component: {fileID: 1409316769}
   - component: {fileID: 1409316768}
   m_Layer: 0
   m_Name: Can Opener
@@ -14305,33 +13845,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 1
   _currentDurability: 31
---- !u!54 &1409316769
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1409316767}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &1409316770
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14823,7 +14337,6 @@ GameObject:
   - component: {fileID: 1457023357}
   - component: {fileID: 1457023356}
   - component: {fileID: 1457023355}
-  - component: {fileID: 1457023354}
   - component: {fileID: 1457023353}
   m_Layer: 0
   m_Name: Open Tomato Soup
@@ -14850,33 +14363,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &1457023354
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1457023352}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &1457023355
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15944,7 +15431,6 @@ GameObject:
   - component: {fileID: 1630951763}
   - component: {fileID: 1630951762}
   - component: {fileID: 1630951765}
-  - component: {fileID: 1630951760}
   - component: {fileID: 1630951759}
   m_Layer: 0
   m_Name: Gas Can
@@ -15971,33 +15457,7 @@ MonoBehaviour:
   _currentAmount: 1.24
   _overrideCurrentDurability: 1
   _currentDurability: 100
---- !u!54 &1630951760
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1630951758}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!23 &1630951762
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -17340,7 +16800,6 @@ GameObject:
   - component: {fileID: 1796346386}
   - component: {fileID: 1796346385}
   - component: {fileID: 1796346384}
-  - component: {fileID: 1796346383}
   - component: {fileID: 1796346382}
   m_Layer: 0
   m_Name: Empty Can (3)
@@ -17382,33 +16841,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &1796346383
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1796346380}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &1796346384
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17718,7 +17151,6 @@ GameObject:
   - component: {fileID: 1869238655}
   - component: {fileID: 1869238654}
   - component: {fileID: 1869238653}
-  - component: {fileID: 1869238652}
   - component: {fileID: 1869238651}
   m_Layer: 0
   m_Name: "\u0421ooked Wolf Meat"
@@ -17745,33 +17177,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 1
   _currentDurability: 88
---- !u!54 &1869238652
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1869238650}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &1869238653
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18109,7 +17515,6 @@ GameObject:
   - component: {fileID: 1877711246}
   - component: {fileID: 1877711245}
   - component: {fileID: 1877711244}
-  - component: {fileID: 1877711243}
   - component: {fileID: 1877711242}
   m_Layer: 0
   m_Name: Empty Can (14)
@@ -18151,33 +17556,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &1877711243
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877711240}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &1877711244
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18467,7 +17846,6 @@ GameObject:
   - component: {fileID: 1902506315}
   - component: {fileID: 1902506314}
   - component: {fileID: 1902506313}
-  - component: {fileID: 1902506312}
   - component: {fileID: 1902506311}
   m_Layer: 0
   m_Name: Empty Can (11)
@@ -18509,33 +17887,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &1902506312
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902506309}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &1902506313
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20420,7 +19772,6 @@ GameObject:
   - component: {fileID: 2063682733}
   - component: {fileID: 2063682732}
   - component: {fileID: 2063682735}
-  - component: {fileID: 2063682730}
   - component: {fileID: 2063682729}
   m_Layer: 0
   m_Name: Rifle
@@ -20447,33 +19798,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 1
   _currentDurability: 56
---- !u!54 &2063682730
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2063682728}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!23 &2063682732
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -20579,7 +19904,6 @@ GameObject:
   - component: {fileID: 2065134452}
   - component: {fileID: 2065134451}
   - component: {fileID: 2065134450}
-  - component: {fileID: 2065134449}
   - component: {fileID: 2065134448}
   m_Layer: 0
   m_Name: Empty Can (2)
@@ -20621,33 +19945,7 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
---- !u!54 &2065134449
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2065134446}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _stickingOffsetY: -0.5
 --- !u!65 &2065134450
 BoxCollider:
   m_ObjectHideFlags: 0

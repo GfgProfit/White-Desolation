@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-[ExecuteAlways]
 public class DayNightCycle : MonoBehaviour
 {
     [Header("Time")]
