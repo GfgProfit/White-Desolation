@@ -22141,28 +22141,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Base Atlas_hd_1013
-      rect:
-        serializedVersion: 2
-        x: 4007
-        y: 1548
-        width: 4
-        height: 5
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 536e6ab5168117949bcd7f367ddd7161
-      internalID: -1287810110
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Base Atlas_hd_1014
       rect:
         serializedVersion: 2
@@ -22268,28 +22246,6 @@ TextureImporter:
       bones: []
       spriteID: 820b1bed5751442409b0b3d0c7c6dba4
       internalID: -605508535
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Base Atlas_hd_1019
-      rect:
-        serializedVersion: 2
-        x: 4012
-        y: 1497
-        width: 4
-        height: 4
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4e81ad32076ef7842839385ffc8d09bc
-      internalID: 884893137
       vertices: []
       indices: 
       edges: []

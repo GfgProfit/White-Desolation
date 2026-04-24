@@ -7,18 +7,12 @@ public interface IPlayerInput
 
     bool IsJumpPressed();
     bool IsSprintHeld();
+    bool IsCrouchingHold();
 
     bool IsInteractPressed();
     bool IsInteractHold();
     bool IsInteractUp();
-
-    bool IsAimingHold();
-    bool IsReloadingPressed();
-    bool IsShootingHold();
-    bool IsShootingPressed();
-    bool IsPrimaryWeaponPressed();
-    bool IsSecondaryWeaponPressed();
-    bool IsCrouchingHold();
+    bool IsInteractDenied();
 
     bool IsEscapePressed();
     bool IsInventoryPressed();

@@ -29,6 +29,7 @@ public class InteractController : MonoBehaviour
     [Inject] private readonly IPlayerInput _playerInput;
 
     private IInteractable _currentInteractable;
+    private IInteractHoverInfo _currentHoverInfo;
     private WorldItem _currentWorldItem;
     private WorldItem _inspectedWorldItem;
 
@@ -56,29 +57,31 @@ public class InteractController : MonoBehaviour
     private void UpdateCurrentTarget()
     {
         _currentInteractable = null;
+        _currentHoverInfo = null;
         _currentWorldItem = null;
 
         if (_cameraTransform == null)
         {
-            RefreshHover(null);
+            RefreshHover(null, null);
             return;
         }
 
         if (!Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hit, _interactRange, _layerMask, QueryTriggerInteraction.Ignore))
         {
-            RefreshHover(null);
+            RefreshHover(null, null);
             return;
         }
 
         _currentInteractable = hit.collider.GetComponentInParent<IInteractable>();
+        _currentHoverInfo = hit.collider.GetComponentInParent<IInteractHoverInfo>();
         _currentWorldItem = hit.collider.GetComponentInParent<WorldItem>();
 
-        RefreshHover(_currentWorldItem);
+        RefreshHover(_currentWorldItem, _currentHoverInfo);
     }
 
     private void HandleWorldItemInput()
     {
-        if (_playerInput == null || !_playerInput.IsShootingPressed())
+        if (_playerInput == null || !_playerInput.IsInteractPressed())
         {
             return;
         }
@@ -104,25 +107,23 @@ public class InteractController : MonoBehaviour
             return;
         }
 
-        if (_playerInput.IsShootingPressed())
+        if (_playerInput.IsInteractPressed())
         {
             bool pickedUp = _inspectedWorldItem.TryPickup();
-
             if (!pickedUp)
             {
                 return;
             }
 
             CloseInspection();
-
             _currentWorldItem = null;
             _currentInteractable = null;
-
-            RefreshHover(null);
+            _currentHoverInfo = null;
+            RefreshHover(null, null);
             return;
         }
 
-        if (_playerInput.IsAimingHold())
+        if (_playerInput.IsInteractDenied())
         {
             CloseInspection();
         }
@@ -143,7 +144,7 @@ public class InteractController : MonoBehaviour
         _currentInteractable?.Interact();
     }
 
-    private void RefreshHover(WorldItem worldItem)
+    private void RefreshHover(WorldItem worldItem, IInteractHoverInfo hoverInfo)
     {
         if (IsInspectOpen)
         {
@@ -151,18 +152,33 @@ public class InteractController : MonoBehaviour
             return;
         }
 
-        if (worldItem == null || worldItem.ItemData == null)
+        if (worldItem != null && worldItem.ItemData != null)
         {
-            SetHoverVisible(false);
+            if (_hoverNameText != null)
+            {
+                _hoverNameText.text = worldItem.ItemData.DisplayName;
+            }
+
+            SetHoverVisible(true);
             return;
         }
 
-        if (_hoverNameText != null)
+        if (hoverInfo != null)
         {
-            _hoverNameText.text = worldItem.ItemData.DisplayName;
+            string hoverText = hoverInfo.GetHoverText();
+            if (!string.IsNullOrWhiteSpace(hoverText))
+            {
+                if (_hoverNameText != null)
+                {
+                    _hoverNameText.text = hoverText;
+                }
+
+                SetHoverVisible(true);
+                return;
+            }
         }
 
-        SetHoverVisible(true);
+        SetHoverVisible(false);
     }
 
     private void OpenInspection(WorldItem worldItem)
@@ -184,7 +200,6 @@ public class InteractController : MonoBehaviour
         _nameText.text = $"{worldItem.ItemData.DisplayName}";
         _descriptionText.text = $"{worldItem.ItemData.Description}";
         _durabilityText.text = $"{FormatDurability(worldItem)}%";
-
         Utils.SetDurabilityColor(worldItem, _durabilityText, _durabilityIcon);
 
         if (worldItem.CurrentWeightKg >= 1)
@@ -244,7 +259,10 @@ public class InteractController : MonoBehaviour
 
     private void SetHoverVisible(bool visible)
     {
-        _hoverRoot.SetActive(visible);
+        if (_hoverRoot != null)
+        {
+            _hoverRoot.SetActive(visible);
+        }
     }
 
     private void SetInspectVisible(bool visible)
@@ -270,6 +288,7 @@ public class InteractController : MonoBehaviour
             }
         }
     }
+
     private void SetObjectsEnabled(bool enabled)
     {
         if (_objectDisableWhileInspectOpen == null)

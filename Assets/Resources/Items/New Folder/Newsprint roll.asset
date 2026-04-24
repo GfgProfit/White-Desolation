@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ab4cbba0c9743748a35073d09f6b5c1, type: 3}
+  m_Name: Newsprint roll
+  m_EditorClassIdentifier: Assembly-CSharp::ItemData
+  _id: newsprint_roll
+  _displayName: "\u0413\u0430\u0437\u0435\u0442\u043D\u044B\u0439 \u0440\u0443\u043B\u043E\u043D"
+  _description: "\u0413\u0430\u0437\u0435\u0442\u043D\u044B\u0439 \u0440\u0443\u043B\u043E\u043D.
+    \u041C\u043E\u0436\u043D\u043E \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C
+    \u043A\u0430\u043A \u0442\u0440\u0443\u0442."
+  _icon: {fileID: 21300000, guid: 853727cf587dd5d439b2d200d17b4b94, type: 3}
+  _category: 4
+  _primaryAction: 0
+  _isStackable: 1
+  _maxStack: 30
+  _usesDurability: 1
+  _isUnbreakable: 0
+  _maxDurability: 100
+  _usesCustomAmount: 0
+  _amountUnit: 0
+  _maxAmount: 1
+  _baseWeightKg: 0.1
+  _weightDependsOnAmount: 0
+  _weightPerUnit: 0
+  _restoreHydration: 0
+  _restoreCalories: 0
+  _needsToOpen: {fileID: 0}
+  _afterOpen: {fileID: 0}
+  _afterUse: {fileID: 0}
+  _needsToOpenDurabilityCost: 1
