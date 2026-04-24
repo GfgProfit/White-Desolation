@@ -41,8 +41,8 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
 
         if (_isBurning)
         {
+            //LEGACY _fireStartingUI.OpenBurningStub(this);
             return;
-            _fireStartingUI.OpenBurningStub(this);
         }
 
         _fireStartingUI.OpenFireStarting(this);
