@@ -382,6 +382,51 @@ public class InventoryController : MonoBehaviour
         return false;
     }
 
+    public bool TryConsumeCustomAmountFromFirstMatchingItem(ItemData itemData, float amount)
+    {
+        if (itemData == null)
+        {
+            Debug.LogWarning($"Cannot consume amount: ItemData is null.");
+            return false;
+        }
+
+        if (amount <= 0f)
+        {
+            Debug.LogWarning($"Cannot consume amount from {itemData.DisplayName}: amount must be > 0.");
+            return false;
+        }
+
+        for (int i = 0; i < _items.Count; i++)
+        {
+            InventorySlot slot = _items[i];
+
+            if (slot == null || slot.IsEmpty || slot.Item == null)
+            {
+                continue;
+            }
+
+            if (!AreSameItem(slot.Item, itemData))
+            {
+                continue;
+            }
+
+            if (!slot.HasAmount)
+            {
+                continue;
+            }
+
+            if (slot.CurrentAmount + ZeroTolerance < amount)
+            {
+                continue;
+            }
+
+            return TryConsumeFromSlot(i, amountToConsume: amount);
+        }
+
+        Debug.LogWarning($"Not enough amount in {itemData.DisplayName}. Need {amount}.");
+        return false;
+    }
+
     public int GetTotalCount(ItemData itemData)
     {
         if (itemData == null)

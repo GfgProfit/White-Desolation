@@ -7,14 +7,16 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
 
     [Header("Runtime")]
     [SerializeField] private bool _isBurning;
-    [SerializeField, Min(0f)] private float _remainingBurnSeconds;
+
+    [SerializeField, Min(0f)] private float _remainingBurnGameMinutes;
 
     [Inject] private readonly FireUIController _fireStartingUI;
+    [Inject] private readonly DayNightCycle _dayNightCycle;
 
     public string DisplayName => _displayName;
     public bool IsBurning => _isBurning;
-    public float RemainingBurnSeconds => _remainingBurnSeconds;
-    public float RemainingBurnMinutes => _remainingBurnSeconds / 60f;
+    public float RemainingBurnSeconds => GameMinutesToRealSeconds(_remainingBurnGameMinutes);
+    public float RemainingBurnMinutes => _remainingBurnGameMinutes;
 
     private void Update()
     {
@@ -23,11 +25,12 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
             return;
         }
 
-        _remainingBurnSeconds = Mathf.Max(0f, _remainingBurnSeconds - Time.deltaTime);
+        float gameMinutesDelta = RealSecondsToGameMinutes(Time.deltaTime);
+        _remainingBurnGameMinutes = Mathf.Max(0f, _remainingBurnGameMinutes - gameMinutesDelta);
 
-        if (_remainingBurnSeconds <= 0f)
+        if (_remainingBurnGameMinutes <= 0f)
         {
-            _isBurning = false;
+            Extinguish();
         }
     }
 
@@ -35,10 +38,23 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
     {
         if (_isBurning)
         {
+            _fireStartingUI.OpenBurningStub(this);
             return;
         }
 
-        _fireStartingUI.OpenFireStarting();
+        _fireStartingUI.OpenFireStarting(this);
+    }
+
+    public void Ignite(float burnGameMinutes)
+    {
+        _remainingBurnGameMinutes = Mathf.Max(0f, burnGameMinutes);
+        _isBurning = _remainingBurnGameMinutes > 0f;
+    }
+
+    public void Extinguish()
+    {
+        _isBurning = false;
+        _remainingBurnGameMinutes = 0f;
     }
 
     public string GetHoverText()
@@ -48,12 +64,33 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
             return _displayName;
         }
 
-        return $"{_displayName}\nВремя горения: {FormatTime(_remainingBurnSeconds)}\nТемпература: 0.0 C";
+        return $"{_displayName}\nВремя горения: {FormatMinutes(_remainingBurnGameMinutes)}\nТемпература: 0.0 C";
     }
 
-    private static string FormatTime(float seconds)
+    private float RealSecondsToGameMinutes(float realSeconds)
     {
-        int totalMinutes = Mathf.CeilToInt(Mathf.Max(0f, seconds) / 60f);
+        if (_dayNightCycle == null)
+        {
+            return realSeconds / 60f;
+        }
+
+        return _dayNightCycle.RealSecondsToGameMinutes(realSeconds);
+    }
+
+    private float GameMinutesToRealSeconds(float gameMinutes)
+    {
+        if (_dayNightCycle == null)
+        {
+            return gameMinutes * 60f;
+        }
+
+        return _dayNightCycle.GameMinutesToRealSeconds(gameMinutes);
+    }
+
+    private static string FormatMinutes(float gameMinutes)
+    {
+        int totalMinutes = Mathf.CeilToInt(Mathf.Max(0f, gameMinutes));
+
         int hours = totalMinutes / 60;
         int minutes = totalMinutes % 60;
 

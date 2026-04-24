@@ -150,6 +150,26 @@ public class DayNightCycle : MonoBehaviour
         return $"{CurrentHour:00}:{CurrentMinute:00}";
     }
 
+    public float RealSecondsToGameMinutes(float realSeconds)
+    {
+        if (_realSecondsPerGameDay <= 0.01f)
+        {
+            return 0f;
+        }
+
+        return Mathf.Max(0f, realSeconds) * 1440f / _realSecondsPerGameDay;
+    }
+
+    public float GameMinutesToRealSeconds(float gameMinutes)
+    {
+        if (_realSecondsPerGameDay <= 0.01f)
+        {
+            return 0f;
+        }
+
+        return Mathf.Max(0f, gameMinutes) * _realSecondsPerGameDay / 1440f;
+    }
+
     private void AdvanceTime(float deltaTime)
     {
         if (_realSecondsPerGameDay <= 0.01f)

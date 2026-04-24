@@ -32,3 +32,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 28c5e4501c7ad374e9a2d492ad998964, type: 2}
   _accelerants:
   - {fileID: 11400000, guid: 659d196027718fd47aded8b6499549c5, type: 2}
+  - {fileID: 11400000, guid: 3b62541978a078a49805cc5b8e00ad87, type: 2}

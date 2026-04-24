@@ -4,6 +4,7 @@ public class TestSceneInstaller : SceneInstaller
 {
     [SerializeField] private InventoryController _inventoryController;
     [SerializeField] private FireUIController _fireUIController;
+    [SerializeField] private DayNightCycle _dayNightCycle;
 
     protected override void Install(IContainer container)
     {
@@ -11,5 +12,6 @@ public class TestSceneInstaller : SceneInstaller
 
         container.BindInstance(_inventoryController).AsSingle();
         container.BindInstance(_fireUIController).AsSingle();
+        container.BindInstance(_dayNightCycle).AsSingle();
     }
 }

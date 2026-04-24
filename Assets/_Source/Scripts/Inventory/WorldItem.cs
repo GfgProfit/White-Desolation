@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 
 public class WorldItem : MonoBehaviour, IInteractable
@@ -54,6 +55,12 @@ public class WorldItem : MonoBehaviour, IInteractable
 
         Destroy(gameObject);
         return true;
+    }
+
+    [Button]
+    private void AssignObjectName()
+    {
+        gameObject.name = $"[Item] - ID: {_itemData.Id}";
     }
 
     private void OnDrawGizmos()
