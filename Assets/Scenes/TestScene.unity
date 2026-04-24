@@ -15,15 +15,15 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.67729235, g: 0.6874543, b: 0.69517046, a: 1}
+  m_FogColor: {r: 0.21863516, g: 0.2550018, b: 0.30847928, a: 1}
   m_FogMode: 1
-  m_FogDensity: 0.005419962
+  m_FogDensity: 0.0122390045
   m_LinearFogStart: 0
   m_LinearFogEnd: 100
-  m_AmbientSkyColor: {r: 0.7370857, g: 0.74235624, b: 0.74172324, a: 1}
+  m_AmbientSkyColor: {r: 0.27176064, g: 0.2981391, b: 0.35731456, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 0.8461708
+  m_AmbientIntensity: 0.28282985
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 1cf6f4c6e6e0518419839d3f5448dd99, type: 2}
@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 4711686484351193501}
+  m_Sun: {fileID: 873527387}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7602,11 +7602,11 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 873527386}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 0.514151, g: 0.650796, b: 1, a: 1}
-  m_Intensity: 0
+  m_Intensity: 0.25
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -7697,7 +7697,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 873527386}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.044592246, y: -0.85593146, z: -0.50969136, w: -0.07488435}
+  m_LocalRotation: {x: -0.031136531, y: -0.93045413, z: 0.35589194, w: -0.08140425}
   m_LocalPosition: {x: -3.64603, y: 7.19883, z: -16.63286}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7766,7 +7766,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 879763126}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -7807,8 +7807,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 00c0d3395683a3242939e94a44082828, type: 3}
-  m_Color: {r: 1, g: 0.98600674, b: 0.8915094, a: 0}
+  m_Sprite: {fileID: 21300000, guid: 7754399890b04214e8a22c3b2740e873, type: 3}
+  m_Color: {r: 1, g: 0.98600674, b: 0.8915094, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -7825,8 +7825,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 879763126}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.044592224, y: 0.85593146, z: 0.5096913, w: 0.074884325}
-  m_LocalPosition: {x: -74.46165, y: -789.58014, z: 422.29285}
+  m_LocalRotation: {x: 0.031136528, y: 0.9304541, z: -0.35589197, w: 0.08140424}
+  m_LocalPosition: {x: -116.39098, y: 602.3163, z: 660.0857}
   m_LocalScale: {x: 35, y: 35, z: 35}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8285,8 +8285,6 @@ GameObject:
   - component: {fileID: 899315761}
   - component: {fileID: 899315762}
   - component: {fileID: 899315763}
-  - component: {fileID: 899315764}
-  - component: {fileID: 899315765}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -8647,59 +8645,6 @@ MonoBehaviour:
   _hungerIdleMultiplier: 1
   _hungerWalkMultiplier: 1
   _hungerRunMultiplier: 2
---- !u!114 &899315764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 899315754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 623a941fd088a1344b2851ca2ba81189, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireStartingUIController
-  _config: {fileID: 11400000, guid: 22f55fb2a6375e24a93426e72e6af99d, type: 2}
-  _startRoot: {fileID: 1849086756}
-  _igniterView: {fileID: 1131550126}
-  _tinderView: {fileID: 1929475481}
-  _fuelView: {fileID: 698244033}
-  _accelerantView: {fileID: 1408167476}
-  _baseChanceText: {fileID: 1946931939}
-  _successChanceText: {fileID: 1130207313}
-  _burnTimeText: {fileID: 689572875}
-  _startButton: {fileID: 1301690671}
-  _closeButton: {fileID: 2029029673}
-  _progressView: {fileID: 899315765}
-  _defaultStartDurationSeconds: 10
-  _accelerantStartDurationSeconds: 2
-  _failedMinFill: 0.1
-  _failedMaxFill: 0.85
-  _burningStubRoot: {fileID: 0}
-  _burningStubText: {fileID: 0}
-  _burningStubCloseButton: {fileID: 0}
-  _disableWhileOpen:
-  - {fileID: 899315756}
-  - {fileID: 899315755}
-  - {fileID: 899315761}
-  - {fileID: 899315762}
-  _objectsDisableWhileOpen:
-  - {fileID: 897127484}
---- !u!114 &899315765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 899315754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54bd26bbc83c03448d377c1e1542af2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireProgressView
-  _root: {fileID: 1893761921}
-  _fillImage: {fileID: 1007497162}
-  _stateText: {fileID: 337111549}
 --- !u!1 &909946005
 GameObject:
   m_ObjectHideFlags: 0
@@ -15887,7 +15832,6 @@ GameObject:
   - component: {fileID: 1619083012}
   - component: {fileID: 1619083011}
   - component: {fileID: 1619083010}
-  - component: {fileID: 1619083009}
   m_Layer: 0
   m_Name: Furnace
   m_TagString: Untagged
@@ -15895,21 +15839,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1619083009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1619083008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a87d54886476244d936f755fceda79b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireSourceInteractable
-  _displayName: "\u041F\u0435\u0447\u043A\u0430"
-  _isBurning: 0
-  _remainingBurnSeconds: 0
 --- !u!65 &1619083010
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19977,7 +19906,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TestSceneInstaller
   InjectOnAwake: 1
   _inventoryController: {fileID: 899315761}
-  _fireStartingUI: {fileID: 899315764}
 --- !u!4 &2032440891
 Transform:
   m_ObjectHideFlags: 0
@@ -21519,7 +21447,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8410027658180030814}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07488435, y: 0.50969136, z: -0.85593146, w: 0.044592246}
+  m_LocalRotation: {x: 0.08140425, y: -0.35589188, z: -0.93045413, w: -0.031136526}
   m_LocalPosition: {x: -3.64603, y: 7.19883, z: -16.63286}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -21566,7 +21494,7 @@ Light:
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 0.80799896, b: 0.5990566, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
