@@ -510,17 +510,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1710020292006947908, guid: bf84f4b8b0878a84aa8e65591a0a2093, type: 3}
   m_PrefabInstance: {fileID: 59246393}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &59246395 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4967280467585690358, guid: bf84f4b8b0878a84aa8e65591a0a2093, type: 3}
-  m_PrefabInstance: {fileID: 59246393}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfd1a97ddf44eff48bce6219cd48b9a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireStartingChoiceView
 --- !u!1 &68259675
 GameObject:
   m_ObjectHideFlags: 0
@@ -2194,17 +2183,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1710020292006947908, guid: bf84f4b8b0878a84aa8e65591a0a2093, type: 3}
   m_PrefabInstance: {fileID: 224248651}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &224248653 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4967280467585690358, guid: bf84f4b8b0878a84aa8e65591a0a2093, type: 3}
-  m_PrefabInstance: {fileID: 224248651}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfd1a97ddf44eff48bce6219cd48b9a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireStartingChoiceView
 --- !u!1 &243884196
 GameObject:
   m_ObjectHideFlags: 0
@@ -2873,17 +2851,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1710020292006947908, guid: bf84f4b8b0878a84aa8e65591a0a2093, type: 3}
   m_PrefabInstance: {fileID: 292637200}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &292637202 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4967280467585690358, guid: bf84f4b8b0878a84aa8e65591a0a2093, type: 3}
-  m_PrefabInstance: {fileID: 292637200}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfd1a97ddf44eff48bce6219cd48b9a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireStartingChoiceView
 --- !u!1 &323804234
 GameObject:
   m_ObjectHideFlags: 0
@@ -7410,8 +7377,6 @@ GameObject:
   - component: {fileID: 899315761}
   - component: {fileID: 899315762}
   - component: {fileID: 899315763}
-  - component: {fileID: 899315765}
-  - component: {fileID: 899315764}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -7772,56 +7737,6 @@ MonoBehaviour:
   _hungerIdleMultiplier: 1
   _hungerWalkMultiplier: 1
   _hungerRunMultiplier: 2
---- !u!114 &899315764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 899315754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ca6c73e29570c54b91f6b4aeae16c3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireProgressView
-  _root: {fileID: 1893761921}
-  _fillImage: {fileID: 1007497162}
-  _stateText: {fileID: 337111549}
---- !u!114 &899315765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 899315754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d940e7cad4daf54ba9f05f9972ede82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireStartingUIController
-  _config: {fileID: 11400000, guid: c355ace964897314a98ca6d00a0b3013, type: 2}
-  _startRoot: {fileID: 1849086756}
-  _igniterView: {fileID: 1131550126}
-  _tinderView: {fileID: 59246395}
-  _fuelView: {fileID: 224248653}
-  _accelerantView: {fileID: 292637202}
-  _baseChanceText: {fileID: 1946931939}
-  _successChanceText: {fileID: 1130207313}
-  _burnTimeText: {fileID: 689572875}
-  _startButton: {fileID: 1301690671}
-  _closeButton: {fileID: 2029029673}
-  _progressView: {fileID: 899315764}
-  _defaultStartDurationSeconds: 10
-  _accelerantStartDurationSeconds: 2
-  _failedMinFill: 0.1
-  _failedMaxFill: 0.85
-  _disableWhileOpen:
-  - {fileID: 899315756}
-  - {fileID: 899315755}
-  - {fileID: 899315761}
-  - {fileID: 899315762}
-  _objectsDisableWhileOpen:
-  - {fileID: 897127484}
 --- !u!1 &909946005
 GameObject:
   m_ObjectHideFlags: 0
@@ -10487,17 +10402,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1710020292006947908, guid: bf84f4b8b0878a84aa8e65591a0a2093, type: 3}
   m_PrefabInstance: {fileID: 6307031235898338069}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1131550126 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4967280467585690358, guid: bf84f4b8b0878a84aa8e65591a0a2093, type: 3}
-  m_PrefabInstance: {fileID: 6307031235898338069}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfd1a97ddf44eff48bce6219cd48b9a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireStartingChoiceView
 --- !u!1 &1134596931
 GameObject:
   m_ObjectHideFlags: 0
@@ -13589,7 +13493,6 @@ GameObject:
   - component: {fileID: 1619083012}
   - component: {fileID: 1619083011}
   - component: {fileID: 1619083010}
-  - component: {fileID: 1619083014}
   m_Layer: 0
   m_Name: Furnace
   m_TagString: Untagged
@@ -13690,21 +13593,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1619083014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1619083008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5efb2ea35d766264b85a911f422fbaf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FireSourceInteractable
-  _displayName: "\u041F\u0435\u0447\u043A\u0430"
-  _isBurning: 0
-  _remainingBurnSeconds: 0
 --- !u!1 &1630951758
 GameObject:
   m_ObjectHideFlags: 0
@@ -17137,7 +17025,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TestSceneInstaller
   InjectOnAwake: 1
   _inventoryController: {fileID: 899315761}
-  _fireStartingUIController: {fileID: 899315765}
 --- !u!4 &2032440891
 Transform:
   m_ObjectHideFlags: 0
