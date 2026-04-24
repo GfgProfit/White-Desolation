@@ -472,6 +472,72 @@ public class InventoryController : MonoBehaviour
         NotifyChanged();
     }
 
+    public bool HasCustomAmount(ItemData item, float requiredAmount)
+    {
+        for (int i = 0; i < Items.Count; i++)
+        {
+            InventorySlot slot = Items[i];
+            if (slot == null || slot.IsEmpty || slot.Item == null)
+            {
+                continue;
+            }
+
+            if (IsSameItem(slot.Item, item) && slot.HasAmount && slot.CurrentAmount >= requiredAmount)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool TryConsumeCustomAmount(ItemData item, float amount)
+    {
+        for (int i = 0; i < Items.Count; i++)
+        {
+            InventorySlot slot = Items[i];
+            if (slot == null || slot.IsEmpty || slot.Item == null)
+            {
+                continue;
+            }
+
+            if (IsSameItem(slot.Item, item) && slot.HasAmount && slot.CurrentAmount >= amount)
+            {
+                return TryConsumeFromSlot(i, amountToConsume: amount);
+            }
+        }
+
+        return false;
+    }
+
+    public bool Contains(List<ItemData> items, ItemData item)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (IsSameItem(items[i], item))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool IsSameItem(ItemData a, ItemData b)
+    {
+        if (a == null || b == null)
+        {
+            return false;
+        }
+
+        if (!string.IsNullOrWhiteSpace(a.Id) && !string.IsNullOrWhiteSpace(b.Id))
+        {
+            return a.Id == b.Id;
+        }
+
+        return ReferenceEquals(a, b);
+    }
+
     private bool TryAddCustomAmountItem(ItemData itemData, int count, float? currentAmountOverride, float? currentDurabilityOverride)
     {
         float amountPerItem = currentAmountOverride ?? itemData.MaxAmount;

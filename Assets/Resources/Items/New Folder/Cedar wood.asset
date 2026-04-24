@@ -38,3 +38,5 @@ MonoBehaviour:
   _afterOpen: {fileID: 0}
   _afterUse: {fileID: 0}
   _needsToOpenDurabilityCost: 1
+  BurnMinutes: 60
+  StartChanceBonus: 15

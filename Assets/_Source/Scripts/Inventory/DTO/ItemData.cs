@@ -43,8 +43,12 @@ public class ItemData : ScriptableObject
     [SerializeField] private ItemData _afterOpen;
     [SerializeField] private ItemData _afterUse;
 
-    [SerializeField, ShowIf(nameof(ShowNeedsToOpenDurabilityCost)), Min(0f)]
-    private float _needsToOpenDurabilityCost = 1f;
+    [Space]
+    [SerializeField, ShowIf(nameof(ShowNeedsToOpenDurabilityCost)), Min(0f)] private float _needsToOpenDurabilityCost = 1f;
+
+    [Header("Fuel")]
+    [SerializeField, Min(0f)] private float BurnMinutes;
+    [SerializeField, Range(0f, 100f)] private float StartChanceBonus;
 
     public ItemData NeedsToOpen => _needsToOpen;
     public ItemData AfterOpen => _afterOpen;
