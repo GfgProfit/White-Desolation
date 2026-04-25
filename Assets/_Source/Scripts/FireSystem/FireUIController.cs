@@ -31,11 +31,6 @@ public sealed class FireUIController : MonoBehaviour
     [SerializeField, Range(0.05f, 0.95f)] private float _failedMinFill = 0.1f;
     [SerializeField, Range(0.05f, 0.95f)] private float _failedMaxFill = 0.85f;
 
-    [Header("Burning Stub Window")]
-    [SerializeField] private GameObject _burningStubRoot;
-    [SerializeField] private TMP_Text _burningStubText;
-    [SerializeField] private Button _burningStubCloseButton;
-
     [Header("Player Lock")]
     [SerializeField] private Behaviour[] _disableWhileOpen;
     [SerializeField] private GameObject[] _objectsDisableWhileOpen;
@@ -58,7 +53,6 @@ public sealed class FireUIController : MonoBehaviour
     private void Awake()
     {
         SetStartVisible(false);
-        SetBurningStubVisible(false);
         _progressView?.Hide();
 
         _igniterView?.Bind(PreviousIgniter, NextIgniter);
@@ -77,20 +71,13 @@ public sealed class FireUIController : MonoBehaviour
             _closeButton.onClick.RemoveAllListeners();
             _closeButton.onClick.AddListener(CloseAll);
         }
-
-        if (_burningStubCloseButton != null)
-        {
-            _burningStubCloseButton.onClick.RemoveAllListeners();
-            _burningStubCloseButton.onClick.AddListener(CloseAll);
-        }
     }
 
     private void Update()
     {
         bool startWindowOpen = _startRoot != null && _startRoot.activeSelf;
-        bool burningStubOpen = _burningStubRoot != null && _burningStubRoot.activeSelf;
 
-        if (!startWindowOpen && !burningStubOpen)
+        if (!startWindowOpen)
         {
             return;
         }
@@ -110,7 +97,6 @@ public sealed class FireUIController : MonoBehaviour
 
         if (source.IsBurning)
         {
-            OpenBurningStub(source);
             return;
         }
 
@@ -132,41 +118,11 @@ public sealed class FireUIController : MonoBehaviour
         ResetSelectionIndexes();
         RefreshAllViews();
 
-        SetBurningStubVisible(false);
         _progressView?.Hide();
 
         SetPlayerControlsEnabled(false);
         SetObjectsEnabled(false);
         SetStartVisible(true);
-
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-    }
-
-    public void OpenBurningStub(FireSourceInteractable source)
-    {
-        if (source == null)
-        {
-            return;
-        }
-
-        _currentSource = source;
-
-        SetStartVisible(false);
-        _progressView?.Hide();
-
-        if (_burningStubText != null)
-        {
-            _burningStubText.text =
-                $"{source.DisplayName}\n" +
-                $"Огонь уже разведён.\n" +
-                $"Время горения: {FormatMinutes(source.RemainingBurnMinutes)}\n" +
-                $"Температура: 0.0 C";
-        }
-
-        SetPlayerControlsEnabled(false);
-        SetObjectsEnabled(false);
-        SetBurningStubVisible(true);
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
@@ -181,7 +137,6 @@ public sealed class FireUIController : MonoBehaviour
         }
 
         SetStartVisible(false);
-        SetBurningStubVisible(false);
         _progressView?.Hide();
 
         SetPlayerControlsEnabled(true);
@@ -570,14 +525,6 @@ public sealed class FireUIController : MonoBehaviour
         if (_startRoot != null)
         {
             _startRoot.SetActive(visible);
-        }
-    }
-
-    private void SetBurningStubVisible(bool visible)
-    {
-        if (_burningStubRoot != null)
-        {
-            _burningStubRoot.SetActive(visible);
         }
     }
 
