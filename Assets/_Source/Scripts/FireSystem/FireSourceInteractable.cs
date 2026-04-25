@@ -7,8 +7,10 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
 
     [Header("Runtime")]
     [SerializeField] private bool _isBurning;
-
     [SerializeField, Min(0f)] private float _remainingBurnGameMinutes;
+
+    [Header("Temperature")]
+    [SerializeField] private float _temperatureCelsius = 0f;
 
     [Inject] private readonly FireUIController _fireStartingUI;
     [Inject] private readonly DayNightCycle _dayNightCycle;
@@ -17,6 +19,7 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
     public bool IsBurning => _isBurning;
     public float RemainingBurnSeconds => GameMinutesToRealSeconds(_remainingBurnGameMinutes);
     public float RemainingBurnMinutes => _remainingBurnGameMinutes;
+    public float TemperatureCelsius => _temperatureCelsius;
 
     private void Update()
     {
@@ -56,14 +59,22 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
         _remainingBurnGameMinutes = 0f;
     }
 
-    public string GetHoverText()
+    public InteractionHoverInfo GetHoverInfo()
     {
+        InteractionHoverInfo info = new InteractionHoverInfo
+        {
+            InteractionText = _displayName
+        };
+
         if (!_isBurning)
         {
-            return _displayName;
+            return info;
         }
 
-        return $"{_displayName}\nВремя горения: {FormatMinutes(_remainingBurnGameMinutes)}\nТемпература: 0.0 C";
+        info.TimeText = $"{FormatMinutes(_remainingBurnGameMinutes)}";
+        info.TemperatureText = $"{_temperatureCelsius:0.#} °C";
+
+        return info;
     }
 
     private float RealSecondsToGameMinutes(float realSeconds)
@@ -89,7 +100,6 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
     private static string FormatMinutes(float gameMinutes)
     {
         int totalMinutes = Mathf.CeilToInt(Mathf.Max(0f, gameMinutes));
-
         int hours = totalMinutes / 60;
         int minutes = totalMinutes % 60;
 

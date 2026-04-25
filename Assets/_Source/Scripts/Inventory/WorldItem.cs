@@ -8,10 +8,10 @@ public class WorldItem : MonoBehaviour, IInteractable
 
     [Header("Optional Runtime Overrides")]
     [SerializeField] private bool _overrideCurrentAmount;
-    [SerializeField, Min(0.01f)] private float _currentAmount = 1f;
+    [SerializeField, Min(0.01f), ShowIf(nameof(_overrideCurrentAmount))] private float _currentAmount = 1f;
 
     [SerializeField] private bool _overrideCurrentDurability;
-    [SerializeField, Min(0.01f)] private float _currentDurability = 100f;
+    [SerializeField, Range(0f, 100f), ShowIf(nameof(_overrideCurrentDurability))] private float _currentDurability = 100f;
 
     [Header("Sticking")]
     [SerializeField] private float _stickingOffsetY = 0.1f;

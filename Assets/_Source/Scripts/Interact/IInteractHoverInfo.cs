@@ -1,4 +1,4 @@
 public interface IInteractHoverInfo
 {
-    string GetHoverText();
+    InteractionHoverInfo GetHoverInfo();
 }
