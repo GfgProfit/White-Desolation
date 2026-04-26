@@ -684,4 +684,86 @@ public class InventoryController : MonoBehaviour
     {
         OnInventoryChanged?.Invoke();
     }
+
+    public void CaptureState(GameSaveData saveData)
+    {
+        if (saveData == null)
+        {
+            return;
+        }
+
+        saveData.InventorySlots.Clear();
+
+        for (int i = 0; i < _items.Count; i++)
+        {
+            InventorySlot slot = _items[i];
+
+            if (slot == null || slot.IsEmpty || slot.Item == null)
+            {
+                continue;
+            }
+
+            saveData.InventorySlots.Add(new InventorySlotSaveData
+            {
+                ItemId = slot.Item.Id,
+                Count = slot.Count,
+                CurrentDurability = slot.CurrentDurability,
+                CurrentAmount = slot.CurrentAmount,
+                CurrentHydration = slot.CurrentHydration,
+                CurrentCalories = slot.CurrentCalories
+            });
+        }
+    }
+
+    public void RestoreState(GameSaveData saveData, SaveContext context)
+    {
+        if (saveData == null)
+        {
+            return;
+        }
+
+        _items.Clear();
+
+        if (saveData.InventorySlots == null)
+        {
+            NotifyChanged();
+            return;
+        }
+
+        for (int i = 0; i < saveData.InventorySlots.Count; i++)
+        {
+            InventorySlotSaveData slotData = saveData.InventorySlots[i];
+
+            if (slotData == null)
+            {
+                continue;
+            }
+
+            if (context == null || context.ItemDatabase == null)
+            {
+                Debug.LogWarning("[Inventory] Cannot restore inventory: ItemDatabase is missing.");
+                continue;
+            }
+
+            if (!context.ItemDatabase.TryGetItem(slotData.ItemId, out ItemData itemData))
+            {
+                Debug.LogWarning($"[Inventory] Cannot restore item. Unknown item id: {slotData.ItemId}");
+                continue;
+            }
+
+            InventorySlot slot = new InventorySlot();
+
+            slot.Initialize(
+                itemData,
+                Mathf.Max(1, slotData.Count),
+                slotData.CurrentDurability,
+                slotData.CurrentAmount,
+                slotData.CurrentHydration,
+                slotData.CurrentCalories);
+
+            _items.Add(slot);
+        }
+
+        NotifyChanged();
+    }
 }

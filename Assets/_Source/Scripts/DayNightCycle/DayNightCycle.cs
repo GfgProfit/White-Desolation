@@ -57,6 +57,7 @@ public class DayNightCycle : MonoBehaviour
     public float NormalizedTimeOfDay => _timeOfDayMinutes / 1440f;
     public float DayFactor => EvaluateDayFactor(NormalizedTimeOfDay);
     public float NightFactor => 1f - DayFactor;
+    public bool IsRunning => _isRunning;
 
     public event Action<int, int, int> OnTimeChanged;
     public event Action<int> OnDayChanged;
@@ -349,5 +350,50 @@ public class DayNightCycle : MonoBehaviour
 
         float x = Mathf.InverseLerp(start, end, value);
         return x * x * (3f - 2f * x);
+    }
+
+    public void SetTimeOfDayMinutes(float timeOfDayMinutes)
+    {
+        _timeOfDayMinutes = Mathf.Repeat(timeOfDayMinutes, 1440f);
+        _lastReportedWholeMinute = Mathf.FloorToInt(_timeOfDayMinutes);
+
+        ApplyVisuals();
+        OnTimeChanged?.Invoke(CurrentDay, CurrentHour, CurrentMinute);
+    }
+
+    public void SetRunning(bool running)
+    {
+        _isRunning = running;
+    }
+
+    public void CaptureState(GameSaveData saveData)
+    {
+        if (saveData == null)
+        {
+            return;
+        }
+
+        saveData.DayNight.HasData = true;
+        saveData.DayNight.Day = CurrentDay;
+        saveData.DayNight.TimeOfDayMinutes = _timeOfDayMinutes;
+        saveData.DayNight.IsRunning = _isRunning;
+    }
+
+    public void RestoreState(GameSaveData saveData, SaveContext context)
+    {
+        if (saveData == null || saveData.DayNight == null || !saveData.DayNight.HasData)
+        {
+            return;
+        }
+
+        CurrentDay = Mathf.Max(1, saveData.DayNight.Day);
+        _timeOfDayMinutes = Mathf.Repeat(saveData.DayNight.TimeOfDayMinutes, 1440f);
+        _isRunning = saveData.DayNight.IsRunning;
+        _lastReportedWholeMinute = Mathf.FloorToInt(_timeOfDayMinutes);
+
+        ApplyVisuals();
+
+        OnDayChanged?.Invoke(CurrentDay);
+        OnTimeChanged?.Invoke(CurrentDay, CurrentHour, CurrentMinute);
     }
 }

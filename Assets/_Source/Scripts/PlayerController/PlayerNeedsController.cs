@@ -270,4 +270,33 @@ public class PlayerNeedsController : MonoBehaviour
             _hungerFill.fillAmount = HungerNormalized;
         }
     }
+
+    public void CaptureState(GameSaveData saveData)
+    {
+        if (saveData == null)
+        {
+            return;
+        }
+
+        saveData.PlayerNeeds.HasData = true;
+        saveData.PlayerNeeds.Temperature = _temperature;
+        saveData.PlayerNeeds.Fatigue = _fatigue;
+        saveData.PlayerNeeds.Thirst = _thirst;
+        saveData.PlayerNeeds.Hunger = _hunger;
+    }
+
+    public void RestoreState(GameSaveData saveData, SaveContext context)
+    {
+        if (saveData == null || saveData.PlayerNeeds == null || !saveData.PlayerNeeds.HasData)
+        {
+            return;
+        }
+
+        _temperature = Mathf.Clamp(saveData.PlayerNeeds.Temperature, 0f, _maxTemperature);
+        _fatigue = Mathf.Clamp(saveData.PlayerNeeds.Fatigue, 0f, _maxFatigue);
+        _thirst = Mathf.Clamp(saveData.PlayerNeeds.Thirst, 0f, _maxThirst);
+        _hunger = Mathf.Clamp(saveData.PlayerNeeds.Hunger, 0f, _maxHunger);
+
+        RefreshUI();
+    }
 }

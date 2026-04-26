@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInteractHoverInfo
+[RequireComponent(typeof(SaveId))]
+public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInteractHoverInfo, ISaveable
 {
     [Header("Display")]
     [SerializeField] private string _displayName = "Печка";
@@ -12,14 +14,32 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
     [Header("Temperature")]
     [SerializeField] private float _temperatureCelsius = 0f;
 
+    [Header("Save")]
+    [SerializeField] private SaveId _saveId;
+
     [Inject] private readonly FireUIController _fireStartingUI;
     [Inject] private readonly DayNightCycle _dayNightCycle;
+
+    public string SaveId => _saveId != null ? _saveId.Id : string.Empty;
 
     public string DisplayName => _displayName;
     public bool IsBurning => _isBurning;
     public float RemainingBurnSeconds => GameMinutesToRealSeconds(_remainingBurnGameMinutes);
     public float RemainingBurnMinutes => _remainingBurnGameMinutes;
     public float TemperatureCelsius => _temperatureCelsius;
+
+    private void Reset()
+    {
+        _saveId = GetComponent<SaveId>();
+    }
+
+    private void Awake()
+    {
+        if (_saveId == null)
+        {
+            _saveId = GetComponent<SaveId>();
+        }
+    }
 
     private void Update()
     {
@@ -71,10 +91,56 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
             return info;
         }
 
-        info.TimeText = $"{FormatMinutes(_remainingBurnGameMinutes)}";
+        info.TimeText = FormatMinutes(_remainingBurnGameMinutes);
         info.TemperatureText = $"{_temperatureCelsius:0.#} °C";
 
         return info;
+    }
+
+    public void CaptureState(GameSaveData saveData)
+    {
+        if (saveData == null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(SaveId))
+        {
+            Debug.LogWarning($"[FireSource] Cannot save without SaveId: {name}");
+            return;
+        }
+
+        RemoveOldState(saveData.FireSources, SaveId);
+
+        saveData.FireSources.Add(new FireSourceSaveData
+        {
+            SaveId = SaveId,
+            IsBurning = _isBurning,
+            RemainingBurnGameMinutes = _remainingBurnGameMinutes
+        });
+    }
+
+    public void RestoreState(GameSaveData saveData, SaveContext context)
+    {
+        if (saveData == null || saveData.FireSources == null)
+        {
+            return;
+        }
+
+        FireSourceSaveData state = FindState(saveData.FireSources, SaveId);
+
+        if (state == null)
+        {
+            return;
+        }
+
+        _isBurning = state.IsBurning;
+        _remainingBurnGameMinutes = Mathf.Max(0f, state.RemainingBurnGameMinutes);
+
+        if (_remainingBurnGameMinutes <= 0f)
+        {
+            _isBurning = false;
+        }
     }
 
     private float RealSecondsToGameMinutes(float realSeconds)
@@ -109,5 +175,41 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
         }
 
         return $"{minutes} мин";
+    }
+
+    private static FireSourceSaveData FindState(List<FireSourceSaveData> states, string saveId)
+    {
+        if (states == null || string.IsNullOrWhiteSpace(saveId))
+        {
+            return null;
+        }
+
+        for (int i = 0; i < states.Count; i++)
+        {
+            FireSourceSaveData state = states[i];
+
+            if (state != null && state.SaveId == saveId)
+            {
+                return state;
+            }
+        }
+
+        return null;
+    }
+
+    private static void RemoveOldState(List<FireSourceSaveData> states, string saveId)
+    {
+        if (states == null || string.IsNullOrWhiteSpace(saveId))
+        {
+            return;
+        }
+
+        for (int i = states.Count - 1; i >= 0; i--)
+        {
+            if (states[i] != null && states[i].SaveId == saveId)
+            {
+                states.RemoveAt(i);
+            }
+        }
     }
 }

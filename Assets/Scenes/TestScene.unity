@@ -285,6 +285,7 @@ GameObject:
   - component: {fileID: 16256870}
   - component: {fileID: 16256869}
   - component: {fileID: 16256867}
+  - component: {fileID: 16256872}
   m_Layer: 0
   m_Name: '[Item] - ID: firestriker'
   m_TagString: Untagged
@@ -325,7 +326,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 1
   _currentDurability: 0
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &16256869
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -404,6 +406,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 16256865}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &16256872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16256865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 5fee09c847f0476eae0af4d2b36b1eaa
 --- !u!1001 &59246393
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2660,6 +2675,7 @@ GameObject:
   - component: {fileID: 254319098}
   - component: {fileID: 254319097}
   - component: {fileID: 254319095}
+  - component: {fileID: 254319100}
   m_Layer: 0
   m_Name: '[Item] - ID: newsprint'
   m_TagString: Untagged
@@ -2700,7 +2716,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &254319097
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2779,6 +2796,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 254319093}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &254319100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254319093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: ec4653384526449a9c0b094c999091cf
 --- !u!1 &255570503
 GameObject:
   m_ObjectHideFlags: 0
@@ -4376,6 +4406,7 @@ GameObject:
   - component: {fileID: 457670626}
   - component: {fileID: 457670629}
   - component: {fileID: 457670623}
+  - component: {fileID: 457670630}
   m_Layer: 0
   m_Name: '[Item] - ID: rifle_ammo'
   m_TagString: Untagged
@@ -4401,7 +4432,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!23 &457670626
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4495,6 +4527,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &457670630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457670622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: c66cb20249404eab86589fcf104a3a19
 --- !u!1 &459784634
 GameObject:
   m_ObjectHideFlags: 0
@@ -4967,6 +5012,7 @@ GameObject:
   - component: {fileID: 533700654}
   - component: {fileID: 533700657}
   - component: {fileID: 533700651}
+  - component: {fileID: 533700658}
   m_Layer: 0
   m_Name: '[Item] - ID: bottle_of_water'
   m_TagString: Untagged
@@ -4992,7 +5038,8 @@ MonoBehaviour:
   _currentAmount: 2.53
   _overrideCurrentDurability: 1
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!23 &533700654
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5086,6 +5133,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &533700658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533700650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 2072afdcb22c488dac6bd8cfda42c50e
 --- !u!1 &546252246
 GameObject:
   m_ObjectHideFlags: 0
@@ -5165,6 +5225,7 @@ GameObject:
   - component: {fileID: 549376228}
   - component: {fileID: 549376227}
   - component: {fileID: 549376225}
+  - component: {fileID: 549376230}
   m_Layer: 0
   m_Name: '[Item] - ID: coal'
   m_TagString: Untagged
@@ -5205,7 +5266,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &549376227
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5284,6 +5346,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549376223}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &549376230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549376223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 040460e4493d4189a05114e77d3a6615
 --- !u!1 &561452329
 GameObject:
   m_ObjectHideFlags: 0
@@ -5638,6 +5713,7 @@ GameObject:
   - component: {fileID: 614310014}
   - component: {fileID: 614310013}
   - component: {fileID: 614310011}
+  - component: {fileID: 614310017}
   m_Layer: 0
   m_Name: '[Item] - ID: tomato_soup'
   m_TagString: Untagged
@@ -5663,7 +5739,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &614310013
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5757,6 +5834,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &614310017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614310010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: f150c391a54b42d7b248b0ab5a401450
 --- !u!1 &624426553
 GameObject:
   m_ObjectHideFlags: 0
@@ -6540,6 +6630,57 @@ RectTransform:
   m_AnchoredPosition: {x: 50, y: -90}
   m_SizeDelta: {x: 100, y: 90}
   m_Pivot: {x: 0.5, y: 0}
+--- !u!1 &712203189
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 712203191}
+  - component: {fileID: 712203190}
+  m_Layer: 0
+  m_Name: Save Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &712203190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712203189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b2f0acd6528afa46a2e7b06cccf9301, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
+  _slotName: slot_0
+  _loadOnStart: 1
+  _itemDatabase: {fileID: 11400000, guid: d03a0cfc3993f5c4abf51d7af7c85c4b, type: 2}
+  _playerTransform: {fileID: 899315759}
+  _inventoryController: {fileID: 899315761}
+  _playerNeedsController: {fileID: 899315763}
+  _dayNightCycle: {fileID: 133213263}
+--- !u!4 &712203191
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712203189}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &731529943
 GameObject:
   m_ObjectHideFlags: 0
@@ -6991,6 +7132,7 @@ GameObject:
   - component: {fileID: 832992028}
   - component: {fileID: 832992027}
   - component: {fileID: 832992025}
+  - component: {fileID: 832992030}
   m_Layer: 0
   m_Name: '[Item] - ID: tinder_plug'
   m_TagString: Untagged
@@ -7031,7 +7173,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &832992027
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7110,6 +7253,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 832992023}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &832992030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832992023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: de1de8b39f254717bdf7ba790913ecd0
 --- !u!1 &850703724
 GameObject:
   m_ObjectHideFlags: 0
@@ -9211,6 +9367,7 @@ GameObject:
   - component: {fileID: 942097605}
   - component: {fileID: 942097608}
   - component: {fileID: 942097602}
+  - component: {fileID: 942097609}
   m_Layer: 0
   m_Name: '[Item] - ID: green_tea'
   m_TagString: Untagged
@@ -9236,7 +9393,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!23 &942097605
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9330,6 +9488,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &942097609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942097601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 0f145d710e8c41a3a8f673e368e1998a
 --- !u!1 &944109328
 GameObject:
   m_ObjectHideFlags: 0
@@ -9422,6 +9593,7 @@ GameObject:
   - component: {fileID: 963974679}
   - component: {fileID: 963974678}
   - component: {fileID: 963974676}
+  - component: {fileID: 963974681}
   m_Layer: 0
   m_Name: '[Item] - ID: wood'
   m_TagString: Untagged
@@ -9462,7 +9634,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &963974678
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9541,6 +9714,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963974674}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &963974681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963974674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: b86f80351d5641a38d4a129f598cc1b8
 --- !u!1 &980980499
 GameObject:
   m_ObjectHideFlags: 0
@@ -9770,6 +9956,7 @@ GameObject:
   - component: {fileID: 1016140135}
   - component: {fileID: 1016140134}
   - component: {fileID: 1016140132}
+  - component: {fileID: 1016140137}
   m_Layer: 0
   m_Name: '[Item] - ID: fuel'
   m_TagString: Untagged
@@ -9810,7 +9997,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &1016140134
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9889,6 +10077,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1016140130}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1016140137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016140130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 5a3956e780764ddf906f642574b20db6
 --- !u!1 &1019117576
 GameObject:
   m_ObjectHideFlags: 0
@@ -11367,6 +11568,7 @@ GameObject:
   - component: {fileID: 1122080177}
   - component: {fileID: 1122080176}
   - component: {fileID: 1122080174}
+  - component: {fileID: 1122080180}
   m_Layer: 0
   m_Name: '[Item] - ID: empty_can'
   m_TagString: Untagged
@@ -11392,7 +11594,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &1122080176
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11486,6 +11689,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1122080180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122080173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 16297a340acf4472a63603703962315d
 --- !u!1 &1123090744
 GameObject:
   m_ObjectHideFlags: 0
@@ -11499,6 +11715,7 @@ GameObject:
   - component: {fileID: 1123090749}
   - component: {fileID: 1123090748}
   - component: {fileID: 1123090746}
+  - component: {fileID: 1123090751}
   m_Layer: 0
   m_Name: '[Item] - ID: newsprint_roll'
   m_TagString: Untagged
@@ -11539,7 +11756,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &1123090748
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11618,6 +11836,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1123090744}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1123090751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123090744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: f12f64e20ea64d73ae8cb918370b3139
 --- !u!1 &1130207311
 GameObject:
   m_ObjectHideFlags: 0
@@ -11932,6 +12163,7 @@ GameObject:
   - component: {fileID: 1167761902}
   - component: {fileID: 1167761901}
   - component: {fileID: 1167761899}
+  - component: {fileID: 1167761904}
   m_Layer: 0
   m_Name: '[Item] - ID: log'
   m_TagString: Untagged
@@ -11972,7 +12204,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &1167761901
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12051,6 +12284,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1167761897}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1167761904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167761897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 8293f4a313e440b0b79c1374e8c5e77d
 --- !u!1 &1219367266
 GameObject:
   m_ObjectHideFlags: 0
@@ -12674,6 +12920,7 @@ GameObject:
   - component: {fileID: 1289173836}
   - component: {fileID: 1289173839}
   - component: {fileID: 1289173833}
+  - component: {fileID: 1289173840}
   m_Layer: 0
   m_Name: '[Item] - ID: soda_can'
   m_TagString: Untagged
@@ -12699,7 +12946,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 1
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!23 &1289173836
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -12793,6 +13041,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1289173840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289173832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 50109069150340f79dd37973fa66b23f
 --- !u!1 &1301690669
 GameObject:
   m_ObjectHideFlags: 0
@@ -13291,6 +13552,7 @@ GameObject:
   - component: {fileID: 1337550708}
   - component: {fileID: 1337550707}
   - component: {fileID: 1337550705}
+  - component: {fileID: 1337550710}
   m_Layer: 0
   m_Name: '[Item] - ID: book'
   m_TagString: Untagged
@@ -13331,7 +13593,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &1337550707
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13410,6 +13673,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1337550703}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1337550710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337550703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 915a1d45767a44ffb4d55f21fdff0820
 --- !u!1 &1342285789
 GameObject:
   m_ObjectHideFlags: 0
@@ -13600,6 +13876,7 @@ GameObject:
   - component: {fileID: 1369023839}
   - component: {fileID: 1369023838}
   - component: {fileID: 1369023836}
+  - component: {fileID: 1369023841}
   m_Layer: 0
   m_Name: '[Item] - ID: spruce_wood'
   m_TagString: Untagged
@@ -13640,7 +13917,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &1369023838
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13719,6 +13997,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1369023834}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1369023841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369023834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 9c5da8fca894409db9f24631dfa9d577
 --- !u!1 &1371895413
 GameObject:
   m_ObjectHideFlags: 0
@@ -13769,6 +14060,7 @@ GameObject:
   - component: {fileID: 1403345655}
   - component: {fileID: 1403345654}
   - component: {fileID: 1403345652}
+  - component: {fileID: 1403345657}
   m_Layer: 0
   m_Name: '[Item] - ID: papers_stack'
   m_TagString: Untagged
@@ -13809,7 +14101,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &1403345654
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13888,6 +14181,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1403345650}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1403345657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403345650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 7fe049dc08944fbbb41d7452699eddd8
 --- !u!1 &1409316767
 GameObject:
   m_ObjectHideFlags: 0
@@ -13901,6 +14207,7 @@ GameObject:
   - component: {fileID: 1409316771}
   - component: {fileID: 1409316770}
   - component: {fileID: 1409316768}
+  - component: {fileID: 1409316774}
   m_Layer: 0
   m_Name: '[Item] - ID: rifle_ammo'
   m_TagString: Untagged
@@ -13926,7 +14233,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 1
   _currentDurability: 31
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &1409316770
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14020,6 +14328,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1409316774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409316767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 592eb34b51e248ea9cf870d3be408aac
 --- !u!1 &1409986032
 GameObject:
   m_ObjectHideFlags: 0
@@ -14282,6 +14603,7 @@ GameObject:
   - component: {fileID: 1457023356}
   - component: {fileID: 1457023355}
   - component: {fileID: 1457023353}
+  - component: {fileID: 1457023359}
   m_Layer: 0
   m_Name: '[Item] - ID: crushed_tomato_soup'
   m_TagString: Untagged
@@ -14307,7 +14629,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &1457023355
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14401,6 +14724,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1457023359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457023352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 9fee49bd8f2d46aca879585acfd1c0f3
 --- !u!1 &1458500765
 GameObject:
   m_ObjectHideFlags: 0
@@ -15144,6 +15480,7 @@ GameObject:
   - component: {fileID: 1630951762}
   - component: {fileID: 1630951765}
   - component: {fileID: 1630951759}
+  - component: {fileID: 1630951766}
   m_Layer: 0
   m_Name: '[Item] - ID: gas_can'
   m_TagString: Untagged
@@ -15169,7 +15506,8 @@ MonoBehaviour:
   _currentAmount: 1.24
   _overrideCurrentDurability: 1
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!23 &1630951762
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15263,6 +15601,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1630951766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630951758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 5040a360f3e649aaa05bc47410a537f6
 --- !u!1 &1647497368
 GameObject:
   m_ObjectHideFlags: 0
@@ -16454,6 +16805,7 @@ GameObject:
   - component: {fileID: 1796346385}
   - component: {fileID: 1796346384}
   - component: {fileID: 1796346382}
+  - component: {fileID: 1796346387}
   m_Layer: 0
   m_Name: '[Item] - ID: cedar_wood'
   m_TagString: Untagged
@@ -16494,7 +16846,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &1796346384
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16573,6 +16926,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1796346380}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1796346387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796346380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 2364c9ce8b0048f584c9f89e08654362
 --- !u!1 &1823093616
 GameObject:
   m_ObjectHideFlags: 0
@@ -16805,6 +17171,7 @@ GameObject:
   - component: {fileID: 1869238654}
   - component: {fileID: 1869238653}
   - component: {fileID: 1869238651}
+  - component: {fileID: 1869238657}
   m_Layer: 0
   m_Name: '[Item] - ID: cooked_wolf_meat'
   m_TagString: Untagged
@@ -16830,7 +17197,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 1
   _currentDurability: 88
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &1869238653
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16924,6 +17292,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1869238657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869238650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 9fef54269cdc43de9e9f5b10e795f261
 --- !u!1 &1871064381
 GameObject:
   m_ObjectHideFlags: 0
@@ -17169,6 +17550,7 @@ GameObject:
   - component: {fileID: 1877711245}
   - component: {fileID: 1877711244}
   - component: {fileID: 1877711242}
+  - component: {fileID: 1877711247}
   m_Layer: 0
   m_Name: '[Item] - ID: wood_matches'
   m_TagString: Untagged
@@ -17209,7 +17591,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &1877711244
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17288,6 +17671,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1877711240}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1877711247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877711240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 7ba448cedc21442b932c4c3e4d2dd3cb
 --- !u!1 &1887284454
 GameObject:
   m_ObjectHideFlags: 0
@@ -17500,6 +17896,7 @@ GameObject:
   - component: {fileID: 1902506314}
   - component: {fileID: 1902506313}
   - component: {fileID: 1902506311}
+  - component: {fileID: 1902506316}
   m_Layer: 0
   m_Name: '[Item] - ID: stick'
   m_TagString: Untagged
@@ -17540,7 +17937,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &1902506313
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17619,6 +18017,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1902506309}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1902506316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902506309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 3ad10916286c4d8eaa5e647bb005e80d
 --- !u!1 &1911142801
 GameObject:
   m_ObjectHideFlags: 0
@@ -18500,6 +18911,7 @@ GameObject:
   - component: {fileID: 2001821798}
   - component: {fileID: 2001821797}
   - component: {fileID: 2001821796}
+  - component: {fileID: 2001821799}
   m_Layer: 0
   m_Name: Furnace
   m_TagString: Untagged
@@ -18523,6 +18935,7 @@ MonoBehaviour:
   _isBurning: 0
   _remainingBurnGameMinutes: 0
   _temperatureCelsius: 0
+  _saveId: {fileID: 0}
 --- !u!64 &2001821797
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -18562,6 +18975,19 @@ Transform:
   - {fileID: 1219367267}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2001821799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2001821795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 41cc77ec22ee4505b234b95c7d5ec4a9
 --- !u!1 &2029029671
 GameObject:
   m_ObjectHideFlags: 0
@@ -19284,6 +19710,7 @@ GameObject:
   - component: {fileID: 2063682732}
   - component: {fileID: 2063682735}
   - component: {fileID: 2063682729}
+  - component: {fileID: 2063682736}
   m_Layer: 0
   m_Name: '[Item] - ID: rifle'
   m_TagString: Untagged
@@ -19309,7 +19736,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 1
   _currentDurability: 56
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!23 &2063682732
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -19403,6 +19831,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2063682736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063682728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: 2e94a72831544b0b8849def90b6c95a8
 --- !u!1 &2065134446
 GameObject:
   m_ObjectHideFlags: 0
@@ -19416,6 +19857,7 @@ GameObject:
   - component: {fileID: 2065134451}
   - component: {fileID: 2065134450}
   - component: {fileID: 2065134448}
+  - component: {fileID: 2065134453}
   m_Layer: 0
   m_Name: '[Item] - ID: cardboard_matches'
   m_TagString: Untagged
@@ -19456,7 +19898,8 @@ MonoBehaviour:
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
-  _stickingOffsetY: -0.5
+  _saveId: {fileID: 0}
+  _pickedUp: 0
 --- !u!65 &2065134450
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19535,6 +19978,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2065134446}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2065134453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065134446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 790f1f82b2d746742ac3b173f03ac81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveId
+  _id: fec31c81f0a144359c3f5dbe8da13510
 --- !u!1 &2065791161
 GameObject:
   m_ObjectHideFlags: 0
@@ -20504,6 +20960,7 @@ SceneRoots:
   - {fileID: 1226543139}
   - {fileID: 899315759}
   - {fileID: 2032440891}
+  - {fileID: 712203191}
   - {fileID: 459784638}
   - {fileID: 2091490253}
   - {fileID: 630931037}
