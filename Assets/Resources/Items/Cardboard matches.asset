@@ -36,3 +36,7 @@ MonoBehaviour:
   _afterOpen: {fileID: 0}
   _afterUse: {fileID: 0}
   _needsToOpenDurabilityCost: 1
+  _burnMinutes: 0
+  _startChanceBonus: 0
+  _fireIgniterConsumeMode: 1
+  _fireIgniterDurabilityCost01: 0.02

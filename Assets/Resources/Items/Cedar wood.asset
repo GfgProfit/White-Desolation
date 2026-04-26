@@ -40,3 +40,5 @@ MonoBehaviour:
   _needsToOpenDurabilityCost: 1
   _burnMinutes: 60
   _startChanceBonus: 15
+  _fireIgniterConsumeMode: 0
+  _fireIgniterDurabilityCost01: 0.02

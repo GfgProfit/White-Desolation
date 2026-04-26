@@ -50,8 +50,16 @@ public class ItemData : ScriptableObject
     [SerializeField, Min(0f)] private float _burnMinutes;
     [SerializeField, Range(0f, 100f)] private float _startChanceBonus;
 
+    [Header("Fire Igniter")]
+    [SerializeField] private FireIgniterConsumeMode _fireIgniterConsumeMode = FireIgniterConsumeMode.Auto;
+    [SerializeField, ShowIf(nameof(ShowFireIgniterDurabilityCost)), Range(0f, 1f)]
+    private float _fireIgniterDurabilityCost01 = 0.02f;
+
     public float BurnMinutes => _burnMinutes;
     public float StartChanceBonus => _startChanceBonus;
+
+    public FireIgniterConsumeMode FireIgniterConsumeMode => _fireIgniterConsumeMode;
+    public float FireIgniterDurabilityCost01 => Mathf.Clamp01(_fireIgniterDurabilityCost01);
 
     public ItemData NeedsToOpen => _needsToOpen;
     public ItemData AfterOpen => _afterOpen;
@@ -61,6 +69,15 @@ public class ItemData : ScriptableObject
     public bool RequiresOpening => _needsToOpen != null && _afterOpen != null;
 
     private bool ShowNeedsToOpenDurabilityCost() => _needsToOpen != null;
+    private bool ShowFireIgniterDurabilityCost()
+    {
+        if (_fireIgniterConsumeMode == FireIgniterConsumeMode.ConsumeItem)
+        {
+            return false;
+        }
+
+        return _usesDurability && !_isUnbreakable;
+    }
 
     public string Id => _id;
     public string DisplayName => _displayName;
@@ -138,6 +155,8 @@ public class ItemData : ScriptableObject
         {
             _weightDependsOnAmount = false;
         }
+
+        _fireIgniterDurabilityCost01 = Mathf.Clamp01(_fireIgniterDurabilityCost01);
     }
 
     [Button]

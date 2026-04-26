@@ -19,7 +19,11 @@ public class InventoryController : MonoBehaviour
 
     public event Action OnInventoryChanged;
 
-    public bool TryAddItem(ItemData itemData, int count, float? currentAmountOverride = null, float? currentDurabilityOverride = null)
+    public bool TryAddItem(
+    ItemData itemData,
+    int count,
+    float? currentAmountOverride = null,
+    float? currentDurabilityOverride = null)
     {
         if (itemData == null)
         {
@@ -33,7 +37,11 @@ public class InventoryController : MonoBehaviour
 
         if (itemData.UsesCustomAmount)
         {
-            bool addedCustomAmount = TryAddCustomAmountItem(itemData, count, currentAmountOverride, currentDurabilityOverride);
+            bool addedCustomAmount = TryAddCustomAmountItem(
+                itemData,
+                count,
+                currentAmountOverride,
+                currentDurabilityOverride);
 
             if (addedCustomAmount)
             {
@@ -98,8 +106,8 @@ public class InventoryController : MonoBehaviour
 
                 InventorySlot newSlot = new();
                 newSlot.Initialize(itemData, amountForNewSlot, currentDurabilityOverride, currentAmountOverride);
-
                 _items.Add(newSlot);
+
                 remaining -= amountForNewSlot;
             }
 
@@ -111,12 +119,34 @@ public class InventoryController : MonoBehaviour
         {
             InventorySlot newSlot = new();
             newSlot.Initialize(itemData, 1, currentDurabilityOverride, currentAmountOverride);
-
             _items.Add(newSlot);
         }
 
         NotifyChanged();
         return true;
+    }
+
+    public bool CanAddItem(ItemData itemData, int count, float? currentAmountOverride = null)
+    {
+        if (itemData == null)
+        {
+            return false;
+        }
+
+        if (count <= 0)
+        {
+            return false;
+        }
+
+        float incomingWeightKg = InventoryWeightCalculator.CalculateIncomingWeightKg(
+            itemData,
+            count,
+            currentAmountOverride);
+
+        return InventoryCapacityPolicy.CanAcceptWeight(
+            CurrentCarryWeightKg,
+            _maxCarryWeightKg,
+            incomingWeightKg);
     }
 
     public bool TryRemoveItem(ItemData itemData, int count)
@@ -149,7 +179,7 @@ public class InventoryController : MonoBehaviour
                 continue;
             }
 
-            if (!AreSameItem(slot.Item, itemData))
+            if (!ItemDataComparer.AreSame(slot.Item, itemData))
             {
                 continue;
             }
@@ -316,7 +346,7 @@ public class InventoryController : MonoBehaviour
                 continue;
             }
 
-            if (!AreSameItem(slot.Item, itemData))
+            if (!ItemDataComparer.AreSame(slot.Item, itemData))
             {
                 continue;
             }
@@ -358,7 +388,7 @@ public class InventoryController : MonoBehaviour
                 continue;
             }
 
-            if (!AreSameItem(slot.Item, itemData))
+            if (!ItemDataComparer.AreSame(slot.Item, itemData))
             {
                 continue;
             }
@@ -374,7 +404,6 @@ public class InventoryController : MonoBehaviour
             }
 
             slot.CurrentDurability = Mathf.Max(0f, slot.CurrentDurability - durabilityCost);
-
             NotifyChanged();
             return true;
         }
@@ -386,7 +415,7 @@ public class InventoryController : MonoBehaviour
     {
         if (itemData == null)
         {
-            Debug.LogWarning($"Cannot consume amount: ItemData is null.");
+            Debug.LogWarning("Cannot consume amount: ItemData is null.");
             return false;
         }
 
@@ -405,7 +434,7 @@ public class InventoryController : MonoBehaviour
                 continue;
             }
 
-            if (!AreSameItem(slot.Item, itemData))
+            if (!ItemDataComparer.AreSame(slot.Item, itemData))
             {
                 continue;
             }
@@ -445,7 +474,7 @@ public class InventoryController : MonoBehaviour
                 continue;
             }
 
-            if (!AreSameItem(slot.Item, itemData))
+            if (!ItemDataComparer.AreSame(slot.Item, itemData))
             {
                 continue;
             }
@@ -474,7 +503,7 @@ public class InventoryController : MonoBehaviour
                 continue;
             }
 
-            if (!AreSameItem(slot.Item, itemData))
+            if (!ItemDataComparer.AreSame(slot.Item, itemData))
             {
                 continue;
             }
@@ -522,12 +551,13 @@ public class InventoryController : MonoBehaviour
         for (int i = 0; i < Items.Count; i++)
         {
             InventorySlot slot = Items[i];
+
             if (slot == null || slot.IsEmpty || slot.Item == null)
             {
                 continue;
             }
 
-            if (IsSameItem(slot.Item, item) && slot.HasAmount && slot.CurrentAmount >= requiredAmount)
+            if (ItemDataComparer.AreSame(slot.Item, item) && slot.HasAmount && slot.CurrentAmount >= requiredAmount)
             {
                 return true;
             }
@@ -541,12 +571,13 @@ public class InventoryController : MonoBehaviour
         for (int i = 0; i < Items.Count; i++)
         {
             InventorySlot slot = Items[i];
+
             if (slot == null || slot.IsEmpty || slot.Item == null)
             {
                 continue;
             }
 
-            if (IsSameItem(slot.Item, item) && slot.HasAmount && slot.CurrentAmount >= amount)
+            if (ItemDataComparer.AreSame(slot.Item, item) && slot.HasAmount && slot.CurrentAmount >= amount)
             {
                 return TryConsumeFromSlot(i, amountToConsume: amount);
             }
@@ -557,9 +588,14 @@ public class InventoryController : MonoBehaviour
 
     public bool Contains(List<ItemData> items, ItemData item)
     {
+        if (items == null || item == null)
+        {
+            return false;
+        }
+
         for (int i = 0; i < items.Count; i++)
         {
-            if (IsSameItem(items[i], item))
+            if (ItemDataComparer.AreSame(items[i], item))
             {
                 return true;
             }
@@ -570,17 +606,7 @@ public class InventoryController : MonoBehaviour
 
     public bool IsSameItem(ItemData a, ItemData b)
     {
-        if (a == null || b == null)
-        {
-            return false;
-        }
-
-        if (!string.IsNullOrWhiteSpace(a.Id) && !string.IsNullOrWhiteSpace(b.Id))
-        {
-            return a.Id == b.Id;
-        }
-
-        return ReferenceEquals(a, b);
+        return ItemDataComparer.AreSame(a, b);
     }
 
     private bool TryAddCustomAmountItem(ItemData itemData, int count, float? currentAmountOverride, float? currentDurabilityOverride)
@@ -611,14 +637,18 @@ public class InventoryController : MonoBehaviour
         return true;
     }
 
-    private bool CanMergeIntoStack(InventorySlot slot, ItemData incomingItem, float? incomingDurabilityOverride, float? incomingAmountOverride)
+    private bool CanMergeIntoStack(
+    InventorySlot slot,
+    ItemData incomingItem,
+    float? incomingDurabilityOverride,
+    float? incomingAmountOverride)
     {
         if (slot == null || slot.IsEmpty || slot.Item == null || incomingItem == null)
         {
             return false;
         }
 
-        if (!AreSameItem(slot.Item, incomingItem))
+        if (!ItemDataComparer.AreSame(slot.Item, incomingItem))
         {
             return false;
         }
@@ -630,14 +660,20 @@ public class InventoryController : MonoBehaviour
 
         if (slot.Item.UsesCustomAmount || incomingItem.UsesCustomAmount)
         {
-            float incomingAmount = Mathf.Clamp(incomingAmountOverride ?? incomingItem.MaxAmount, 0f, incomingItem.MaxAmount);
+            float incomingAmount = Mathf.Clamp(
+                incomingAmountOverride ?? incomingItem.MaxAmount,
+                0f,
+                incomingItem.MaxAmount);
 
             return Mathf.Approximately(slot.CurrentAmount, incomingAmount);
         }
 
         if (slot.Item.UsesDurability && !slot.Item.IsUnbreakable)
         {
-            float incomingDurability = Mathf.Clamp(incomingDurabilityOverride ?? incomingItem.MaxDurability, 0f, incomingItem.MaxDurability);
+            float incomingDurability = Mathf.Clamp(
+                incomingDurabilityOverride ?? incomingItem.MaxDurability,
+                0f,
+                incomingItem.MaxDurability);
 
             return Mathf.Approximately(slot.CurrentDurability, incomingDurability);
         }
@@ -668,16 +704,6 @@ public class InventoryController : MonoBehaviour
         }
 
         return slot.IsEmpty;
-    }
-
-    private static bool AreSameItem(ItemData a, ItemData b)
-    {
-        if (a == null || b == null)
-        {
-            return false;
-        }
-
-        return a.Id == b.Id;
     }
 
     private void NotifyChanged()

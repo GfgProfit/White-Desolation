@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SaveId))]
-public class WorldItem : MonoBehaviour, IInteractable, ISaveable
+public class WorldItem : MonoBehaviour, IInteractable, IInteractHoverInfo, IInspectableInteractable, ISaveable
 {
     private const string DebugPrefix = "[WorldItem]";
 
@@ -13,10 +13,10 @@ public class WorldItem : MonoBehaviour, IInteractable, ISaveable
 
     [Header("Optional Runtime Overrides")]
     [SerializeField] private bool _overrideCurrentAmount;
-    [SerializeField, Min(0.01f)] private float _currentAmount = 1f;
+    [SerializeField] private float _currentAmount = 1f;
 
     [SerializeField] private bool _overrideCurrentDurability;
-    [SerializeField, Min(0.01f)] private float _currentDurability = 100f;
+    [SerializeField] private float _currentDurability = 100f;
 
     [Header("Save")]
     [SerializeField] private SaveId _saveId;
@@ -25,28 +25,14 @@ public class WorldItem : MonoBehaviour, IInteractable, ISaveable
     [Inject] private InventoryController _inventoryController;
 
     public string SaveId => _saveId != null ? _saveId.Id : string.Empty;
-
     public ItemData ItemData => _itemData;
     public int Count => _count;
-
     public bool PickedUp => _pickedUp;
-
-    public float CurrentAmount =>
-        _overrideCurrentAmount
-            ? _currentAmount
-            : (_itemData != null && _itemData.UsesCustomAmount ? _itemData.MaxAmount : 0f);
-
-    public float CurrentDurability =>
-        _overrideCurrentDurability
-            ? _currentDurability
-            : (_itemData != null && _itemData.UsesDurability && !_itemData.IsUnbreakable ? _itemData.MaxDurability : 100f);
-
+    public float CurrentAmount =>_overrideCurrentAmount ? _currentAmount : (_itemData != null && _itemData.UsesCustomAmount ? _itemData.MaxAmount : 0f);
+    public float CurrentDurability =>_overrideCurrentDurability ? _currentDurability : (_itemData != null && _itemData.UsesDurability && !_itemData.IsUnbreakable ? _itemData.MaxDurability : 100f);
     public bool HasDurability => _itemData != null && _itemData.UsesDurability;
-
-    public float CurrentWeightKg => InventoryWeightCalculator.CalculateIncomingWeightKg(
-        _itemData,
-        _count,
-        _overrideCurrentAmount ? _currentAmount : null);
+    public float CurrentWeightKg => InventoryWeightCalculator.CalculateIncomingWeightKg(_itemData, _count, _overrideCurrentAmount ? _currentAmount : null);
+    public bool CanInspect => !_pickedUp && _itemData != null;
 
     private void Reset()
     {
@@ -55,10 +41,9 @@ public class WorldItem : MonoBehaviour, IInteractable, ISaveable
 
     private void Awake()
     {
-        if (Physics.Raycast(transform.localPosition, Vector3.down, out RaycastHit hit, Mathf.Infinity))
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, Mathf.Infinity))
         {
-            transform.localPosition = hit.point;
-            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y - _stickingOffsetY, transform.localPosition.z);
+            transform.position = hit.point - Vector3.up * _stickingOffsetY;
         }
 
         if (_saveId == null)
@@ -215,6 +200,131 @@ public class WorldItem : MonoBehaviour, IInteractable, ISaveable
                 states.RemoveAt(i);
             }
         }
+    }
+
+    public InteractionHoverInfo GetHoverInfo()
+    {
+        if (_itemData == null)
+        {
+            return InteractionHoverInfo.Empty;
+        }
+
+        InteractionHoverInfo info = new()
+        {
+            InteractionText = _itemData.DisplayName
+        };
+
+        if (IsBroken())
+        {
+            info.InfoText = "Разрушено";
+        }
+
+        return info;
+    }
+
+    public InteractionInspectInfo GetInspectInfo()
+    {
+        if (_itemData == null)
+        {
+            return InteractionInspectInfo.Empty;
+        }
+
+        return new InteractionInspectInfo(
+            _itemData.Icon,
+            _itemData.DisplayName,
+            _itemData.Description,
+            FormatDurabilityText(),
+            HasDurability,
+            ResolveDurabilityColor(),
+            FormatWeightText());
+    }
+
+    public bool TryConfirmInspectAction()
+    {
+        return TryPickup();
+    }
+
+    private bool IsBroken()
+    {
+        if (_itemData == null)
+        {
+            return false;
+        }
+
+        if (!_itemData.UsesDurability || _itemData.IsUnbreakable)
+        {
+            return false;
+        }
+
+        return CurrentDurability <= 0.0001f;
+    }
+
+    private string FormatDurabilityText()
+    {
+        if (_itemData == null)
+        {
+            return "—";
+        }
+
+        if (!HasDurability)
+        {
+            return "—";
+        }
+
+        if (_itemData.IsUnbreakable)
+        {
+            return "Неразрушаемый";
+        }
+
+        return $"{CurrentDurability:0.##}%";
+    }
+
+    private string FormatWeightText()
+    {
+        if (CurrentWeightKg >= 1f)
+        {
+            return $"{CurrentWeightKg:0.##} кг";
+        }
+
+        return $"{CurrentWeightKg * 1000f:0} гр";
+    }
+
+    private Color ResolveDurabilityColor()
+    {
+        if (_itemData == null)
+        {
+            return Color.white;
+        }
+
+        if (!HasDurability)
+        {
+            return Color.white;
+        }
+
+        if (_itemData.IsUnbreakable)
+        {
+            return Color.white;
+        }
+
+        float maxDurability = Mathf.Max(0.0001f, _itemData.MaxDurability);
+        float normalized = Mathf.Clamp01(CurrentDurability / maxDurability);
+
+        if (normalized <= 0.0001f)
+        {
+            return Color.red;
+        }
+
+        if (normalized <= 0.25f)
+        {
+            return new Color(1f, 0.45f, 0.25f);
+        }
+
+        if (normalized <= 0.5f)
+        {
+            return Color.yellow;
+        }
+
+        return Color.white;
     }
 
     [Button]

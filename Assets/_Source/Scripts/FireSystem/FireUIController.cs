@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public sealed class FireUIController : MonoBehaviour
 {
     private const float AccelerantAmountCost = 0.3f;
-    private const float FlintDurabilityCost01 = 0.02f;
 
     [Header("Data")]
     [SerializeField] private FireStartingConfig _config;
@@ -73,6 +72,26 @@ public sealed class FireUIController : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        PlayerControlLockService.ReleaseOwner(this);
+        CursorLockService.ReleaseOwner(this);
+    }
+
+    private void OnDisable()
+    {
+        if (_startRoutine != null)
+        {
+            StopCoroutine(_startRoutine);
+            _startRoutine = null;
+        }
+
+        _currentSource = null;
+
+        PlayerControlLockService.ReleaseOwner(this);
+        CursorLockService.ReleaseOwner(this);
+    }
+
     private void Update()
     {
         bool startWindowOpen = _startRoot != null && _startRoot.activeSelf;
@@ -90,6 +109,11 @@ public sealed class FireUIController : MonoBehaviour
 
     public void OpenFireStarting(FireSourceInteractable source)
     {
+        if (_currentSource != null || _startRoutine != null)
+        {
+            return;
+        }
+
         if (source == null)
         {
             return;
@@ -124,8 +148,7 @@ public sealed class FireUIController : MonoBehaviour
         SetObjectsEnabled(false);
         SetStartVisible(true);
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        CursorLockService.ShowCursor(this);
     }
 
     public void CloseAll()
@@ -144,8 +167,7 @@ public sealed class FireUIController : MonoBehaviour
 
         _currentSource = null;
 
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        CursorLockService.ReleaseCursor(this);
     }
 
     private void StartFireAttempt()
@@ -155,16 +177,16 @@ public sealed class FireUIController : MonoBehaviour
             return;
         }
 
-        FireAttemptSnapshot snapshot = BuildCurrentSnapshot();
+        FireStartPlan plan = BuildCurrentPlan();
 
-        if (!snapshot.HasRequiredItems)
+        if (!plan.HasRequiredItems)
         {
             Debug.LogWarning("[FireStarting] Нужны воспламенитель, трут и топливо.");
             RefreshAllViews();
             return;
         }
 
-        if (!ConsumeIgniter(snapshot.Igniter))
+        if (!FireStartCostConsumer.TryPay(_inventory, plan.AttemptCost))
         {
             Debug.LogWarning("[FireStarting] Не удалось потратить воспламенитель.");
             RebuildAvailableItems();
@@ -173,7 +195,7 @@ public sealed class FireUIController : MonoBehaviour
             return;
         }
 
-        bool success = snapshot.UsesAccelerant || Random.value <= snapshot.SuccessChance / 100f;
+        bool success = plan.UsesAccelerant || Random.value <= plan.SuccessChance / 100f;
 
         float maxFailedFill = Mathf.Max(_failedMinFill, _failedMaxFill);
         float targetFill = success ? 1f : Random.Range(_failedMinFill, maxFailedFill);
@@ -181,12 +203,12 @@ public sealed class FireUIController : MonoBehaviour
         SetStartVisible(false);
         _progressView?.Show("разводим огонь");
 
-        _startRoutine = StartCoroutine(FireProgressRoutine(snapshot, success, targetFill));
+        _startRoutine = StartCoroutine(FireProgressRoutine(plan, success, targetFill));
     }
 
-    private IEnumerator FireProgressRoutine(FireAttemptSnapshot snapshot, bool success, float targetFill)
+    private IEnumerator FireProgressRoutine(FireStartPlan plan, bool success, float targetFill)
     {
-        float duration = Mathf.Max(0.1f, snapshot.StartDurationSeconds);
+        float duration = Mathf.Max(0.1f, plan.StartDurationSeconds);
         float actualDuration = success ? duration : Mathf.Max(0.1f, duration * Mathf.Clamp01(targetFill));
 
         float elapsed = 0f;
@@ -207,11 +229,11 @@ public sealed class FireUIController : MonoBehaviour
 
         if (success)
         {
-            bool consumed = ConsumeSuccessItems(snapshot);
+            bool consumed = FireStartCostConsumer.TryPay(_inventory, plan.SuccessCost);
 
             if (consumed)
             {
-                _currentSource?.Ignite(snapshot.BurnMinutes);
+                _currentSource?.Ignite(plan.BurnMinutes);
             }
             else
             {
@@ -223,7 +245,7 @@ public sealed class FireUIController : MonoBehaviour
         CloseAll();
     }
 
-    private FireAttemptSnapshot BuildCurrentSnapshot()
+    private FireStartPlan BuildCurrentPlan()
     {
         ItemData igniter = GetSelected(_availableIgniters, _igniterIndex);
         ItemData tinder = GetSelected(_availableTinders, _tinderIndex);
@@ -232,21 +254,67 @@ public sealed class FireUIController : MonoBehaviour
 
         bool usesAccelerant = accelerant != null;
 
-        float successChance = CalculateSuccessChance(igniter, tinder, fuel, accelerant);
+        float successChance = FireStartChanceCalculator.Calculate(_config, igniter, tinder, fuel, accelerant);
+
         float burnMinutes = fuel != null ? fuel.BurnMinutes : 0f;
         float duration = usesAccelerant ? _accelerantStartDurationSeconds : _defaultStartDurationSeconds;
 
-        return new FireAttemptSnapshot
+        FireStartCost attemptCost = BuildAttemptCost(igniter);
+        FireStartCost successCost = BuildSuccessCost(tinder, fuel, accelerant);
+
+        return new FireStartPlan(igniter, tinder, fuel, accelerant, usesAccelerant, successChance, burnMinutes, duration, attemptCost, successCost);
+    }
+
+    private FireStartCost BuildAttemptCost(ItemData igniter)
+    {
+        FireStartCost cost = new();
+
+        if (igniter == null)
         {
-            Igniter = igniter,
-            Tinder = tinder,
-            Fuel = fuel,
-            Accelerant = accelerant,
-            UsesAccelerant = usesAccelerant,
-            SuccessChance = successChance,
-            BurnMinutes = burnMinutes,
-            StartDurationSeconds = duration
-        };
+            return cost;
+        }
+
+        if (FireIgniterConsumptionPolicy.TryGetDurabilityCost(igniter, out float durabilityCost))
+        {
+            cost.AddDurability(igniter, durabilityCost);
+        }
+        else
+        {
+            cost.AddItem(igniter, 1);
+        }
+
+        return cost;
+    }
+
+    private FireStartCost BuildSuccessCost(ItemData tinder, ItemData fuel, ItemData accelerant)
+    {
+        FireStartCost cost = new();
+
+        if (tinder != null)
+        {
+            cost.AddItem(tinder, 1);
+        }
+
+        if (fuel != null)
+        {
+            cost.AddItem(fuel, 1);
+        }
+
+        if (accelerant == null)
+        {
+            return cost;
+        }
+
+        if (accelerant.UsesCustomAmount)
+        {
+            cost.AddCustomAmount(accelerant, AccelerantAmountCost);
+        }
+        else
+        {
+            cost.AddItem(accelerant, 1);
+        }
+
+        return cost;
     }
 
     private void RebuildAvailableItems()
@@ -309,27 +377,12 @@ public sealed class FireUIController : MonoBehaviour
 
     private void RefreshAllViews()
     {
-        FireAttemptSnapshot snapshot = BuildCurrentSnapshot();
+        FireStartPlan plan = BuildCurrentPlan();
 
-        _igniterView?.Refresh(
-            snapshot.Igniter,
-            BuildItemAmountText(snapshot.Igniter, 1f)
-        );
-
-        _tinderView?.Refresh(
-            snapshot.Tinder,
-            BuildItemAmountText(snapshot.Tinder, 1f)
-        );
-
-        _fuelView?.Refresh(
-            snapshot.Fuel,
-            BuildItemAmountText(snapshot.Fuel, 1f)
-        );
-
-        _accelerantView?.Refresh(
-            snapshot.Accelerant,
-            BuildItemAmountText(snapshot.Accelerant, AccelerantAmountCost)
-        );
+        _igniterView?.Refresh(plan.Igniter, BuildItemAmountText(plan.Igniter, 1f));
+        _tinderView?.Refresh(plan.Tinder, BuildItemAmountText(plan.Tinder, 1f));
+        _fuelView?.Refresh(plan.Fuel, BuildItemAmountText(plan.Fuel, 1f));
+        _accelerantView?.Refresh(plan.Accelerant, BuildItemAmountText(plan.Accelerant, AccelerantAmountCost));
 
         if (_baseChanceText != null)
         {
@@ -338,17 +391,19 @@ public sealed class FireUIController : MonoBehaviour
 
         if (_successChanceText != null)
         {
-            _successChanceText.text = $"{snapshot.SuccessChance:0}%";
+            _successChanceText.text = $"{plan.SuccessChance:0}%";
         }
 
         if (_burnTimeText != null)
         {
-            _burnTimeText.text = $"{FormatMinutes(snapshot.BurnMinutes)}";
+            _burnTimeText.text = $"{FormatMinutes(plan.BurnMinutes)}";
         }
 
         if (_startButton != null)
         {
-            _startButton.interactable = snapshot.HasRequiredItems;
+            bool canStart = plan.HasRequiredItems && FireStartCostValidator.CanPay(_inventory, plan.AttemptCost) && FireStartCostValidator.CanPay(_inventory, plan.SuccessCost);
+
+            _startButton.interactable = canStart;
         }
     }
 
@@ -376,78 +431,6 @@ public sealed class FireUIController : MonoBehaviour
         return amount.ToString("0.##");
     }
 
-    private float CalculateSuccessChance(ItemData igniter, ItemData tinder, ItemData fuel, ItemData accelerant)
-    {
-        if (_config == null)
-        {
-            return 0f;
-        }
-
-        if (accelerant != null)
-        {
-            return 100f;
-        }
-
-        float chance = _config.BaseChance;
-
-        chance += GetStartChanceBonus(igniter);
-        chance += GetStartChanceBonus(tinder);
-        chance += GetStartChanceBonus(fuel);
-
-        return Mathf.Clamp(chance, 0f, 100f);
-    }
-
-    private static float GetStartChanceBonus(ItemData item)
-    {
-        return item != null ? item.StartChanceBonus : 0f;
-    }
-
-    private bool ConsumeIgniter(ItemData igniter)
-    {
-        if (igniter == null || _inventory == null)
-        {
-            return false;
-        }
-
-        if (igniter.UsesDurability && !igniter.IsUnbreakable && igniter.Id == "firestriker")
-        {
-            float durabilityCost = Mathf.Max(0f, igniter.MaxDurability * FlintDurabilityCost01);
-            return _inventory.TryConsumeDurabilityFromFirstMatchingItem(igniter, durabilityCost);
-        }
-
-        return _inventory.TryRemoveItem(igniter, 1);
-    }
-
-    private bool ConsumeSuccessItems(FireAttemptSnapshot snapshot)
-    {
-        if (_inventory == null || snapshot == null)
-        {
-            return false;
-        }
-
-        if (snapshot.Tinder != null && !_inventory.TryRemoveItem(snapshot.Tinder, 1))
-        {
-            return false;
-        }
-
-        if (snapshot.Fuel != null && !_inventory.TryRemoveItem(snapshot.Fuel, 1))
-        {
-            return false;
-        }
-
-        if (snapshot.Accelerant == null)
-        {
-            return true;
-        }
-
-        if (snapshot.Accelerant.UsesCustomAmount)
-        {
-            return _inventory.TryConsumeCustomAmountFromFirstMatchingItem(snapshot.Accelerant, AccelerantAmountCost);
-        }
-
-        return _inventory.TryRemoveItem(snapshot.Accelerant, 1);
-    }
-
     private bool HasCustomAmount(ItemData item, float requiredAmount)
     {
         if (_inventory == null || item == null)
@@ -464,7 +447,7 @@ public sealed class FireUIController : MonoBehaviour
                 continue;
             }
 
-            if (!IsSameItem(slot.Item, item))
+            if (!ItemDataComparer.AreSame(slot.Item, item))
             {
                 continue;
             }
@@ -510,7 +493,6 @@ public sealed class FireUIController : MonoBehaviour
 
     private void StepOptionalIndex(ref int index, int count, int direction)
     {
-        // -1 = "ни одного", 0..count-1 = предметы.
         int totalStates = count + 1;
         int state = index + 1;
 
@@ -530,33 +512,25 @@ public sealed class FireUIController : MonoBehaviour
 
     private void SetPlayerControlsEnabled(bool enabled)
     {
-        if (_disableWhileOpen == null)
+        if (enabled)
         {
-            return;
+            PlayerControlLockService.UnlockBehaviours(this, _disableWhileOpen);
         }
-
-        for (int i = 0; i < _disableWhileOpen.Length; i++)
+        else
         {
-            if (_disableWhileOpen[i] != null)
-            {
-                _disableWhileOpen[i].enabled = enabled;
-            }
+            PlayerControlLockService.LockBehaviours(this, _disableWhileOpen);
         }
     }
 
     private void SetObjectsEnabled(bool enabled)
     {
-        if (_objectsDisableWhileOpen == null)
+        if (enabled)
         {
-            return;
+            PlayerControlLockService.UnlockGameObjects(this, _objectsDisableWhileOpen);
         }
-
-        for (int i = 0; i < _objectsDisableWhileOpen.Length; i++)
+        else
         {
-            if (_objectsDisableWhileOpen[i] != null)
-            {
-                _objectsDisableWhileOpen[i].SetActive(enabled);
-            }
+            PlayerControlLockService.LockGameObjects(this, _objectsDisableWhileOpen);
         }
     }
 
@@ -584,28 +558,13 @@ public sealed class FireUIController : MonoBehaviour
 
         for (int i = 0; i < items.Count; i++)
         {
-            if (IsSameItem(items[i], item))
+            if (ItemDataComparer.AreSame(items[i], item))
             {
                 return true;
             }
         }
 
         return false;
-    }
-
-    private static bool IsSameItem(ItemData a, ItemData b)
-    {
-        if (a == null || b == null)
-        {
-            return false;
-        }
-
-        if (!string.IsNullOrWhiteSpace(a.Id) && !string.IsNullOrWhiteSpace(b.Id))
-        {
-            return a.Id == b.Id;
-        }
-
-        return ReferenceEquals(a, b);
     }
 
     private static int Mod(int value, int divisor)
@@ -631,20 +590,5 @@ public sealed class FireUIController : MonoBehaviour
         }
 
         return $"{restMinutes} мин";
-    }
-
-    private sealed class FireAttemptSnapshot
-    {
-        public ItemData Igniter;
-        public ItemData Tinder;
-        public ItemData Fuel;
-        public ItemData Accelerant;
-
-        public bool UsesAccelerant;
-        public float SuccessChance;
-        public float BurnMinutes;
-        public float StartDurationSeconds;
-
-        public bool HasRequiredItems => Igniter != null && Tinder != null && Fuel != null;
     }
 }

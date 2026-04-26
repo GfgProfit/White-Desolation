@@ -44,24 +44,41 @@ public class InteractController : MonoBehaviour
     [SerializeField] private Behaviour[] _disableWhileInspectOpen;
     [SerializeField] private GameObject[] _objectDisableWhileInspectOpen;
 
-    [Inject] private readonly IPlayerInput _playerInput;
+    [Inject] private IPlayerInput _playerInput;
 
-    private IInteractable _currentInteractable;
-    private IInteractHoverInfo _currentHoverInfo;
-    private IInteractionExtraInfoProvider _currentExtraInfo;
-    private WorldItem _currentWorldItem;
-    private WorldItem _inspectedWorldItem;
-
+    private InteractionRaycaster _interactionRaycaster;
+    private InteractionTarget _currentTarget;
+    private IInspectableInteractable _inspectedTarget;
     private bool _hoverVisibleTarget;
-
-    private bool IsInspectOpen => _inspectedWorldItem != null;
+    private bool IsInspectOpen => _inspectedTarget != null;
 
     private void Awake()
     {
-        CacheHoverReferences();
+        _interactionRaycaster = new InteractionRaycaster(_cameraTransform, _interactRange, _layerMask);
 
+        CacheHoverReferences();
         ApplyHoverInfo(InteractionHoverInfo.Empty, true);
         SetInspectVisible(false);
+    }
+
+    private void OnValidate()
+    {
+        _interactRange = Mathf.Max(0.1f, _interactRange);
+
+        _interactionRaycaster?.Configure(_cameraTransform, _interactRange, _layerMask);
+    }
+
+    private void OnDisable()
+    {
+        _currentTarget = InteractionTarget.Empty;
+        _inspectedTarget = null;
+
+        PlayerControlLockService.ReleaseOwner(this);
+    }
+
+    private void OnDestroy()
+    {
+        PlayerControlLockService.ReleaseOwner(this);
     }
 
     private void Update()
@@ -73,7 +90,12 @@ public class InteractController : MonoBehaviour
         }
 
         UpdateCurrentTarget();
-        HandleWorldItemInput();
+
+        if (HandleInspectableInput())
+        {
+            return;
+        }
+
         HandleGenericInteractableInput();
     }
 
@@ -107,50 +129,45 @@ public class InteractController : MonoBehaviour
 
     private void UpdateCurrentTarget()
     {
-        _currentInteractable = null;
-        _currentHoverInfo = null;
-        _currentExtraInfo = null;
-        _currentWorldItem = null;
+        _currentTarget = InteractionTarget.Empty;
 
-        if (_cameraTransform == null)
+        EnsureRaycaster();
+
+        if (!_interactionRaycaster.TryGetTarget(out InteractionTarget target))
         {
-            RefreshHover(null, null, null);
+            RefreshHover(InteractionTarget.Empty);
             return;
         }
 
-        if (!Physics.Raycast(
-                _cameraTransform.position,
-                _cameraTransform.forward,
-                out RaycastHit hit,
-                _interactRange,
-                _layerMask,
-                QueryTriggerInteraction.Ignore))
-        {
-            RefreshHover(null, null, null);
-            return;
-        }
-
-        _currentInteractable = hit.collider.GetComponentInParent<IInteractable>();
-        _currentHoverInfo = hit.collider.GetComponentInParent<IInteractHoverInfo>();
-        _currentExtraInfo = hit.collider.GetComponentInParent<IInteractionExtraInfoProvider>();
-        _currentWorldItem = hit.collider.GetComponentInParent<WorldItem>();
-
-        RefreshHover(_currentWorldItem, _currentHoverInfo, _currentExtraInfo);
+        _currentTarget = target;
+        RefreshHover(_currentTarget);
     }
 
-    private void HandleWorldItemInput()
+    private void EnsureRaycaster()
+    {
+        if (_interactionRaycaster == null)
+        {
+            _interactionRaycaster = new InteractionRaycaster(_cameraTransform, _interactRange, _layerMask);
+            return;
+        }
+
+        _interactionRaycaster.Configure(_cameraTransform, _interactRange, _layerMask);
+    }
+
+    private bool HandleInspectableInput()
     {
         if (_playerInput == null || !_playerInput.IsInteractPressed())
         {
-            return;
+            return false;
         }
 
-        if (_currentWorldItem == null)
+        if (!_currentTarget.HasInspectable)
         {
-            return;
+            return false;
         }
 
-        OpenInspection(_currentWorldItem);
+        OpenInspection(_currentTarget.Inspectable);
+        return true;
     }
 
     private void HandleInspectInput()
@@ -160,7 +177,7 @@ public class InteractController : MonoBehaviour
             return;
         }
 
-        if (_inspectedWorldItem == null)
+        if (_inspectedTarget == null)
         {
             CloseInspection();
             return;
@@ -168,21 +185,18 @@ public class InteractController : MonoBehaviour
 
         if (_playerInput.IsInteractPressed())
         {
-            bool pickedUp = _inspectedWorldItem.TryPickup();
+            bool confirmed = _inspectedTarget.TryConfirmInspectAction();
 
-            if (!pickedUp)
+            if (!confirmed)
             {
                 return;
             }
 
             CloseInspection();
 
-            _currentWorldItem = null;
-            _currentInteractable = null;
-            _currentHoverInfo = null;
-            _currentExtraInfo = null;
-
+            _currentTarget = InteractionTarget.Empty;
             ApplyHoverInfo(InteractionHoverInfo.Empty);
+
             return;
         }
 
@@ -199,18 +213,15 @@ public class InteractController : MonoBehaviour
             return;
         }
 
-        if (_currentWorldItem != null)
+        if (_currentTarget.HasInspectable)
         {
             return;
         }
 
-        _currentInteractable?.Interact();
+        _currentTarget.Interactable?.Interact();
     }
 
-    private void RefreshHover(
-        WorldItem worldItem,
-        IInteractHoverInfo hoverInfo,
-        IInteractionExtraInfoProvider extraInfo)
+    private void RefreshHover(InteractionTarget target)
     {
         if (IsInspectOpen)
         {
@@ -220,52 +231,16 @@ public class InteractController : MonoBehaviour
 
         InteractionHoverInfo info = InteractionHoverInfo.Empty;
 
-        if (worldItem != null && worldItem.ItemData != null)
+        if (target.HasHoverInfo)
         {
-            info = BuildWorldItemHoverInfo(worldItem);
-        }
-        else if (hoverInfo != null)
-        {
-            info = hoverInfo.GetHoverInfo();
+            info = target.HoverInfo.GetHoverInfo();
         }
 
-        MergeExtraInfo(ref info, extraInfo);
+        MergeExtraInfo(ref info, target.ExtraInfo);
         ApplyHoverInfo(info);
     }
 
-    private static InteractionHoverInfo BuildWorldItemHoverInfo(WorldItem worldItem)
-    {
-        InteractionHoverInfo info = new InteractionHoverInfo
-        {
-            InteractionText = worldItem.ItemData.DisplayName
-        };
-
-        if (IsWorldItemBroken(worldItem))
-        {
-            info.InfoText = "Разрушено";
-        }
-
-        return info;
-    }
-
-    private static bool IsWorldItemBroken(WorldItem worldItem)
-    {
-        if (worldItem == null || worldItem.ItemData == null)
-        {
-            return false;
-        }
-
-        if (!worldItem.ItemData.UsesDurability || worldItem.ItemData.IsUnbreakable)
-        {
-            return false;
-        }
-
-        return worldItem.CurrentDurability <= BrokenTolerance;
-    }
-
-    private static void MergeExtraInfo(
-        ref InteractionHoverInfo info,
-        IInteractionExtraInfoProvider extraInfo)
+    private static void MergeExtraInfo(ref InteractionHoverInfo info, IInteractionExtraInfoProvider extraInfo)
     {
         if (extraInfo == null)
         {
@@ -324,49 +299,49 @@ public class InteractController : MonoBehaviour
         return visible;
     }
 
-    private void OpenInspection(WorldItem worldItem)
+    private void OpenInspection(IInspectableInteractable target)
     {
-        if (worldItem == null || worldItem.ItemData == null)
+        if (target == null || !target.CanInspect)
         {
             CloseInspection();
             return;
         }
 
-        _inspectedWorldItem = worldItem;
+        _inspectedTarget = target;
+
+        InteractionInspectInfo info = target.GetInspectInfo();
 
         if (_inspectIcon != null)
         {
-            _inspectIcon.enabled = worldItem.ItemData.Icon != null;
-            _inspectIcon.sprite = worldItem.ItemData.Icon;
+            _inspectIcon.enabled = info.Icon != null;
+            _inspectIcon.sprite = info.Icon;
         }
 
         if (_nameText != null)
         {
-            _nameText.text = $"{worldItem.ItemData.DisplayName}";
+            _nameText.text = info.HasName ? info.Name : string.Empty;
         }
 
         if (_descriptionText != null)
         {
-            _descriptionText.text = $"{worldItem.ItemData.Description}";
+            _descriptionText.text = info.HasDescription ? info.Description : string.Empty;
         }
 
         if (_durabilityText != null)
         {
-            _durabilityText.text = $"{FormatDurability(worldItem)}%";
+            _durabilityText.text = info.HasDurabilityText ? info.DurabilityText : string.Empty;
+            _durabilityText.color = info.HasDurabilityVisual ? info.DurabilityColor : Color.white;
         }
 
-        Utils.SetDurabilityColor(worldItem, _durabilityText, _durabilityIcon);
+        if (_durabilityIcon != null)
+        {
+            _durabilityIcon.enabled = info.HasDurabilityVisual;
+            _durabilityIcon.color = info.HasDurabilityVisual ? info.DurabilityColor : Color.white;
+        }
 
         if (_weightText != null)
         {
-            if (worldItem.CurrentWeightKg >= 1)
-            {
-                _weightText.text = $"{worldItem.CurrentWeightKg:0.##} кг";
-            }
-            else
-            {
-                _weightText.text = $"{worldItem.CurrentWeightKg * 1000f:0} гр";
-            }
+            _weightText.text = info.HasWeightText ? info.WeightText : string.Empty;
         }
 
         ApplyHoverInfo(InteractionHoverInfo.Empty);
@@ -378,7 +353,7 @@ public class InteractController : MonoBehaviour
 
     private void CloseInspection()
     {
-        _inspectedWorldItem = null;
+        _inspectedTarget = null;
 
         if (_inspectIcon != null)
         {
@@ -391,29 +366,33 @@ public class InteractController : MonoBehaviour
             _nameText.text = string.Empty;
         }
 
+        if (_descriptionText != null)
+        {
+            _descriptionText.text = string.Empty;
+        }
+
+        if (_durabilityText != null)
+        {
+            _durabilityText.text = string.Empty;
+            _durabilityText.color = Color.white;
+        }
+
+        if (_durabilityIcon != null)
+        {
+            _durabilityIcon.enabled = false;
+            _durabilityIcon.color = Color.white;
+        }
+
+        if (_weightText != null)
+        {
+            _weightText.text = string.Empty;
+        }
+
+        _currentTarget = InteractionTarget.Empty;
+
         SetInspectVisible(false);
         SetPlayerControlsEnabled(true);
         SetObjectsEnabled(true);
-    }
-
-    private static string FormatDurability(WorldItem worldItem)
-    {
-        if (worldItem == null || worldItem.ItemData == null)
-        {
-            return "—";
-        }
-
-        if (!worldItem.HasDurability)
-        {
-            return "—";
-        }
-
-        if (worldItem.ItemData.IsUnbreakable)
-        {
-            return "Неразрушаемый";
-        }
-
-        return $"{worldItem.CurrentDurability:0.##}";
     }
 
     private void SetHoverVisible(bool visible, bool instant = false)
@@ -488,33 +467,25 @@ public class InteractController : MonoBehaviour
 
     private void SetPlayerControlsEnabled(bool enabled)
     {
-        if (_disableWhileInspectOpen == null)
+        if (enabled)
         {
-            return;
+            PlayerControlLockService.UnlockBehaviours(this, _disableWhileInspectOpen);
         }
-
-        for (int i = 0; i < _disableWhileInspectOpen.Length; i++)
+        else
         {
-            if (_disableWhileInspectOpen[i] != null)
-            {
-                _disableWhileInspectOpen[i].enabled = enabled;
-            }
+            PlayerControlLockService.LockBehaviours(this, _disableWhileInspectOpen);
         }
     }
 
     private void SetObjectsEnabled(bool enabled)
     {
-        if (_objectDisableWhileInspectOpen == null)
+        if (enabled)
         {
-            return;
+            PlayerControlLockService.UnlockGameObjects(this, _objectDisableWhileInspectOpen);
         }
-
-        for (int i = 0; i < _objectDisableWhileInspectOpen.Length; i++)
+        else
         {
-            if (_objectDisableWhileInspectOpen[i] != null)
-            {
-                _objectDisableWhileInspectOpen[i].SetActive(enabled);
-            }
+            PlayerControlLockService.LockGameObjects(this, _objectDisableWhileInspectOpen);
         }
     }
 }

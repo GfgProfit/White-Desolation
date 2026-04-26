@@ -182,11 +182,17 @@ public static class InventoryDisplayFormatter
 
     public static string FormatCarryWeight(float currentWeightKg, float maxWeightKg)
     {
-        string color = currentWeightKg > maxWeightKg ? "" : "";
-
         if (maxWeightKg > 0f)
         {
-            return $"{currentWeightKg:0.##} / {color}{maxWeightKg:0.##} кг";
+            string currentText = $"{currentWeightKg:0.##}";
+            string maxText = $"{maxWeightKg:0.##}";
+
+            if (currentWeightKg > maxWeightKg)
+            {
+                currentText = $"<color=#FF5555>{currentText}</color>";
+            }
+
+            return $"{currentText} / {maxText} кг";
         }
 
         return $"{currentWeightKg:0.##} кг";

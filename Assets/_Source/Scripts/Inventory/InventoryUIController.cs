@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public partial class InventoryUIController : MonoBehaviour
@@ -68,7 +69,8 @@ public partial class InventoryUIController : MonoBehaviour
 
     [Header("Optional")]
     [SerializeField] private Behaviour[] _disableWhileOpen;
-    [SerializeField] private GameObject[] _obectDisableWhileOpen;
+    [FormerlySerializedAs("_obectDisableWhileOpen")]
+    [SerializeField] private GameObject[] _objectDisableWhileOpen;
 
     [Inject] private readonly InventoryController _inventoryController;
     [Inject] private readonly IPlayerInput _playerInput;
@@ -126,6 +128,17 @@ public partial class InventoryUIController : MonoBehaviour
         RefreshView();
     }
 
+    private void OnDisable()
+    {
+        if (_isOpen)
+        {
+            _isOpen = false;
+        }
+
+        PlayerControlLockService.ReleaseOwner(this);
+        CursorLockService.ReleaseOwner(this);
+    }
+
     private void OnDestroy()
     {
         if (_inventoryController != null)
@@ -149,6 +162,9 @@ public partial class InventoryUIController : MonoBehaviour
         {
             StopCoroutine(_useRoutine);
         }
+
+        PlayerControlLockService.ReleaseOwner(this);
+        CursorLockService.ReleaseOwner(this);
     }
 
     private void Update()
@@ -177,6 +193,11 @@ public partial class InventoryUIController : MonoBehaviour
 
     private void Open()
     {
+        if (_isOpen)
+        {
+            return;
+        }
+
         _isOpen = true;
 
         if (_inventoryRoot != null)
@@ -187,11 +208,17 @@ public partial class InventoryUIController : MonoBehaviour
         SetBlockedBehaviours(false);
         SetBlockedObjects(false);
         SetCursorState(true);
+
         RefreshView();
     }
 
     private void Close()
     {
+        if (!_isOpen)
+        {
+            return;
+        }
+
         if (_isUsingItem)
         {
             return;
@@ -647,7 +674,7 @@ public partial class InventoryUIController : MonoBehaviour
         InventorySlot slot = _inventoryController != null ? _inventoryController.GetSlotAt(_selectedIndex) : null;
 
         bool hasSelection = slot != null && !slot.IsEmpty && slot.Item != null;
-        bool canUseSelected = hasSelection && CanUseSlot(slot);
+        bool canUseSelected = hasSelection && ItemUseService.CanUseSlot(BuildItemUseContext(), slot);
         bool canDrop = hasSelection && !_isUsingItem;
 
         if (_useButton != null)
@@ -764,13 +791,14 @@ public partial class InventoryUIController : MonoBehaviour
             return;
         }
 
-        if (!CanUseSlot(slot))
+        ItemUseContext context = BuildItemUseContext();
+
+        if (!ItemUseService.CanUseSlot(context, slot))
         {
-            LogUseBlockedReason(slot);
             return;
         }
 
-        if (!TryBuildUsePlan(_selectedIndex, slot, out UsePlan plan))
+        if (!ItemUseService.TryBuildPlan(context, _selectedIndex, slot, out ItemUsePlan plan))
         {
             return;
         }
@@ -778,7 +806,12 @@ public partial class InventoryUIController : MonoBehaviour
         _useRoutine = StartCoroutine(ExecuteUseRoutine(plan));
     }
 
-    private IEnumerator ExecuteUseRoutine(UsePlan plan)
+    private ItemUseContext BuildItemUseContext()
+    {
+        return new ItemUseContext(_inventoryController, _playerNeedsController, _useDurationSeconds, _isUsingItem);
+    }
+
+    private IEnumerator ExecuteUseRoutine(ItemUsePlan plan)
     {
         _isUsingItem = true;
         RefreshDetails();
@@ -853,7 +886,7 @@ public partial class InventoryUIController : MonoBehaviour
         {
             InventorySlot nextSlot = _inventoryController.GetSlotAt(plan.SlotIndex);
 
-            if (nextSlot != null && nextSlot.Item != null && TryBuildUsePlan(plan.SlotIndex, nextSlot, out UsePlan nextPlan))
+            if (nextSlot != null && nextSlot.Item != null && ItemUseService.TryBuildPlan(BuildItemUseContext(), plan.SlotIndex, nextSlot, out ItemUsePlan nextPlan))
             {
                 _useRoutine = StartCoroutine(ExecuteUseRoutine(nextPlan));
                 yield break;
@@ -929,242 +962,6 @@ public partial class InventoryUIController : MonoBehaviour
         return _playerNeedsController.RestoreHungerUpTo(caloriesDelta);
     }
 
-    private bool TryBuildUsePlan(int slotIndex, InventorySlot slot, out UsePlan plan)
-    {
-        plan = default;
-
-        if (slot == null || slot.Item == null)
-        {
-            return false;
-        }
-
-        if (slot.Item.RequiresOpening)
-        {
-            return TryBuildOpenPlan(slotIndex, slot, out plan);
-        }
-
-        plan.SlotIndex = slotIndex;
-        plan.ActionType = slot.Item.PrimaryAction;
-        plan.VerbText = ResolveUseVerb(slot);
-        plan.Duration = _useDurationSeconds;
-
-        switch (slot.Item.PrimaryAction)
-        {
-            case ItemPrimaryActionType.Use:
-                return TryBuildConsumableUsePlan(slot, ref plan);
-            case ItemPrimaryActionType.Action:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    private bool TryBuildOpenPlan(int slotIndex, InventorySlot slot, out UsePlan plan)
-    {
-        plan = default;
-
-        if (_inventoryController == null || slot == null || slot.Item == null)
-        {
-            return false;
-        }
-
-        ItemData item = slot.Item;
-
-        if (!item.RequiresOpening || item.AfterOpen == null)
-        {
-            return false;
-        }
-
-        if (!_inventoryController.ContainsUsableItem(item.NeedsToOpen))
-        {
-            return false;
-        }
-
-        plan.SlotIndex = slotIndex;
-        plan.ActionType = ItemPrimaryActionType.Action;
-        plan.VerbText = "открывает";
-        plan.Duration = _useDurationSeconds;
-
-        plan.ReplaceSlotItemAfterAction = item.AfterOpen;
-        plan.AutoUseReplacedItem = true;
-
-        plan.ToolItemToDamage = item.NeedsToOpen;
-        plan.ToolDurabilityCost = item.NeedsToOpenDurabilityCost;
-        return true;
-    }
-
-    private bool TryBuildConsumableUsePlan(InventorySlot slot, ref UsePlan plan)
-    {
-        if (_playerNeedsController == null)
-        {
-            return false;
-        }
-
-        if (IsVolumeDrink(slot))
-        {
-            float hydrationToApply = Mathf.Min(slot.CurrentAmount, _playerNeedsController.MissingThirst);
-
-            if (hydrationToApply <= ZeroTolerance)
-            {
-                return false;
-            }
-
-            plan.HydrationToApply = hydrationToApply;
-            plan.AmountToConsume = hydrationToApply;
-            return true;
-        }
-
-        float useRatio = CalculateConsumableUseRatio(slot);
-
-        if (useRatio <= ZeroTolerance)
-        {
-            return false;
-        }
-
-        if (Mathf.Abs(slot.CurrentHydration) > ZeroTolerance)
-        {
-            float hydrationAmount = slot.CurrentHydration * useRatio;
-            plan.HydrationToApply = hydrationAmount;
-            plan.HydrationStateToConsume = hydrationAmount;
-        }
-
-        if (Mathf.Abs(slot.CurrentCalories) > ZeroTolerance)
-        {
-            float caloriesAmount = slot.CurrentCalories * useRatio;
-            plan.CaloriesToApply = caloriesAmount;
-            plan.CaloriesStateToConsume = caloriesAmount;
-        }
-
-        if (slot.HasAmount && slot.CurrentAmount > ZeroTolerance)
-        {
-            plan.AmountToConsume = slot.CurrentAmount * useRatio;
-        }
-
-        plan.ReplaceWhenDepleted = slot.Item.AfterUse;
-        return plan.HasPlayerEffect || plan.HasInventoryConsume;
-    }
-
-    private float CalculateConsumableUseRatio(InventorySlot slot)
-    {
-        if (slot == null || slot.Item == null || _playerNeedsController == null)
-        {
-            return 0f;
-        }
-
-        float ratio = 1f;
-        bool hasPositiveEffect = false;
-        bool hasAnyEffect = false;
-
-        if (Mathf.Abs(slot.CurrentHydration) > ZeroTolerance)
-        {
-            hasAnyEffect = true;
-
-            if (slot.CurrentHydration > ZeroTolerance)
-            {
-                hasPositiveEffect = true;
-                ratio = Mathf.Min(ratio, _playerNeedsController.MissingThirst / slot.CurrentHydration);
-            }
-        }
-
-        if (Mathf.Abs(slot.CurrentCalories) > ZeroTolerance)
-        {
-            hasAnyEffect = true;
-
-            if (slot.CurrentCalories > 0f)
-            {
-                hasPositiveEffect = true;
-                ratio = Mathf.Min(ratio, _playerNeedsController.MissingHunger / slot.CurrentCalories);
-            }
-        }
-
-        if (!hasAnyEffect)
-        {
-            return 0f;
-        }
-
-        if (!hasPositiveEffect)
-        {
-            return 1f;
-        }
-
-        return Mathf.Clamp01(ratio);
-    }
-
-    private string ResolveUseVerb(InventorySlot slot)
-    {
-        if (slot == null || slot.Item == null)
-        {
-            return "использует";
-        }
-
-        if (slot.Item.Category == ItemCategory.Water)
-        {
-            return "пьет";
-        }
-
-        if (slot.Item.Category == ItemCategory.Food)
-        {
-            return "ест";
-        }
-
-        if (slot.Item.Category == ItemCategory.Resource)
-        {
-            return "собирает";
-        }
-
-        if (slot.Item.Category == ItemCategory.Tool)
-        {
-            return "ремонтирует";
-        }
-
-        return "открывает";
-    }
-
-    private static bool IsVolumeDrink(InventorySlot slot)
-    {
-        if (slot == null || slot.Item == null)
-        {
-            return false;
-        }
-
-        if (slot.Item.PrimaryAction != ItemPrimaryActionType.Use)
-        {
-            return false;
-        }
-
-        if (slot.Item.Category != ItemCategory.Water)
-        {
-            return false;
-        }
-
-        if (!slot.HasAmount)
-        {
-            return false;
-        }
-
-        if (slot.Item.AmountUnit != ItemAmountUnit.Liter)
-        {
-            return false;
-        }
-
-        if (slot.CurrentAmount <= ZeroTolerance)
-        {
-            return false;
-        }
-
-        if (slot.Item.RestoreCalories > 0)
-        {
-            return false;
-        }
-
-        if (slot.CurrentCalories > ZeroTolerance)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
     private void SetUseProgressVisible(bool visible)
     {
         if (_useProgressModalRoot != null)
@@ -1183,102 +980,6 @@ public partial class InventoryUIController : MonoBehaviour
         if (_useProgressText != null)
         {
             _useProgressText.text = text;
-        }
-    }
-
-    private bool CanUseSlot(InventorySlot slot)
-    {
-        if (slot == null || slot.Item == null)
-        {
-            return false;
-        }
-
-        if (_isUsingItem)
-        {
-            return false;
-        }
-
-        if (slot.IsBroken)
-        {
-            return slot.Item.PrimaryAction == ItemPrimaryActionType.Action;
-        }
-
-        return slot.Item.PrimaryAction switch
-        {
-            ItemPrimaryActionType.Use => CanUseConsumableSlot(slot),
-            ItemPrimaryActionType.Action => true,
-            _ => false
-        };
-    }
-
-    private bool CanUseConsumableSlot(InventorySlot slot)
-    {
-        if (slot == null || slot.Item == null || _playerNeedsController == null)
-        {
-            return false;
-        }
-
-        if (slot.Item.RequiresOpening)
-        {
-            return CanUseClosedConsumableSlot(slot);
-        }
-
-        if (IsVolumeDrink(slot))
-        {
-            return slot.CurrentAmount > ZeroTolerance && _playerNeedsController.MissingThirst > ZeroTolerance;
-        }
-
-        bool hasHydrationEffect = Mathf.Abs(slot.CurrentHydration) > ZeroTolerance;
-        bool hasCaloriesEffect = Mathf.Abs(slot.CurrentCalories) > ZeroTolerance;
-
-        return hasHydrationEffect || hasCaloriesEffect;
-    }
-
-    private bool DoesAffectHydration(InventorySlot slot)
-    {
-        if (slot == null || slot.Item == null)
-        {
-            return false;
-        }
-
-        if (IsVolumeDrink(slot))
-        {
-            return true;
-        }
-
-        return Mathf.Abs(slot.CurrentHydration) > ZeroTolerance;
-    }
-
-    private bool DoesAffectCalories(InventorySlot slot)
-    {
-        if (slot == null || slot.Item == null)
-        {
-            return false;
-        }
-
-        return Mathf.Abs(slot.CurrentCalories) > ZeroTolerance;
-    }
-
-    private void LogUseBlockedReason(InventorySlot slot)
-    {
-        if (slot == null || slot.Item == null)
-        {
-            return;
-        }
-
-        if (slot.IsBroken)
-        {
-            return;
-        }
-
-        if (_playerNeedsController == null)
-        {
-            return;
-        }
-
-        if (slot.Item.RequiresOpening && _inventoryController != null && !_inventoryController.ContainsUsableItem(slot.Item.NeedsToOpen))
-        {
-            return;
         }
     }
 
@@ -1301,69 +1002,37 @@ public partial class InventoryUIController : MonoBehaviour
 
     private void SetBlockedBehaviours(bool enabled)
     {
-        if (_disableWhileOpen == null)
+        if (enabled)
         {
-            return;
+            PlayerControlLockService.UnlockBehaviours(this, _disableWhileOpen);
         }
-
-        for (int i = 0; i < _disableWhileOpen.Length; i++)
+        else
         {
-            if (_disableWhileOpen[i] != null)
-            {
-                _disableWhileOpen[i].enabled = enabled;
-            }
+            PlayerControlLockService.LockBehaviours(this, _disableWhileOpen);
         }
     }
 
     private void SetBlockedObjects(bool enabled)
     {
-        if (_obectDisableWhileOpen == null)
+        if (enabled)
         {
-            return;
+            PlayerControlLockService.UnlockGameObjects(this, _objectDisableWhileOpen);
         }
-
-        for (int i = 0; i < _obectDisableWhileOpen.Length; i++)
+        else
         {
-            if (_obectDisableWhileOpen[i] != null)
-            {
-                _obectDisableWhileOpen[i].SetActive(enabled);
-            }
+            PlayerControlLockService.LockGameObjects(this, _objectDisableWhileOpen);
         }
-    }
-
-    private bool CanUseClosedConsumableSlot(InventorySlot slot)
-    {
-        if (slot == null || slot.Item == null || _inventoryController == null)
-        {
-            return false;
-        }
-
-        ItemData item = slot.Item;
-
-        if (!item.RequiresOpening)
-        {
-            return false;
-        }
-
-        if (item.AfterOpen == null || item.AfterOpen == item || item.AfterOpen.RequiresOpening)
-        {
-            return false;
-        }
-
-        if (!_inventoryController.ContainsUsableItem(item.NeedsToOpen))
-        {
-            return false;
-        }
-
-        InventorySlot previewOpenedSlot = new();
-        previewOpenedSlot.Initialize(item.AfterOpen, 1);
-
-        return CanUseConsumableSlot(previewOpenedSlot);
     }
 
     private void SetCursorState(bool visible)
     {
-        Cursor.visible = visible;
-        Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
+        if (visible)
+        {
+            CursorLockService.ShowCursor(this);
+        }
+        else
+        {
+            CursorLockService.ReleaseCursor(this);
+        }
     }
 }
