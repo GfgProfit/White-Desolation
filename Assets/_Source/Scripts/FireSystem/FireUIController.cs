@@ -41,10 +41,7 @@ public sealed class FireUIController : MonoBehaviour
     private readonly List<ItemData> _availableFuels = new List<ItemData>();
     private readonly List<ItemData> _availableAccelerants = new List<ItemData>();
 
-    private int _igniterIndex = -1;
-    private int _tinderIndex = -1;
-    private int _fuelIndex = -1;
-    private int _accelerantIndex = -1;
+    private readonly FireStartSelectionState _selectionState = new FireStartSelectionState();
 
     private FireSourceInteractable _currentSource;
 
@@ -234,10 +231,10 @@ public sealed class FireUIController : MonoBehaviour
 
     private FireStartPlan BuildCurrentPlan()
     {
-        ItemData igniter = GetSelected(_availableIgniters, _igniterIndex);
-        ItemData tinder = GetSelected(_availableTinders, _tinderIndex);
-        ItemData fuel = GetSelected(_availableFuels, _fuelIndex);
-        ItemData accelerant = GetSelectedOptional(_availableAccelerants, _accelerantIndex);
+        ItemData igniter = _selectionState.GetIgniter(_availableIgniters);
+        ItemData tinder = _selectionState.GetTinder(_availableTinders);
+        ItemData fuel = _selectionState.GetFuel(_availableFuels);
+        ItemData accelerant = _selectionState.GetAccelerant(_availableAccelerants);
 
         bool usesAccelerant = accelerant != null;
 
@@ -355,11 +352,7 @@ public sealed class FireUIController : MonoBehaviour
 
     private void ResetSelectionIndexes()
     {
-        _igniterIndex = _availableIgniters.Count > 0 ? 0 : -1;
-        _tinderIndex = _availableTinders.Count > 0 ? 0 : -1;
-        _fuelIndex = _availableFuels.Count > 0 ? 0 : -1;
-
-        _accelerantIndex = -1;
+        _selectionState.Reset(_availableIgniters.Count, _availableTinders.Count, _availableFuels.Count);
     }
 
     private void RefreshAllViews()
@@ -403,55 +396,52 @@ public sealed class FireUIController : MonoBehaviour
         return false;
     }
 
-    private void PreviousIgniter() => StepIndex(ref _igniterIndex, _availableIgniters.Count, -1);
-    private void NextIgniter() => StepIndex(ref _igniterIndex, _availableIgniters.Count, 1);
-
-    private void PreviousTinder() => StepIndex(ref _tinderIndex, _availableTinders.Count, -1);
-    private void NextTinder() => StepIndex(ref _tinderIndex, _availableTinders.Count, 1);
-
-    private void PreviousFuel() => StepIndex(ref _fuelIndex, _availableFuels.Count, -1);
-    private void NextFuel() => StepIndex(ref _fuelIndex, _availableFuels.Count, 1);
-
-    private void PreviousAccelerant() => StepOptionalIndex(ref _accelerantIndex, _availableAccelerants.Count, -1);
-    private void NextAccelerant() => StepOptionalIndex(ref _accelerantIndex, _availableAccelerants.Count, 1);
-
-    private void StepIndex(ref int index, int count, int direction)
+    private void PreviousIgniter()
     {
-        if (count <= 0)
-        {
-            index = -1;
-            RefreshAllViews();
-            return;
-        }
-
-        index = Mod(index + direction, count);
+        _selectionState.PreviousIgniter(_availableIgniters.Count);
         RefreshAllViews();
     }
 
-    private void StepOptionalIndex(ref int index, int count, int direction)
+    private void NextIgniter()
     {
-        int totalStates = count + 1;
-        int state = index + 1;
-
-        state = Mod(state + direction, totalStates);
-        index = state - 1;
-
+        _selectionState.NextIgniter(_availableIgniters.Count);
         RefreshAllViews();
     }
 
-    private static ItemData GetSelected(List<ItemData> items, int index)
+    private void PreviousTinder()
     {
-        if (items == null || index < 0 || index >= items.Count)
-        {
-            return null;
-        }
-
-        return items[index];
+        _selectionState.PreviousTinder(_availableTinders.Count);
+        RefreshAllViews();
     }
 
-    private static ItemData GetSelectedOptional(List<ItemData> items, int index)
+    private void NextTinder()
     {
-        return index < 0 ? null : GetSelected(items, index);
+        _selectionState.NextTinder(_availableTinders.Count);
+        RefreshAllViews();
+    }
+
+    private void PreviousFuel()
+    {
+        _selectionState.PreviousFuel(_availableFuels.Count);
+        RefreshAllViews();
+    }
+
+    private void NextFuel()
+    {
+        _selectionState.NextFuel(_availableFuels.Count);
+        RefreshAllViews();
+    }
+
+    private void PreviousAccelerant()
+    {
+        _selectionState.PreviousAccelerant(_availableAccelerants.Count);
+        RefreshAllViews();
+    }
+
+    private void NextAccelerant()
+    {
+        _selectionState.NextAccelerant(_availableAccelerants.Count);
+        RefreshAllViews();
     }
 
     private static bool ContainsSameItem(List<ItemData> items, ItemData item)
@@ -470,16 +460,5 @@ public sealed class FireUIController : MonoBehaviour
         }
 
         return false;
-    }
-
-    private static int Mod(int value, int divisor)
-    {
-        if (divisor <= 0)
-        {
-            return 0;
-        }
-
-        int result = value % divisor;
-        return result < 0 ? result + divisor : result;
     }
 }
