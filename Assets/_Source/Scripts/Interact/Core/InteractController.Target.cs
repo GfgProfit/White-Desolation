@@ -20,4 +20,14 @@ public partial class InteractController
     {
         _hoverPresenter?.Apply(info, instant);
     }
+
+    private void ClearCurrentTarget()
+    {
+        _currentTarget = InteractionTarget.Empty;
+    }
+
+    private void ClearHoverInfo(bool instant = false)
+    {
+        ApplyHoverInfo(InteractionHoverInfo.Empty, instant);
+    }
 }

@@ -12,7 +12,7 @@ public partial class InteractController
 
         _inspectPresenter?.Show(info);
 
-        ApplyHoverInfo(InteractionHoverInfo.Empty);
+        ClearHoverInfo();
     }
 
     private void CloseInspection()
@@ -20,7 +20,7 @@ public partial class InteractController
         _inspectSession?.Close();
         _inspectPresenter?.Hide();
 
-        _currentTarget = InteractionTarget.Empty;
+        ClearCurrentTarget();
     }
 
     private void ApplyInspectActionResult(InteractionInspectActionResult result)
@@ -34,8 +34,7 @@ public partial class InteractController
 
         if (result == InteractionInspectActionResult.CloseAndClearHover)
         {
-            _currentTarget = InteractionTarget.Empty;
-            ApplyHoverInfo(InteractionHoverInfo.Empty);
+            ClearHoverInfo();
         }
     }
 }

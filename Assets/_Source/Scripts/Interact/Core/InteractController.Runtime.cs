@@ -21,21 +21,21 @@ public partial class InteractController
 
     private void InitializeRuntimeState()
     {
-        _currentTarget = InteractionTarget.Empty;
+        ClearCurrentTarget();
         _currentInputState = InteractionInputState.Empty;
 
-        ApplyHoverInfo(InteractionHoverInfo.Empty, true);
+        ClearHoverInfo(true);
         _inspectPresenter?.Hide();
     }
 
     private void ReleaseRuntimeState()
     {
-        _currentTarget = InteractionTarget.Empty;
+        ClearCurrentTarget();
         _currentInputState = InteractionInputState.Empty;
 
         _inspectSession?.Release();
         _inspectPresenter?.Hide();
 
-        ApplyHoverInfo(InteractionHoverInfo.Empty, true);
+        ClearHoverInfo(true);
     }
 }
