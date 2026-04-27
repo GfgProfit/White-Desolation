@@ -51,31 +51,17 @@ public sealed class FireUIController : MonoBehaviour
     private Coroutine _startRoutine;
 
     private FireUIControlLockSession _controlLockSession;
+    private FireStartWindowPresenter _startWindowPresenter;
 
     private void Awake()
     {
         _controlLockSession = new FireUIControlLockSession(this, _disableWhileOpen, _objectsDisableWhileOpen);
+        _startWindowPresenter = new FireStartWindowPresenter(_startRoot, _igniterView, _tinderView, _fuelView, _accelerantView, _baseChanceText, _successChanceText, _burnTimeText, _startButton, _closeButton);
 
-        SetStartVisible(false);
+        _startWindowPresenter.Bind(PreviousIgniter, NextIgniter, PreviousTinder, NextTinder, PreviousFuel, NextFuel, PreviousAccelerant, NextAccelerant, StartFireAttempt, CloseAll);
+        _startWindowPresenter.Hide();
 
-        _progressView.Hide();
-
-        _igniterView.Bind(PreviousIgniter, NextIgniter);
-        _tinderView.Bind(PreviousTinder, NextTinder);
-        _fuelView.Bind(PreviousFuel, NextFuel);
-        _accelerantView.Bind(PreviousAccelerant, NextAccelerant);
-
-        if (_startButton != null)
-        {
-            _startButton.onClick.RemoveAllListeners();
-            _startButton.onClick.AddListener(StartFireAttempt);
-        }
-
-        if (_closeButton != null)
-        {
-            _closeButton.onClick.RemoveAllListeners();
-            _closeButton.onClick.AddListener(CloseAll);
-        }
+        _progressView?.Hide();
     }
 
     private void OnDestroy()
@@ -98,9 +84,7 @@ public sealed class FireUIController : MonoBehaviour
 
     private void Update()
     {
-        bool startWindowOpen = _startRoot != null && _startRoot.activeSelf;
-
-        if (!startWindowOpen)
+        if (_startWindowPresenter == null || !_startWindowPresenter.IsOpen)
         {
             return;
         }
@@ -150,7 +134,7 @@ public sealed class FireUIController : MonoBehaviour
 
         _controlLockSession.Open();
 
-        SetStartVisible(true);
+        _startWindowPresenter.Show();
     }
 
     public void CloseAll()
@@ -161,7 +145,7 @@ public sealed class FireUIController : MonoBehaviour
             _startRoutine = null;
         }
 
-        SetStartVisible(false);
+        _startWindowPresenter.Hide();
 
         _progressView?.Hide();
 
@@ -202,7 +186,8 @@ public sealed class FireUIController : MonoBehaviour
         float maxFailedFill = Mathf.Max(_failedMinFill, _failedMaxFill);
         float targetFill = success ? 1f : Random.Range(_failedMinFill, maxFailedFill);
 
-        SetStartVisible(false);
+        _startWindowPresenter.Hide();
+
         _progressView?.Show("разводим огонь");
 
         _startRoutine = StartCoroutine(FireProgressRoutine(plan, success, targetFill));
@@ -380,57 +365,7 @@ public sealed class FireUIController : MonoBehaviour
     private void RefreshAllViews()
     {
         FireStartPlan plan = BuildCurrentPlan();
-
-        _igniterView?.Refresh(plan.Igniter, BuildItemAmountText(plan.Igniter, 1f));
-        _tinderView?.Refresh(plan.Tinder, BuildItemAmountText(plan.Tinder, 1f));
-        _fuelView?.Refresh(plan.Fuel, BuildItemAmountText(plan.Fuel, 1f));
-        _accelerantView?.Refresh(plan.Accelerant, BuildItemAmountText(plan.Accelerant, AccelerantAmountCost));
-
-        if (_baseChanceText != null)
-        {
-            _baseChanceText.text = $"{_config.BaseChance:0}%";
-        }
-
-        if (_successChanceText != null)
-        {
-            _successChanceText.text = $"{plan.SuccessChance:0}%";
-        }
-
-        if (_burnTimeText != null)
-        {
-            _burnTimeText.text = $"{FormatMinutes(plan.BurnMinutes)}";
-        }
-
-        if (_startButton != null)
-        {
-            bool canStart = plan.HasRequiredItems && FireStartCostValidator.CanPay(_inventory, plan.AttemptCost) && FireStartCostValidator.CanPay(_inventory, plan.SuccessCost);
-
-            _startButton.interactable = canStart;
-        }
-    }
-
-    private string BuildItemAmountText(ItemData itemData, float requiredAmount)
-    {
-        if (itemData == null || _inventory == null)
-        {
-            return string.Empty;
-        }
-
-        if (itemData.UsesCustomAmount)
-        {
-            float currentAmount = _inventory.GetTotalAmount(itemData);
-
-            return $"{FormatAmount(requiredAmount)} л / {FormatAmount(currentAmount)} л";
-        }
-
-        int currentCount = _inventory.GetTotalCount(itemData);
-
-        return $"1 из {currentCount}";
-    }
-
-    private static string FormatAmount(float amount)
-    {
-        return amount.ToString("0.##");
+        _startWindowPresenter.Refresh(plan, _config, _inventory, AccelerantAmountCost);
     }
 
     private bool HasCustomAmount(ItemData item, float requiredAmount)
@@ -504,14 +439,6 @@ public sealed class FireUIController : MonoBehaviour
         RefreshAllViews();
     }
 
-    private void SetStartVisible(bool visible)
-    {
-        if (_startRoot != null)
-        {
-            _startRoot.SetActive(visible);
-        }
-    }
-
     private static ItemData GetSelected(List<ItemData> items, int index)
     {
         if (items == null || index < 0 || index >= items.Count)
@@ -554,19 +481,5 @@ public sealed class FireUIController : MonoBehaviour
 
         int result = value % divisor;
         return result < 0 ? result + divisor : result;
-    }
-
-    private static string FormatMinutes(float minutes)
-    {
-        int totalMinutes = Mathf.CeilToInt(Mathf.Max(0f, minutes));
-        int hours = totalMinutes / 60;
-        int restMinutes = totalMinutes % 60;
-
-        if (hours > 0)
-        {
-            return $"{hours} ч {restMinutes:00} мин";
-        }
-
-        return $"{restMinutes} мин";
     }
 }
