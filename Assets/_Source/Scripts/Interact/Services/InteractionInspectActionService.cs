@@ -1,0 +1,29 @@
+public sealed class InteractionInspectActionService
+{
+    public InteractionInspectActionResult Execute(IInspectableInteractable inspectedTarget, InteractionInspectInputAction action)
+    {
+        if (inspectedTarget == null)
+        {
+            return InteractionInspectActionResult.Close;
+        }
+
+        if (action == InteractionInspectInputAction.Confirm)
+        {
+            bool confirmed = inspectedTarget.TryConfirmInspectAction();
+
+            if (!confirmed)
+            {
+                return InteractionInspectActionResult.None;
+            }
+
+            return InteractionInspectActionResult.CloseAndClearHover;
+        }
+
+        if (action == InteractionInspectInputAction.Deny)
+        {
+            return InteractionInspectActionResult.Close;
+        }
+
+        return InteractionInspectActionResult.None;
+    }
+}

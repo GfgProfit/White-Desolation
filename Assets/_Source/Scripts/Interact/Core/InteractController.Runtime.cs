@@ -6,6 +6,7 @@ public partial class InteractController
         _hoverInfoQuery = new InteractionHoverInfoQuery();
         _inputReader = new InteractionInputReader(_playerInput);
         _inputService = new InteractionInputService();
+        _inspectActionService = new InteractionInspectActionService();
         _inspectSession = new InteractionInspectSessionController(this, _disableWhileInspectOpen, _objectDisableWhileInspectOpen);
     }
 

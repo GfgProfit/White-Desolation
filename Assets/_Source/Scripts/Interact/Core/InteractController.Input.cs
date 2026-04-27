@@ -1,5 +1,10 @@
 public partial class InteractController
 {
+    private InteractionInputState ReadInputState()
+    {
+        return _inputReader != null ? _inputReader.Read() : InteractionInputState.Empty;
+    }
+
     private bool HandleInspectableInput()
     {
         InteractionInputState inputState = ReadInputState();
@@ -25,25 +30,24 @@ public partial class InteractController
 
         InteractionInputState inputState = ReadInputState();
         InteractionInspectInputAction action = _inputService != null ? _inputService.GetInspectInputAction(inputState) : InteractionInspectInputAction.None;
+        InteractionInspectActionResult result = _inspectActionService != null ? _inspectActionService.Execute(inspectedTarget, action) : InteractionInspectActionResult.None;
 
-        if (action == InteractionInspectInputAction.Confirm)
+        ApplyInspectActionResult(result);
+    }
+
+    private void ApplyInspectActionResult(InteractionInspectActionResult result)
+    {
+        if (result == InteractionInspectActionResult.None)
         {
-            bool confirmed = inspectedTarget.TryConfirmInspectAction();
-
-            if (!confirmed)
-            {
-                return;
-            }
-
-            CloseInspection();
-            _currentTarget = InteractionTarget.Empty;
-            ApplyHoverInfo(InteractionHoverInfo.Empty);
             return;
         }
 
-        if (action == InteractionInspectInputAction.Deny)
+        CloseInspection();
+
+        if (result == InteractionInspectActionResult.CloseAndClearHover)
         {
-            CloseInspection();
+            _currentTarget = InteractionTarget.Empty;
+            ApplyHoverInfo(InteractionHoverInfo.Empty);
         }
     }
 
@@ -57,10 +61,5 @@ public partial class InteractController
         }
 
         interactable.Interact();
-    }
-
-    private InteractionInputState ReadInputState()
-    {
-        return _inputReader != null ? _inputReader.Read() : InteractionInputState.Empty;
     }
 }
