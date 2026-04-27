@@ -32,7 +32,7 @@ public partial class InteractController
 
         CloseInspection();
 
-        if (result.ShouldClearHover)
+        if (result.IsConfirmed)
         {
             ClearHoverInfo();
         }

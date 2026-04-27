@@ -1,15 +1,15 @@
 public readonly struct InteractionInspectActionResult
 {
     public readonly bool ShouldClose;
-    public readonly bool ShouldClearHover;
+    public readonly bool IsConfirmed;
 
-    public InteractionInspectActionResult(bool shouldClose, bool shouldClearHover)
+    public InteractionInspectActionResult(bool shouldClose, bool isConfirmed)
     {
         ShouldClose = shouldClose;
-        ShouldClearHover = shouldClearHover;
+        IsConfirmed = isConfirmed;
     }
 
     public static InteractionInspectActionResult None => new(false, false);
     public static InteractionInspectActionResult Close => new(true, false);
-    public static InteractionInspectActionResult CloseAndClearHover => new(true, true);
+    public static InteractionInspectActionResult Confirmed => new(true, true);
 }

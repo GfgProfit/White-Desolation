@@ -16,7 +16,7 @@ public sealed class InteractionInspectActionService
                 return InteractionInspectActionResult.None;
             }
 
-            return InteractionInspectActionResult.CloseAndClearHover;
+            return InteractionInspectActionResult.Confirmed;
         }
 
         if (action == InteractionInspectInputAction.Deny)
