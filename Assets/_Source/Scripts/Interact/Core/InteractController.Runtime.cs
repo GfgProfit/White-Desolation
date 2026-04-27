@@ -7,7 +7,7 @@ public partial class InteractController
         _inputReader = new InteractionInputReader(_playerInput);
         _inputService = new InteractionInputService();
         _inspectActionService = new InteractionInspectActionService();
-        _executionService = new InteractionExecutionService();
+        _executionService = new GenericInteractionExecutionService();
         _inspectSession = new InteractionInspectSessionController(this, _disableWhileInspectOpen, _objectDisableWhileInspectOpen);
     }
 

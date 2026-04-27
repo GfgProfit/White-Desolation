@@ -1,6 +1,6 @@
 public sealed class InteractionInspectActionService
 {
-    public InteractionInspectActionResult Execute(IInspectableInteractable inspectedTarget, InteractionInspectInputAction action)
+    public InteractionInspectActionResult Resolve(IInspectableInteractable inspectedTarget, InteractionInspectInputAction action)
     {
         if (inspectedTarget == null)
         {

@@ -27,7 +27,7 @@ public partial class InteractController
         }
 
         InteractionInspectInputAction action = _inputService != null ? _inputService.GetInspectInputAction(_currentInputState) : InteractionInspectInputAction.None;
-        InteractionInspectActionResult result = _inspectActionService != null ? _inspectActionService.Execute(inspectedTarget, action) : InteractionInspectActionResult.None;
+        InteractionInspectActionResult result = _inspectActionService != null ? _inspectActionService.Resolve(inspectedTarget, action) : InteractionInspectActionResult.None;
 
         ApplyInspectActionResult(result);
     }

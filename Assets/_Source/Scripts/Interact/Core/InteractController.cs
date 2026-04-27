@@ -49,7 +49,7 @@ public partial class InteractController : MonoBehaviour
     private InteractionInputReader _inputReader;
     private InteractionInputService _inputService;
     private InteractionInspectActionService _inspectActionService;
-    private InteractionExecutionService _executionService;
+    private GenericInteractionExecutionService _executionService;
     private InteractionHoverPresenter _hoverPresenter;
     private InteractionInspectPresenter _inspectPresenter;
     private InteractionInspectSessionController _inspectSession;

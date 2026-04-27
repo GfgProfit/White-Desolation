@@ -1,4 +1,4 @@
-public sealed class InteractionExecutionService
+public sealed class GenericInteractionExecutionService
 {
     public void Execute(IInteractable interactable)
     {
