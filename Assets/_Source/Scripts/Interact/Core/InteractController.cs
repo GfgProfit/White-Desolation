@@ -12,21 +12,21 @@ public class InteractController : MonoBehaviour
     [SerializeField, Min(0.1f)] private float _interactRange = 3.0f;
 
     [Header("Hover UI")]
-    [SerializeField] private GameObject _hoverRoot;              // InteractionHolder
-    [SerializeField] private CanvasGroup _hoverCanvasGroup;      // CanvasGroup на InteractionHolder
-    [SerializeField] private TMP_Text _hoverNameText;            // Interaction Text
+    [SerializeField] private GameObject _hoverRoot;
+    [SerializeField] private CanvasGroup _hoverCanvasGroup;
+    [SerializeField] private TMP_Text _hoverNameText;
 
     [Header("Hover UI Extra")]
-    [SerializeField] private Image _lineImage;                   // Line(Image)
+    [SerializeField] private Image _lineImage;
 
-    [SerializeField] private GameObject _timeHolder;             // TimeHolder
-    [SerializeField] private TMP_Text _timeText;                 // child text, можно не назначать
+    [SerializeField] private GameObject _timeHolder;
+    [SerializeField] private TMP_Text _timeText;
 
-    [SerializeField] private GameObject _temperatureHolder;      // TemperatureHolder
-    [SerializeField] private TMP_Text _temperatureText;          // child text, можно не назначать
+    [SerializeField] private GameObject _temperatureHolder;
+    [SerializeField] private TMP_Text _temperatureText;
 
-    [SerializeField] private GameObject _infoHolder;             // InfoHolder
-    [SerializeField] private TMP_Text _infoText;                 // child text, можно не назначать
+    [SerializeField] private GameObject _infoHolder;
+    [SerializeField] private TMP_Text _infoText;
 
     [Header("Hover Fade")]
     [SerializeField, Min(0f)] private float _hoverFadeDuration = 0.15f;
@@ -47,16 +47,19 @@ public class InteractController : MonoBehaviour
     [Inject] private IPlayerInput _playerInput;
 
     private InteractionRaycaster _interactionRaycaster;
+    private InteractionHoverPresenter _hoverPresenter;
     private InteractionTarget _currentTarget;
     private IInspectableInteractable _inspectedTarget;
-    private bool _hoverVisibleTarget;
     private bool IsInspectOpen => _inspectedTarget != null;
 
     private void Awake()
     {
         _interactionRaycaster = new InteractionRaycaster(_cameraTransform, _interactRange, _layerMask);
 
-        CacheHoverReferences();
+        _hoverPresenter = new InteractionHoverPresenter(_hoverRoot, _hoverCanvasGroup, _hoverNameText, _lineImage, _timeHolder, _timeText, _temperatureHolder, _temperatureText, _infoHolder, _infoText, _hoverFadeDuration);
+
+        _hoverPresenter.CacheReferences();
+
         ApplyHoverInfo(InteractionHoverInfo.Empty, true);
         SetInspectVisible(false);
     }
@@ -101,30 +104,7 @@ public class InteractController : MonoBehaviour
 
     private void LateUpdate()
     {
-        UpdateHoverFade();
-    }
-
-    private void CacheHoverReferences()
-    {
-        if (_hoverCanvasGroup == null && _hoverRoot != null)
-        {
-            _hoverCanvasGroup = _hoverRoot.GetComponent<CanvasGroup>();
-        }
-
-        if (_timeText == null && _timeHolder != null)
-        {
-            _timeText = _timeHolder.GetComponentInChildren<TMP_Text>(true);
-        }
-
-        if (_temperatureText == null && _temperatureHolder != null)
-        {
-            _temperatureText = _temperatureHolder.GetComponentInChildren<TMP_Text>(true);
-        }
-
-        if (_infoText == null && _infoHolder != null)
-        {
-            _infoText = _infoHolder.GetComponentInChildren<TMP_Text>(true);
-        }
+        _hoverPresenter?.UpdateFade();
     }
 
     private void UpdateCurrentTarget()
@@ -260,43 +240,7 @@ public class InteractController : MonoBehaviour
 
     private void ApplyHoverInfo(InteractionHoverInfo info, bool instant = false)
     {
-        bool hasInteractionText = info.HasInteractionText;
-
-        if (_hoverNameText != null)
-        {
-            _hoverNameText.text = hasInteractionText ? info.InteractionText : string.Empty;
-            _hoverNameText.gameObject.SetActive(hasInteractionText);
-        }
-
-        bool hasTime = SetHolderText(_timeHolder, _timeText, info.TimeText);
-        bool hasTemperature = SetHolderText(_temperatureHolder, _temperatureText, info.TemperatureText);
-        bool hasInfo = SetHolderText(_infoHolder, _infoText, info.InfoText);
-
-        bool hasExtra = hasTime || hasTemperature || hasInfo;
-
-        if (_lineImage != null)
-        {
-            _lineImage.gameObject.SetActive(hasExtra);
-        }
-
-        SetHoverVisible(info.HasAnyText, instant);
-    }
-
-    private static bool SetHolderText(GameObject holder, TMP_Text text, string value)
-    {
-        bool visible = !string.IsNullOrWhiteSpace(value);
-
-        if (text != null)
-        {
-            text.text = visible ? value : string.Empty;
-        }
-
-        if (holder != null)
-        {
-            holder.SetActive(visible);
-        }
-
-        return visible;
+        _hoverPresenter?.Apply(info, instant);
     }
 
     private void OpenInspection(IInspectableInteractable target)
@@ -393,68 +337,6 @@ public class InteractController : MonoBehaviour
         SetInspectVisible(false);
         SetPlayerControlsEnabled(true);
         SetObjectsEnabled(true);
-    }
-
-    private void SetHoverVisible(bool visible, bool instant = false)
-    {
-        _hoverVisibleTarget = visible;
-
-        if (_hoverRoot != null && visible && !_hoverRoot.activeSelf)
-        {
-            _hoverRoot.SetActive(true);
-        }
-
-        if (_hoverCanvasGroup == null)
-        {
-            if (_hoverRoot != null)
-            {
-                _hoverRoot.SetActive(visible);
-            }
-
-            return;
-        }
-
-        _hoverCanvasGroup.interactable = false;
-        _hoverCanvasGroup.blocksRaycasts = false;
-
-        if (!instant)
-        {
-            return;
-        }
-
-        _hoverCanvasGroup.alpha = visible ? 1f : 0f;
-
-        if (_hoverRoot != null && !visible)
-        {
-            _hoverRoot.SetActive(false);
-        }
-    }
-
-    private void UpdateHoverFade()
-    {
-        if (_hoverCanvasGroup == null)
-        {
-            return;
-        }
-
-        float targetAlpha = _hoverVisibleTarget ? 1f : 0f;
-
-        if (_hoverFadeDuration <= 0f)
-        {
-            _hoverCanvasGroup.alpha = targetAlpha;
-        }
-        else
-        {
-            _hoverCanvasGroup.alpha = Mathf.MoveTowards(
-                _hoverCanvasGroup.alpha,
-                targetAlpha,
-                Time.unscaledDeltaTime / _hoverFadeDuration);
-        }
-
-        if (_hoverRoot != null && !_hoverVisibleTarget && _hoverCanvasGroup.alpha <= 0f)
-        {
-            _hoverRoot.SetActive(false);
-        }
     }
 
     private void SetInspectVisible(bool visible)
