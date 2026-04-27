@@ -60,6 +60,6 @@ public partial class InteractController
             return;
         }
 
-        interactable.Interact();
+        _executionService?.Execute(interactable);
     }
 }
