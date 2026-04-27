@@ -238,69 +238,7 @@ public sealed class FireUIController : MonoBehaviour
         ItemData fuel = _selectionState.GetFuel(_availableFuels);
         ItemData accelerant = _selectionState.GetAccelerant(_availableAccelerants);
 
-        bool usesAccelerant = accelerant != null;
-
-        float successChance = FireStartChanceCalculator.Calculate(_config, igniter, tinder, fuel, accelerant);
-
-        float burnMinutes = fuel != null ? fuel.BurnMinutes : 0f;
-        float duration = usesAccelerant ? _accelerantStartDurationSeconds : _defaultStartDurationSeconds;
-
-        FireStartCost attemptCost = BuildAttemptCost(igniter);
-        FireStartCost successCost = BuildSuccessCost(tinder, fuel, accelerant);
-
-        return new FireStartPlan(igniter, tinder, fuel, accelerant, usesAccelerant, successChance, burnMinutes, duration, attemptCost, successCost);
-    }
-
-    private FireStartCost BuildAttemptCost(ItemData igniter)
-    {
-        FireStartCost cost = new();
-
-        if (igniter == null)
-        {
-            return cost;
-        }
-
-        if (FireIgniterConsumptionPolicy.TryGetDurabilityCost(igniter, out float durabilityCost))
-        {
-            cost.AddDurability(igniter, durabilityCost);
-        }
-        else
-        {
-            cost.AddItem(igniter, 1);
-        }
-
-        return cost;
-    }
-
-    private FireStartCost BuildSuccessCost(ItemData tinder, ItemData fuel, ItemData accelerant)
-    {
-        FireStartCost cost = new();
-
-        if (tinder != null)
-        {
-            cost.AddItem(tinder, 1);
-        }
-
-        if (fuel != null)
-        {
-            cost.AddItem(fuel, 1);
-        }
-
-        if (accelerant == null)
-        {
-            return cost;
-        }
-
-        if (accelerant.UsesCustomAmount)
-        {
-            cost.AddCustomAmount(accelerant, AccelerantAmountCost);
-        }
-        else
-        {
-            cost.AddItem(accelerant, 1);
-        }
-
-        return cost;
+        return FireStartPlanBuilder.Build(_config, igniter, tinder, fuel, accelerant, _defaultStartDurationSeconds, _accelerantStartDurationSeconds, AccelerantAmountCost);
     }
 
     private void RebuildAvailableItems()
