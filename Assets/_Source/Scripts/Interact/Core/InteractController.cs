@@ -49,19 +49,42 @@ public class InteractController : MonoBehaviour
     private InteractionRaycaster _interactionRaycaster;
     private InteractionHoverPresenter _hoverPresenter;
     private InteractionInspectPresenter _inspectPresenter;
+    private InteractionInspectSessionController _inspectSession;
     private InteractionTarget _currentTarget;
-    private IInspectableInteractable _inspectedTarget;
-    private bool IsInspectOpen => _inspectedTarget != null;
+    private bool IsInspectOpen => _inspectSession != null && _inspectSession.IsOpen;
 
     private void Awake()
     {
         _interactionRaycaster = new InteractionRaycaster(_cameraTransform, _interactRange, _layerMask);
 
-        _hoverPresenter = new InteractionHoverPresenter(_hoverRoot, _hoverCanvasGroup, _hoverNameText, _lineImage, _timeHolder, _timeText, _temperatureHolder, _temperatureText, _infoHolder, _infoText, _hoverFadeDuration);
+        _hoverPresenter = new InteractionHoverPresenter(
+            _hoverRoot,
+            _hoverCanvasGroup,
+            _hoverNameText,
+            _lineImage,
+            _timeHolder,
+            _timeText,
+            _temperatureHolder,
+            _temperatureText,
+            _infoHolder,
+            _infoText,
+            _hoverFadeDuration);
 
         _hoverPresenter.CacheReferences();
 
-        _inspectPresenter = new InteractionInspectPresenter(_inspectRoot, _inspectIcon, _durabilityIcon, _nameText, _descriptionText, _durabilityText, _weightText);
+        _inspectPresenter = new InteractionInspectPresenter(
+            _inspectRoot,
+            _inspectIcon,
+            _durabilityIcon,
+            _nameText,
+            _descriptionText,
+            _durabilityText,
+            _weightText);
+
+        _inspectSession = new InteractionInspectSessionController(
+            this,
+            _disableWhileInspectOpen,
+            _objectDisableWhileInspectOpen);
 
         ApplyHoverInfo(InteractionHoverInfo.Empty, true);
         _inspectPresenter.Hide();
@@ -77,14 +100,16 @@ public class InteractController : MonoBehaviour
     private void OnDisable()
     {
         _currentTarget = InteractionTarget.Empty;
-        _inspectedTarget = null;
 
-        PlayerControlLockService.ReleaseOwner(this);
+        _inspectSession?.Release();
+        _inspectPresenter?.Hide();
+
+        ApplyHoverInfo(InteractionHoverInfo.Empty, true);
     }
 
     private void OnDestroy()
     {
-        PlayerControlLockService.ReleaseOwner(this);
+        _inspectSession?.Release();
     }
 
     private void Update()
@@ -160,7 +185,9 @@ public class InteractController : MonoBehaviour
             return;
         }
 
-        if (_inspectedTarget == null)
+        IInspectableInteractable inspectedTarget = _inspectSession?.Target;
+
+        if (inspectedTarget == null)
         {
             CloseInspection();
             return;
@@ -168,7 +195,7 @@ public class InteractController : MonoBehaviour
 
         if (_playerInput.IsInteractPressed())
         {
-            bool confirmed = _inspectedTarget.TryConfirmInspectAction();
+            bool confirmed = inspectedTarget.TryConfirmInspectAction();
 
             if (!confirmed)
             {
@@ -176,10 +203,8 @@ public class InteractController : MonoBehaviour
             }
 
             CloseInspection();
-
             _currentTarget = InteractionTarget.Empty;
             ApplyHoverInfo(InteractionHoverInfo.Empty);
-
             return;
         }
 
@@ -248,56 +273,24 @@ public class InteractController : MonoBehaviour
 
     private void OpenInspection(IInspectableInteractable target)
     {
-        if (target == null || !target.CanInspect)
+        if (_inspectSession == null || !_inspectSession.Open(target))
         {
             CloseInspection();
             return;
         }
-
-        _inspectedTarget = target;
 
         InteractionInspectInfo info = target.GetInspectInfo();
 
         _inspectPresenter?.Show(info);
 
         ApplyHoverInfo(InteractionHoverInfo.Empty);
-        SetPlayerControlsEnabled(false);
-        SetObjectsEnabled(false);
     }
 
     private void CloseInspection()
     {
-        _inspectedTarget = null;
-
+        _inspectSession?.Close();
         _inspectPresenter?.Hide();
 
         _currentTarget = InteractionTarget.Empty;
-
-        SetPlayerControlsEnabled(true);
-        SetObjectsEnabled(true);
-    }
-
-    private void SetPlayerControlsEnabled(bool enabled)
-    {
-        if (enabled)
-        {
-            PlayerControlLockService.UnlockBehaviours(this, _disableWhileInspectOpen);
-        }
-        else
-        {
-            PlayerControlLockService.LockBehaviours(this, _disableWhileInspectOpen);
-        }
-    }
-
-    private void SetObjectsEnabled(bool enabled)
-    {
-        if (enabled)
-        {
-            PlayerControlLockService.UnlockGameObjects(this, _objectDisableWhileInspectOpen);
-        }
-        else
-        {
-            PlayerControlLockService.LockGameObjects(this, _objectDisableWhileInspectOpen);
-        }
     }
 }
