@@ -25,14 +25,14 @@ public partial class InteractController
 
     private void ApplyInspectActionResult(InteractionInspectActionResult result)
     {
-        if (result == InteractionInspectActionResult.None)
+        if (!result.ShouldClose)
         {
             return;
         }
 
         CloseInspection();
 
-        if (result == InteractionInspectActionResult.CloseAndClearHover)
+        if (result.ShouldClearHover)
         {
             ClearHoverInfo();
         }
