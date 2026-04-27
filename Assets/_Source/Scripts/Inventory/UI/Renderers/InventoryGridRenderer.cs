@@ -42,8 +42,7 @@ public static class InventoryGridRenderer
                 continue;
             }
 
-            bool isSelected = i < visibleEntries.Count
-                && selectionState.IsSelected(visibleEntries[i].SlotIndex);
+            bool isSelected = i < visibleEntries.Count && selectionState.IsSelected(visibleEntries[i].SlotIndex);
 
             spawnedCells[i].SetSelected(isSelected);
         }
