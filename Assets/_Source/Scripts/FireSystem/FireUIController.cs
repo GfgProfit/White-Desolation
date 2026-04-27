@@ -51,6 +51,7 @@ public sealed class FireUIController : MonoBehaviour
     private FireStartWindowPresenter _startWindowPresenter;
     private FireStartAvailableItemService _availableItemService;
     private FireStartAttemptService _attemptService;
+    private FireStartCompletionService _completionService;
 
     private void Awake()
     {
@@ -58,6 +59,7 @@ public sealed class FireUIController : MonoBehaviour
         _startWindowPresenter = new FireStartWindowPresenter(_startRoot, _igniterView, _tinderView, _fuelView, _accelerantView, _baseChanceText, _successChanceText, _burnTimeText, _startButton, _closeButton);
         _availableItemService = new FireStartAvailableItemService(_inventory, AccelerantAmountCost);
         _attemptService = new FireStartAttemptService(_inventory, _failedMinFill, _failedMaxFill);
+        _completionService = new FireStartCompletionService(_inventory);
 
         _startWindowPresenter.Bind(PreviousIgniter, NextIgniter, PreviousTinder, NextTinder, PreviousFuel, NextFuel, PreviousAccelerant, NextAccelerant, StartFireAttempt, CloseAll);
         _startWindowPresenter.Hide();
@@ -219,21 +221,10 @@ public sealed class FireUIController : MonoBehaviour
 
         _progressView?.SetFill(targetFill);
 
-        if (success)
-        {
-            bool consumed = FireStartCostConsumer.TryPay(_inventory, plan.SuccessCost);
-
-            if (consumed)
-            {
-                _currentSource?.Ignite(plan.BurnMinutes);
-            }
-            else
-            {
-                Debug.LogWarning("[FireStarting] Успех выпал, но не удалось потратить предметы для костра/печки.");
-            }
-        }
+        _completionService.Complete(plan, _currentSource, success);
 
         _startRoutine = null;
+
         CloseAll();
     }
 
