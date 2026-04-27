@@ -49,11 +49,13 @@ public sealed class FireUIController : MonoBehaviour
 
     private FireUIControlLockSession _controlLockSession;
     private FireStartWindowPresenter _startWindowPresenter;
+    private FireStartAvailableItemService _availableItemService;
 
     private void Awake()
     {
         _controlLockSession = new FireUIControlLockSession(this, _disableWhileOpen, _objectsDisableWhileOpen);
         _startWindowPresenter = new FireStartWindowPresenter(_startRoot, _igniterView, _tinderView, _fuelView, _accelerantView, _baseChanceText, _successChanceText, _burnTimeText, _startButton, _closeButton);
+        _availableItemService = new FireStartAvailableItemService(_inventory, AccelerantAmountCost);
 
         _startWindowPresenter.Bind(PreviousIgniter, NextIgniter, PreviousTinder, NextTinder, PreviousFuel, NextFuel, PreviousAccelerant, NextAccelerant, StartFireAttempt, CloseAll);
         _startWindowPresenter.Hide();
@@ -303,51 +305,7 @@ public sealed class FireUIController : MonoBehaviour
 
     private void RebuildAvailableItems()
     {
-        FillAvailable(_availableIgniters, _config.Igniters, false);
-        FillAvailable(_availableTinders, _config.Tinders, false);
-        FillAvailable(_availableFuels, _config.Fuels, false);
-        FillAvailable(_availableAccelerants, _config.Accelerants, true);
-    }
-
-    private void FillAvailable(List<ItemData> result, ItemData[] source, bool isAccelerant)
-    {
-        result.Clear();
-
-        if (source == null)
-        {
-            return;
-        }
-
-        for (int i = 0; i < source.Length; i++)
-        {
-            ItemData item = source[i];
-
-            if (item == null)
-            {
-                continue;
-            }
-
-            if (ContainsSameItem(result, item))
-            {
-                continue;
-            }
-
-            bool available;
-
-            if (isAccelerant && item.UsesCustomAmount)
-            {
-                available = HasCustomAmount(item, AccelerantAmountCost);
-            }
-            else
-            {
-                available = _inventory.ContainsUsableItem(item, 1);
-            }
-
-            if (available)
-            {
-                result.Add(item);
-            }
-        }
+        _availableItemService.Rebuild(_config, _availableIgniters, _availableTinders, _availableFuels, _availableAccelerants);
     }
 
     private void ResetSelectionIndexes()
@@ -359,41 +317,6 @@ public sealed class FireUIController : MonoBehaviour
     {
         FireStartPlan plan = BuildCurrentPlan();
         _startWindowPresenter.Refresh(plan, _config, _inventory, AccelerantAmountCost);
-    }
-
-    private bool HasCustomAmount(ItemData item, float requiredAmount)
-    {
-        if (_inventory == null || item == null)
-        {
-            return false;
-        }
-
-        for (int i = 0; i < _inventory.Items.Count; i++)
-        {
-            InventorySlot slot = _inventory.Items[i];
-
-            if (slot == null || slot.IsEmpty || slot.Item == null)
-            {
-                continue;
-            }
-
-            if (!ItemDataComparer.AreSame(slot.Item, item))
-            {
-                continue;
-            }
-
-            if (!slot.HasAmount)
-            {
-                continue;
-            }
-
-            if (slot.CurrentAmount >= requiredAmount)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private void PreviousIgniter()
@@ -442,23 +365,5 @@ public sealed class FireUIController : MonoBehaviour
     {
         _selectionState.NextAccelerant(_availableAccelerants.Count);
         RefreshAllViews();
-    }
-
-    private static bool ContainsSameItem(List<ItemData> items, ItemData item)
-    {
-        if (items == null || item == null)
-        {
-            return false;
-        }
-
-        for (int i = 0; i < items.Count; i++)
-        {
-            if (ItemDataComparer.AreSame(items[i], item))
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
