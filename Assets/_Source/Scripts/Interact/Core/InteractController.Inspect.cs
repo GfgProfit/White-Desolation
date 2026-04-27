@@ -22,4 +22,20 @@ public partial class InteractController
 
         _currentTarget = InteractionTarget.Empty;
     }
+
+    private void ApplyInspectActionResult(InteractionInspectActionResult result)
+    {
+        if (result == InteractionInspectActionResult.None)
+        {
+            return;
+        }
+
+        CloseInspection();
+
+        if (result == InteractionInspectActionResult.CloseAndClearHover)
+        {
+            _currentTarget = InteractionTarget.Empty;
+            ApplyHoverInfo(InteractionHoverInfo.Empty);
+        }
+    }
 }

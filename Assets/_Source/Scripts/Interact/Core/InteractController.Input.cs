@@ -32,22 +32,6 @@ public partial class InteractController
         ApplyInspectActionResult(result);
     }
 
-    private void ApplyInspectActionResult(InteractionInspectActionResult result)
-    {
-        if (result == InteractionInspectActionResult.None)
-        {
-            return;
-        }
-
-        CloseInspection();
-
-        if (result == InteractionInspectActionResult.CloseAndClearHover)
-        {
-            _currentTarget = InteractionTarget.Empty;
-            ApplyHoverInfo(InteractionHoverInfo.Empty);
-        }
-    }
-
     private void HandleGenericInteractableInput()
     {
         if (_inputService == null || !_inputService.TryGetGenericInteractable(_currentTarget, _currentInputState, out IInteractable interactable))
