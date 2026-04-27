@@ -50,12 +50,14 @@ public sealed class FireUIController : MonoBehaviour
     private FireUIControlLockSession _controlLockSession;
     private FireStartWindowPresenter _startWindowPresenter;
     private FireStartAvailableItemService _availableItemService;
+    private FireStartAttemptService _attemptService;
 
     private void Awake()
     {
         _controlLockSession = new FireUIControlLockSession(this, _disableWhileOpen, _objectsDisableWhileOpen);
         _startWindowPresenter = new FireStartWindowPresenter(_startRoot, _igniterView, _tinderView, _fuelView, _accelerantView, _baseChanceText, _successChanceText, _burnTimeText, _startButton, _closeButton);
         _availableItemService = new FireStartAvailableItemService(_inventory, AccelerantAmountCost);
+        _attemptService = new FireStartAttemptService(_inventory, _failedMinFill, _failedMaxFill);
 
         _startWindowPresenter.Bind(PreviousIgniter, NextIgniter, PreviousTinder, NextTinder, PreviousFuel, NextFuel, PreviousAccelerant, NextAccelerant, StartFireAttempt, CloseAll);
         _startWindowPresenter.Hide();
@@ -163,33 +165,37 @@ public sealed class FireUIController : MonoBehaviour
         }
 
         FireStartPlan plan = BuildCurrentPlan();
+        FireStartAttemptResult result = _attemptService.Begin(plan);
 
-        if (!plan.HasRequiredItems)
+        if (!result.Started)
+        {
+            HandleFailedStartAttempt(result);
+            return;
+        }
+
+        _startWindowPresenter.Hide();
+
+        _progressView?.Show("разводим огонь");
+
+        _startRoutine = StartCoroutine(FireProgressRoutine(plan, result.Success, result.TargetFill));
+    }
+
+    private void HandleFailedStartAttempt(FireStartAttemptResult result)
+    {
+        if (result.Status == FireStartAttemptStatus.MissingRequiredItems)
         {
             Debug.LogWarning("[FireStarting] Нужны воспламенитель, трут и топливо.");
             RefreshAllViews();
             return;
         }
 
-        if (!FireStartCostConsumer.TryPay(_inventory, plan.AttemptCost))
+        if (result.Status == FireStartAttemptStatus.FailedToPayAttemptCost)
         {
             Debug.LogWarning("[FireStarting] Не удалось потратить воспламенитель.");
             RebuildAvailableItems();
             ResetSelectionIndexes();
             RefreshAllViews();
-            return;
         }
-
-        bool success = plan.UsesAccelerant || Random.value <= plan.SuccessChance / 100f;
-
-        float maxFailedFill = Mathf.Max(_failedMinFill, _failedMaxFill);
-        float targetFill = success ? 1f : Random.Range(_failedMinFill, maxFailedFill);
-
-        _startWindowPresenter.Hide();
-
-        _progressView?.Show("разводим огонь");
-
-        _startRoutine = StartCoroutine(FireProgressRoutine(plan, success, targetFill));
     }
 
     private IEnumerator FireProgressRoutine(FireStartPlan plan, bool success, float targetFill)
