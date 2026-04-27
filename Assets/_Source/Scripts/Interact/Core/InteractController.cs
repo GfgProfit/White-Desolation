@@ -48,6 +48,7 @@ public class InteractController : MonoBehaviour
 
     private InteractionTargetService _targetService;
     private InteractionHoverInfoQuery _hoverInfoQuery;
+    private InteractionInputService _inputService;
     private InteractionHoverPresenter _hoverPresenter;
     private InteractionInspectPresenter _inspectPresenter;
     private InteractionInspectSessionController _inspectSession;
@@ -57,17 +58,12 @@ public class InteractController : MonoBehaviour
     private void Awake()
     {
         _targetService = new InteractionTargetService(_cameraTransform, _interactRange, _layerMask);
-
         _hoverInfoQuery = new InteractionHoverInfoQuery();
-
+        _inputService = new InteractionInputService(_playerInput);
         _hoverPresenter = new InteractionHoverPresenter(_hoverRoot, _hoverCanvasGroup, _hoverNameText, _lineImage, _timeHolder, _timeText, _temperatureHolder, _temperatureText, _infoHolder, _infoText, _hoverFadeDuration);
-
         _hoverPresenter.CacheReferences();
-
         _inspectPresenter = new InteractionInspectPresenter(_inspectRoot, _inspectIcon, _durabilityIcon, _nameText, _descriptionText, _durabilityText, _weightText);
-
         _inspectSession = new InteractionInspectSessionController(this, _disableWhileInspectOpen, _objectDisableWhileInspectOpen);
-
         ApplyHoverInfo(InteractionHoverInfo.Empty, true);
         _inspectPresenter.Hide();
     }
@@ -135,27 +131,17 @@ public class InteractController : MonoBehaviour
 
     private bool HandleInspectableInput()
     {
-        if (_playerInput == null || !_playerInput.IsInteractPressed())
+        if (_inputService == null || !_inputService.TryGetInspectableTarget(_currentTarget, out IInspectableInteractable inspectable))
         {
             return false;
         }
 
-        if (!_currentTarget.HasInspectable)
-        {
-            return false;
-        }
-
-        OpenInspection(_currentTarget.Inspectable);
+        OpenInspection(inspectable);
         return true;
     }
 
     private void HandleInspectInput()
     {
-        if (_playerInput == null)
-        {
-            return;
-        }
-
         IInspectableInteractable inspectedTarget = _inspectSession?.Target;
 
         if (inspectedTarget == null)
@@ -164,7 +150,9 @@ public class InteractController : MonoBehaviour
             return;
         }
 
-        if (_playerInput.IsInteractPressed())
+        InteractionInspectInputAction action = _inputService != null ? _inputService.GetInspectInputAction() : InteractionInspectInputAction.None;
+
+        if (action == InteractionInspectInputAction.Confirm)
         {
             bool confirmed = inspectedTarget.TryConfirmInspectAction();
 
@@ -179,7 +167,7 @@ public class InteractController : MonoBehaviour
             return;
         }
 
-        if (_playerInput.IsInteractDenied())
+        if (action == InteractionInspectInputAction.Deny)
         {
             CloseInspection();
         }
@@ -187,17 +175,12 @@ public class InteractController : MonoBehaviour
 
     private void HandleGenericInteractableInput()
     {
-        if (_playerInput == null || !_playerInput.IsInteractPressed())
+        if (_inputService == null || !_inputService.TryGetGenericInteractable(_currentTarget, out IInteractable interactable))
         {
             return;
         }
 
-        if (_currentTarget.HasInspectable)
-        {
-            return;
-        }
-
-        _currentTarget.Interactable?.Interact();
+        interactable.Interact();
     }
 
     private void ApplyHoverInfo(InteractionHoverInfo info, bool instant = false)
