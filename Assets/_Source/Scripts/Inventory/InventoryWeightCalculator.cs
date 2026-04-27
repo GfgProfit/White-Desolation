@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class InventoryWeightCalculator
@@ -121,5 +122,29 @@ public static class InventoryWeightCalculator
         }
 
         return Mathf.Max(0f, hydration01, calories01);
+    }
+
+    public static float CalculateTotalWeightKg(IReadOnlyList<InventorySlot> slots)
+    {
+        if (slots == null)
+        {
+            return 0f;
+        }
+
+        float totalWeight = 0f;
+
+        for (int i = 0; i < slots.Count; i++)
+        {
+            InventorySlot slot = slots[i];
+
+            if (slot == null || slot.IsEmpty)
+            {
+                continue;
+            }
+
+            totalWeight += GetSlotWeightKg(slot);
+        }
+
+        return totalWeight;
     }
 }
