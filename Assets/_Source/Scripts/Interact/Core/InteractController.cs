@@ -48,6 +48,7 @@ public class InteractController : MonoBehaviour
 
     private InteractionRaycaster _interactionRaycaster;
     private InteractionHoverPresenter _hoverPresenter;
+    private InteractionInspectPresenter _inspectPresenter;
     private InteractionTarget _currentTarget;
     private IInspectableInteractable _inspectedTarget;
     private bool IsInspectOpen => _inspectedTarget != null;
@@ -60,8 +61,10 @@ public class InteractController : MonoBehaviour
 
         _hoverPresenter.CacheReferences();
 
+        _inspectPresenter = new InteractionInspectPresenter(_inspectRoot, _inspectIcon, _durabilityIcon, _nameText, _descriptionText, _durabilityText, _weightText);
+
         ApplyHoverInfo(InteractionHoverInfo.Empty, true);
-        SetInspectVisible(false);
+        _inspectPresenter.Hide();
     }
 
     private void OnValidate()
@@ -255,96 +258,23 @@ public class InteractController : MonoBehaviour
 
         InteractionInspectInfo info = target.GetInspectInfo();
 
-        if (_inspectIcon != null)
-        {
-            _inspectIcon.enabled = info.Icon != null;
-            _inspectIcon.sprite = info.Icon;
-        }
-
-        if (_nameText != null)
-        {
-            _nameText.text = info.HasName ? info.Name : string.Empty;
-        }
-
-        if (_descriptionText != null)
-        {
-            _descriptionText.text = info.HasDescription ? info.Description : string.Empty;
-        }
-
-        if (_durabilityText != null)
-        {
-            _durabilityText.text = info.HasDurabilityText ? info.DurabilityText : string.Empty;
-            _durabilityText.color = info.HasDurabilityVisual ? info.DurabilityColor : Color.white;
-        }
-
-        if (_durabilityIcon != null)
-        {
-            _durabilityIcon.enabled = info.HasDurabilityVisual;
-            _durabilityIcon.color = info.HasDurabilityVisual ? info.DurabilityColor : Color.white;
-        }
-
-        if (_weightText != null)
-        {
-            _weightText.text = info.HasWeightText ? info.WeightText : string.Empty;
-        }
+        _inspectPresenter?.Show(info);
 
         ApplyHoverInfo(InteractionHoverInfo.Empty);
-
         SetPlayerControlsEnabled(false);
         SetObjectsEnabled(false);
-        SetInspectVisible(true);
     }
 
     private void CloseInspection()
     {
         _inspectedTarget = null;
 
-        if (_inspectIcon != null)
-        {
-            _inspectIcon.enabled = false;
-            _inspectIcon.sprite = null;
-        }
-
-        if (_nameText != null)
-        {
-            _nameText.text = string.Empty;
-        }
-
-        if (_descriptionText != null)
-        {
-            _descriptionText.text = string.Empty;
-        }
-
-        if (_durabilityText != null)
-        {
-            _durabilityText.text = string.Empty;
-            _durabilityText.color = Color.white;
-        }
-
-        if (_durabilityIcon != null)
-        {
-            _durabilityIcon.enabled = false;
-            _durabilityIcon.color = Color.white;
-        }
-
-        if (_weightText != null)
-        {
-            _weightText.text = string.Empty;
-        }
+        _inspectPresenter?.Hide();
 
         _currentTarget = InteractionTarget.Empty;
 
-        SetInspectVisible(false);
         SetPlayerControlsEnabled(true);
         SetObjectsEnabled(true);
-    }
-
-    private void SetInspectVisible(bool visible)
-    {
-        if (_inspectRoot != null)
-        {
-            _inspectRoot.SetActive(visible);
-        }
     }
 
     private void SetPlayerControlsEnabled(bool enabled)
