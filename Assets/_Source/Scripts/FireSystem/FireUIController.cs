@@ -101,7 +101,7 @@ public sealed class FireUIController : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
         {
             CloseAll();
         }
