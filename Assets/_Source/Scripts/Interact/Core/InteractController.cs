@@ -46,7 +46,8 @@ public class InteractController : MonoBehaviour
 
     [Inject] private IPlayerInput _playerInput;
 
-    private InteractionRaycaster _interactionRaycaster;
+    private InteractionTargetService _targetService;
+    private InteractionHoverInfoQuery _hoverInfoQuery;
     private InteractionHoverPresenter _hoverPresenter;
     private InteractionInspectPresenter _inspectPresenter;
     private InteractionInspectSessionController _inspectSession;
@@ -55,36 +56,17 @@ public class InteractController : MonoBehaviour
 
     private void Awake()
     {
-        _interactionRaycaster = new InteractionRaycaster(_cameraTransform, _interactRange, _layerMask);
+        _targetService = new InteractionTargetService(_cameraTransform, _interactRange, _layerMask);
 
-        _hoverPresenter = new InteractionHoverPresenter(
-            _hoverRoot,
-            _hoverCanvasGroup,
-            _hoverNameText,
-            _lineImage,
-            _timeHolder,
-            _timeText,
-            _temperatureHolder,
-            _temperatureText,
-            _infoHolder,
-            _infoText,
-            _hoverFadeDuration);
+        _hoverInfoQuery = new InteractionHoverInfoQuery();
+
+        _hoverPresenter = new InteractionHoverPresenter(_hoverRoot, _hoverCanvasGroup, _hoverNameText, _lineImage, _timeHolder, _timeText, _temperatureHolder, _temperatureText, _infoHolder, _infoText, _hoverFadeDuration);
 
         _hoverPresenter.CacheReferences();
 
-        _inspectPresenter = new InteractionInspectPresenter(
-            _inspectRoot,
-            _inspectIcon,
-            _durabilityIcon,
-            _nameText,
-            _descriptionText,
-            _durabilityText,
-            _weightText);
+        _inspectPresenter = new InteractionInspectPresenter(_inspectRoot, _inspectIcon, _durabilityIcon, _nameText, _descriptionText, _durabilityText, _weightText);
 
-        _inspectSession = new InteractionInspectSessionController(
-            this,
-            _disableWhileInspectOpen,
-            _objectDisableWhileInspectOpen);
+        _inspectSession = new InteractionInspectSessionController(this, _disableWhileInspectOpen, _objectDisableWhileInspectOpen);
 
         ApplyHoverInfo(InteractionHoverInfo.Empty, true);
         _inspectPresenter.Hide();
@@ -94,7 +76,7 @@ public class InteractController : MonoBehaviour
     {
         _interactRange = Mathf.Max(0.1f, _interactRange);
 
-        _interactionRaycaster?.Configure(_cameraTransform, _interactRange, _layerMask);
+        _targetService?.Configure(_cameraTransform, _interactRange, _layerMask);
     }
 
     private void OnDisable()
@@ -137,29 +119,18 @@ public class InteractController : MonoBehaviour
 
     private void UpdateCurrentTarget()
     {
-        _currentTarget = InteractionTarget.Empty;
-
-        EnsureRaycaster();
-
-        if (!_interactionRaycaster.TryGetTarget(out InteractionTarget target))
+        if (_targetService == null)
         {
-            RefreshHover(InteractionTarget.Empty);
+            _currentTarget = InteractionTarget.Empty;
+            ApplyHoverInfo(InteractionHoverInfo.Empty);
             return;
         }
 
-        _currentTarget = target;
-        RefreshHover(_currentTarget);
-    }
+        _currentTarget = _targetService.GetCurrentTarget();
 
-    private void EnsureRaycaster()
-    {
-        if (_interactionRaycaster == null)
-        {
-            _interactionRaycaster = new InteractionRaycaster(_cameraTransform, _interactRange, _layerMask);
-            return;
-        }
+        InteractionHoverInfo hoverInfo = _hoverInfoQuery != null ? _hoverInfoQuery.Build(_currentTarget) : InteractionHoverInfo.Empty;
 
-        _interactionRaycaster.Configure(_cameraTransform, _interactRange, _layerMask);
+        ApplyHoverInfo(hoverInfo);
     }
 
     private bool HandleInspectableInput()
@@ -227,43 +198,6 @@ public class InteractController : MonoBehaviour
         }
 
         _currentTarget.Interactable?.Interact();
-    }
-
-    private void RefreshHover(InteractionTarget target)
-    {
-        if (IsInspectOpen)
-        {
-            ApplyHoverInfo(InteractionHoverInfo.Empty);
-            return;
-        }
-
-        InteractionHoverInfo info = InteractionHoverInfo.Empty;
-
-        if (target.HasHoverInfo)
-        {
-            info = target.HoverInfo.GetHoverInfo();
-        }
-
-        MergeExtraInfo(ref info, target.ExtraInfo);
-        ApplyHoverInfo(info);
-    }
-
-    private static void MergeExtraInfo(ref InteractionHoverInfo info, IInteractionExtraInfoProvider extraInfo)
-    {
-        if (extraInfo == null)
-        {
-            return;
-        }
-
-        if (info.HasInfoText)
-        {
-            return;
-        }
-
-        if (extraInfo.TryGetExtraInfo(out string extraText))
-        {
-            info.InfoText = extraText;
-        }
     }
 
     private void ApplyHoverInfo(InteractionHoverInfo info, bool instant = false)
