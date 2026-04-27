@@ -27,6 +27,8 @@ public partial class InteractController
 
     private void Update()
     {
+        _currentInputState = ReadInputState();
+
         if (IsInspectOpen)
         {
             HandleInspectInput();

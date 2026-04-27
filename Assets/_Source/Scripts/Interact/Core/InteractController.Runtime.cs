@@ -22,6 +22,7 @@ public partial class InteractController
     private void InitializeRuntimeState()
     {
         _currentTarget = InteractionTarget.Empty;
+        _currentInputState = InteractionInputState.Empty;
 
         ApplyHoverInfo(InteractionHoverInfo.Empty, true);
         _inspectPresenter?.Hide();
@@ -30,6 +31,7 @@ public partial class InteractController
     private void ReleaseRuntimeState()
     {
         _currentTarget = InteractionTarget.Empty;
+        _currentInputState = InteractionInputState.Empty;
 
         _inspectSession?.Release();
         _inspectPresenter?.Hide();

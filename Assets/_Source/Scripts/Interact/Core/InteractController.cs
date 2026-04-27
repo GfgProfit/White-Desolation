@@ -54,5 +54,6 @@ public partial class InteractController : MonoBehaviour
     private InteractionInspectPresenter _inspectPresenter;
     private InteractionInspectSessionController _inspectSession;
     private InteractionTarget _currentTarget;
+    private InteractionInputState _currentInputState;
     private bool IsInspectOpen => _inspectSession != null && _inspectSession.IsOpen;
 }
