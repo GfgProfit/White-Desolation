@@ -2,7 +2,9 @@ public partial class InteractController
 {
     private bool HandleInspectableInput()
     {
-        if (_inputService == null || !_inputService.TryGetInspectableTarget(_currentTarget, out IInspectableInteractable inspectable))
+        InteractionInputState inputState = ReadInputState();
+
+        if (_inputService == null || !_inputService.TryGetInspectableTarget(_currentTarget, inputState, out IInspectableInteractable inspectable))
         {
             return false;
         }
@@ -21,7 +23,8 @@ public partial class InteractController
             return;
         }
 
-        InteractionInspectInputAction action = _inputService != null ? _inputService.GetInspectInputAction() : InteractionInspectInputAction.None;
+        InteractionInputState inputState = ReadInputState();
+        InteractionInspectInputAction action = _inputService != null ? _inputService.GetInspectInputAction(inputState) : InteractionInspectInputAction.None;
 
         if (action == InteractionInspectInputAction.Confirm)
         {
@@ -46,11 +49,18 @@ public partial class InteractController
 
     private void HandleGenericInteractableInput()
     {
-        if (_inputService == null || !_inputService.TryGetGenericInteractable(_currentTarget, out IInteractable interactable))
+        InteractionInputState inputState = ReadInputState();
+
+        if (_inputService == null || !_inputService.TryGetGenericInteractable(_currentTarget, inputState, out IInteractable interactable))
         {
             return;
         }
 
         interactable.Interact();
+    }
+
+    private InteractionInputState ReadInputState()
+    {
+        return _inputReader != null ? _inputReader.Read() : InteractionInputState.Empty;
     }
 }

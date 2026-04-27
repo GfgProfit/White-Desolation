@@ -1,17 +1,10 @@
 public sealed class InteractionInputService
 {
-    private readonly IPlayerInput _playerInput;
-
-    public InteractionInputService(IPlayerInput playerInput)
-    {
-        _playerInput = playerInput;
-    }
-
-    public bool TryGetInspectableTarget(InteractionTarget currentTarget, out IInspectableInteractable inspectable)
+    public bool TryGetInspectableTarget(InteractionTarget currentTarget, InteractionInputState inputState, out IInspectableInteractable inspectable)
     {
         inspectable = null;
 
-        if (_playerInput == null || !_playerInput.IsInteractPressed())
+        if (!inputState.IsInteractPressed)
         {
             return false;
         }
@@ -25,11 +18,11 @@ public sealed class InteractionInputService
         return inspectable != null;
     }
 
-    public bool TryGetGenericInteractable(InteractionTarget currentTarget, out IInteractable interactable)
+    public bool TryGetGenericInteractable(InteractionTarget currentTarget, InteractionInputState inputState, out IInteractable interactable)
     {
         interactable = null;
 
-        if (_playerInput == null || !_playerInput.IsInteractPressed())
+        if (!inputState.IsInteractPressed)
         {
             return false;
         }
@@ -43,19 +36,14 @@ public sealed class InteractionInputService
         return interactable != null;
     }
 
-    public InteractionInspectInputAction GetInspectInputAction()
+    public InteractionInspectInputAction GetInspectInputAction(InteractionInputState inputState)
     {
-        if (_playerInput == null)
-        {
-            return InteractionInspectInputAction.None;
-        }
-
-        if (_playerInput.IsInteractPressed())
+        if (inputState.IsInteractPressed)
         {
             return InteractionInspectInputAction.Confirm;
         }
 
-        if (_playerInput.IsInteractDenied())
+        if (inputState.IsInteractDenied)
         {
             return InteractionInspectInputAction.Deny;
         }
