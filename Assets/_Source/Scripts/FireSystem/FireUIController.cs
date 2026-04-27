@@ -47,17 +47,23 @@ public sealed class FireUIController : MonoBehaviour
     private int _accelerantIndex = -1;
 
     private FireSourceInteractable _currentSource;
+
     private Coroutine _startRoutine;
+
+    private FireUIControlLockSession _controlLockSession;
 
     private void Awake()
     {
-        SetStartVisible(false);
-        _progressView?.Hide();
+        _controlLockSession = new FireUIControlLockSession(this, _disableWhileOpen, _objectsDisableWhileOpen);
 
-        _igniterView?.Bind(PreviousIgniter, NextIgniter);
-        _tinderView?.Bind(PreviousTinder, NextTinder);
-        _fuelView?.Bind(PreviousFuel, NextFuel);
-        _accelerantView?.Bind(PreviousAccelerant, NextAccelerant);
+        SetStartVisible(false);
+
+        _progressView.Hide();
+
+        _igniterView.Bind(PreviousIgniter, NextIgniter);
+        _tinderView.Bind(PreviousTinder, NextTinder);
+        _fuelView.Bind(PreviousFuel, NextFuel);
+        _accelerantView.Bind(PreviousAccelerant, NextAccelerant);
 
         if (_startButton != null)
         {
@@ -74,8 +80,7 @@ public sealed class FireUIController : MonoBehaviour
 
     private void OnDestroy()
     {
-        PlayerControlLockService.ReleaseOwner(this);
-        CursorLockService.ReleaseOwner(this);
+        _controlLockSession?.Release();
     }
 
     private void OnDisable()
@@ -88,8 +93,7 @@ public sealed class FireUIController : MonoBehaviour
 
         _currentSource = null;
 
-        PlayerControlLockService.ReleaseOwner(this);
-        CursorLockService.ReleaseOwner(this);
+        _controlLockSession?.Release();
     }
 
     private void Update()
@@ -144,11 +148,9 @@ public sealed class FireUIController : MonoBehaviour
 
         _progressView?.Hide();
 
-        SetPlayerControlsEnabled(false);
-        SetObjectsEnabled(false);
-        SetStartVisible(true);
+        _controlLockSession.Open();
 
-        CursorLockService.ShowCursor(this);
+        SetStartVisible(true);
     }
 
     public void CloseAll()
@@ -160,10 +162,10 @@ public sealed class FireUIController : MonoBehaviour
         }
 
         SetStartVisible(false);
+
         _progressView?.Hide();
 
-        SetPlayerControlsEnabled(true);
-        SetObjectsEnabled(true);
+        _controlLockSession?.Close();
 
         _currentSource = null;
 
@@ -507,30 +509,6 @@ public sealed class FireUIController : MonoBehaviour
         if (_startRoot != null)
         {
             _startRoot.SetActive(visible);
-        }
-    }
-
-    private void SetPlayerControlsEnabled(bool enabled)
-    {
-        if (enabled)
-        {
-            PlayerControlLockService.UnlockBehaviours(this, _disableWhileOpen);
-        }
-        else
-        {
-            PlayerControlLockService.LockBehaviours(this, _disableWhileOpen);
-        }
-    }
-
-    private void SetObjectsEnabled(bool enabled)
-    {
-        if (enabled)
-        {
-            PlayerControlLockService.UnlockGameObjects(this, _objectsDisableWhileOpen);
-        }
-        else
-        {
-            PlayerControlLockService.LockGameObjects(this, _objectsDisableWhileOpen);
         }
     }
 
