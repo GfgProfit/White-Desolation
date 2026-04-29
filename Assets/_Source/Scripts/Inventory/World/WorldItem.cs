@@ -28,8 +28,8 @@ public class WorldItem : MonoBehaviour, IInteractable, IInteractHoverInfo, IInsp
     public ItemData ItemData => _itemData;
     public int Count => _count;
     public bool PickedUp => _pickedUp;
-    public float CurrentAmount =>_overrideCurrentAmount ? _currentAmount : (_itemData != null && _itemData.UsesCustomAmount ? _itemData.MaxAmount : 0f);
-    public float CurrentDurability =>_overrideCurrentDurability ? _currentDurability : (_itemData != null && _itemData.UsesDurability && !_itemData.IsUnbreakable ? _itemData.MaxDurability : 100f);
+    public float CurrentAmount => _overrideCurrentAmount ? _currentAmount : (_itemData != null && _itemData.UsesCustomAmount ? _itemData.MaxAmount : 0f);
+    public float CurrentDurability => _overrideCurrentDurability ? _currentDurability : (_itemData != null && _itemData.UsesDurability && !_itemData.IsUnbreakable ? _itemData.MaxDurability : 100f);
     public bool HasDurability => _itemData != null && _itemData.UsesDurability;
     public float CurrentWeightKg => InventoryWeightCalculator.CalculateIncomingWeightKg(_itemData, _count, _overrideCurrentAmount ? _currentAmount : null);
     public bool CanInspect => !_pickedUp && _itemData != null;
@@ -204,127 +204,17 @@ public class WorldItem : MonoBehaviour, IInteractable, IInteractHoverInfo, IInsp
 
     public InteractionHoverInfo GetHoverInfo()
     {
-        if (_itemData == null)
-        {
-            return InteractionHoverInfo.Empty;
-        }
-
-        InteractionHoverInfo info = new()
-        {
-            InteractionText = _itemData.DisplayName
-        };
-
-        if (IsBroken())
-        {
-            info.InfoText = "Разрушено";
-        }
-
-        return info;
+        return WorldItemInteractionInfoBuilder.BuildHoverInfo(_itemData, CurrentDurability);
     }
 
     public InteractionInspectInfo GetInspectInfo()
     {
-        if (_itemData == null)
-        {
-            return InteractionInspectInfo.Empty;
-        }
-
-        return new InteractionInspectInfo(
-            _itemData.Icon,
-            _itemData.DisplayName,
-            _itemData.Description,
-            FormatDurabilityText(),
-            HasDurability,
-            ResolveDurabilityColor(),
-            FormatWeightText());
+        return WorldItemInteractionInfoBuilder.BuildInspectInfo(_itemData, CurrentDurability, CurrentWeightKg);
     }
 
     public bool TryConfirmInspectAction()
     {
         return TryPickup();
-    }
-
-    private bool IsBroken()
-    {
-        if (_itemData == null)
-        {
-            return false;
-        }
-
-        if (!_itemData.UsesDurability || _itemData.IsUnbreakable)
-        {
-            return false;
-        }
-
-        return CurrentDurability <= 0.0001f;
-    }
-
-    private string FormatDurabilityText()
-    {
-        if (_itemData == null)
-        {
-            return "—";
-        }
-
-        if (!HasDurability)
-        {
-            return "—";
-        }
-
-        if (_itemData.IsUnbreakable)
-        {
-            return "Неразрушаемый";
-        }
-
-        return $"{CurrentDurability:0.##}%";
-    }
-
-    private string FormatWeightText()
-    {
-        if (CurrentWeightKg >= 1f)
-        {
-            return $"{CurrentWeightKg:0.##} кг";
-        }
-
-        return $"{CurrentWeightKg * 1000f:0} гр";
-    }
-
-    private Color ResolveDurabilityColor()
-    {
-        if (_itemData == null)
-        {
-            return Color.white;
-        }
-
-        if (!HasDurability)
-        {
-            return Color.white;
-        }
-
-        if (_itemData.IsUnbreakable)
-        {
-            return Color.white;
-        }
-
-        float maxDurability = Mathf.Max(0.0001f, _itemData.MaxDurability);
-        float normalized = Mathf.Clamp01(CurrentDurability / maxDurability);
-
-        if (normalized <= 0.0001f)
-        {
-            return Color.red;
-        }
-
-        if (normalized <= 0.25f)
-        {
-            return new Color(1f, 0.45f, 0.25f);
-        }
-
-        if (normalized <= 0.5f)
-        {
-            return Color.yellow;
-        }
-
-        return Color.white;
     }
 
     [Button]
