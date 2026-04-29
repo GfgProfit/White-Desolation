@@ -16,6 +16,7 @@ public sealed class SaveManager : MonoBehaviour
     private readonly JsonSaveFileService _fileService = new();
 
     private PlayerTransformSaveService _playerTransformSaveService;
+    private SceneSaveableStateService _sceneSaveableStateService;
 
     private void Start()
     {
@@ -43,6 +44,7 @@ public sealed class SaveManager : MonoBehaviour
     private void EnsureRuntimeServices()
     {
         _playerTransformSaveService ??= new PlayerTransformSaveService(_playerTransform);
+        _sceneSaveableStateService ??= new SceneSaveableStateService();
     }
 
     public void Save()
@@ -68,25 +70,7 @@ public sealed class SaveManager : MonoBehaviour
             _dayNightCycle.CaptureState(saveData);
         }
 
-        ISaveable[] saveables = SaveableObjectQuery.FindAll();
-
-        for (int i = 0; i < saveables.Length; i++)
-        {
-            ISaveable saveable = saveables[i];
-
-            if (saveable == null)
-            {
-                continue;
-            }
-
-            if (string.IsNullOrWhiteSpace(saveable.SaveId))
-            {
-                Debug.LogWarning($"[Save] Saveable has empty SaveId: {saveable}");
-                continue;
-            }
-
-            saveable.CaptureState(saveData);
-        }
+        _sceneSaveableStateService.CaptureAll(saveData);
 
         _fileService.Save(_slotName, saveData);
     }
@@ -120,19 +104,7 @@ public sealed class SaveManager : MonoBehaviour
             _dayNightCycle.RestoreState(saveData, context);
         }
 
-        ISaveable[] saveables = SaveableObjectQuery.FindAll();
-
-        for (int i = 0; i < saveables.Length; i++)
-        {
-            ISaveable saveable = saveables[i];
-
-            if (saveable == null)
-            {
-                continue;
-            }
-
-            saveable.RestoreState(saveData, context);
-        }
+        _sceneSaveableStateService.RestoreAll(saveData, context);
 
         Debug.Log($"[Save] Loaded slot '{_slotName}'.");
     }
