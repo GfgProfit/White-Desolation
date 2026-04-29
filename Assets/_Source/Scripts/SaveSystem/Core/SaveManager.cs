@@ -9,9 +9,6 @@ public sealed partial class SaveManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private ItemDatabase _itemDatabase;
     [SerializeField] private Transform _playerTransform;
-    [SerializeField] private InventoryController _inventoryController;
-    [SerializeField] private PlayerNeedsController _playerNeedsController;
-    [SerializeField] private DayNightCycle _dayNightCycle;
 
     private readonly JsonSaveFileService _fileService = new();
     private readonly SaveHotkeyInputService _hotkeyInputService = new();

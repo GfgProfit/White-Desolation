@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class InventoryController : MonoBehaviour
+public partial class InventoryController : MonoBehaviour, IGlobalSaveable
 {
     private const float ZeroTolerance = 0.0001f;
 

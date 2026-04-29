@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Item Database", menuName = "Save System/Item Database")]
+[CreateAssetMenu(fileName = "Item Database", menuName = "Inventory/Item Database")]
 public sealed class ItemDatabase : ScriptableObject
 {
     [SerializeField] private ItemData[] _items;

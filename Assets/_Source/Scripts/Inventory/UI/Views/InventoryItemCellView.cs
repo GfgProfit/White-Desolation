@@ -52,7 +52,7 @@ public class InventoryItemCellView : MonoBehaviour, IPointerEnterHandler, IPoint
                 _durabilityText.gameObject.SetActive(showDurability);
                 _durabilityText.text = showDurability ? InventoryDisplayFormatter.FormatDurabilityShort(slot) : string.Empty;
 
-                Utils.SetDurabilityColor(slot, _durabilityText, _durabilityIcon);
+                Utils.SetDurabilityColor01(slot.Durability01, _durabilityText, _durabilityIcon);
             }
 
             if (_weightText != null)

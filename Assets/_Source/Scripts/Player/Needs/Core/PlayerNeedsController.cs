@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public partial class PlayerNeedsController : MonoBehaviour
+public partial class PlayerNeedsController : MonoBehaviour, IGlobalSaveable
 {
     [Header("UI")]
     [SerializeField] private Image _temperatureFill;

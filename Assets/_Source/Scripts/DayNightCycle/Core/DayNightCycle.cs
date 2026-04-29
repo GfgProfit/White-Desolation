@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public partial class DayNightCycle : MonoBehaviour
+public partial class DayNightCycle : MonoBehaviour, IGlobalSaveable
 {
     [Header("Time")]
     [SerializeField, Min(1f)] private float _realSecondsPerGameDay = 1800f;

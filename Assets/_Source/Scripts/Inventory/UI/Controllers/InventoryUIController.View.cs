@@ -129,7 +129,7 @@ public partial class InventoryUIController
 
         if (viewModel.HasSelection)
         {
-            Utils.SetDurabilityColor(viewModel.SourceSlot, _durabilityText, _durabilityIcon);
+            Utils.SetDurabilityColor01(viewModel.SourceSlot.Durability01, _durabilityText, _durabilityIcon);
         }
 
         SetStatRow(_weightHolder, _weightText, viewModel.Weight.IsVisible, viewModel.Weight.Text);

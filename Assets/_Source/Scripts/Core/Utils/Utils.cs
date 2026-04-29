@@ -79,26 +79,9 @@ public static class Utils
         return string.Join("", chars.ToArray()).Trim(separator);
     }
 
-    public static void SetDurabilityColor(WorldItem worldItem, TMP_Text durabilityText, Image durabilityIcon = null)
+    public static void SetDurabilityColor01(float durability01, TMP_Text durabilityText, Image durabilityIcon = null)
     {
-        if (worldItem == null || worldItem.ItemData == null)
-        {
-            return;
-        }
-
-        float durabilityPercent = worldItem.ItemData.IsUnbreakable ? 100f : Mathf.Clamp01(worldItem.CurrentDurability / Mathf.Max(0.0001f, worldItem.ItemData.MaxDurability)) * 100f;
-
-        SetDurability(durabilityPercent, durabilityText, durabilityIcon);
-    }
-
-    public static void SetDurabilityColor(InventorySlot slot, TMP_Text durabilityText, Image durabilityIcon = null)
-    {
-        if (slot == null)
-        {
-            return;
-        }
-
-        SetDurability(slot.Durability01 * 100f, durabilityText, durabilityIcon);
+        SetDurability(Mathf.Clamp01(durability01) * 100f, durabilityText, durabilityIcon);
     }
 
     private static void SetDurability(float durabilityPercent, TMP_Text durabilityText, Image durabilityIcon)
