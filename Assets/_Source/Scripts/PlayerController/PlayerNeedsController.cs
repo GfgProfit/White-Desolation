@@ -215,40 +215,19 @@ public class PlayerNeedsController : MonoBehaviour
 
     private void TickFatigue(float dt)
     {
-        float multiplier = _locomotionState switch
-        {
-            PlayerLocomotionState.Idle => _fatigueIdleMultiplier,
-            PlayerLocomotionState.Walking => _fatigueWalkMultiplier,
-            PlayerLocomotionState.Running => _fatigueRunMultiplier,
-            _ => 1f
-        };
-
+        float multiplier = PlayerNeedsLocomotionMultiplierResolver.Resolve(_locomotionState, _fatigueIdleMultiplier, _fatigueWalkMultiplier, _fatigueRunMultiplier);
         _fatigue = Mathf.Clamp(_fatigue - (_fatigueDrainPerSecond * multiplier * dt), 0f, _maxFatigue);
     }
 
     private void TickThirst(float dt)
     {
-        float multiplier = _locomotionState switch
-        {
-            PlayerLocomotionState.Idle => _thirstIdleMultiplier,
-            PlayerLocomotionState.Walking => _thirstWalkMultiplier,
-            PlayerLocomotionState.Running => _thirstRunMultiplier,
-            _ => 1f
-        };
-
+        float multiplier = PlayerNeedsLocomotionMultiplierResolver.Resolve(_locomotionState, _thirstIdleMultiplier, _thirstWalkMultiplier, _thirstRunMultiplier);
         _thirst = Mathf.Clamp(_thirst - (_thirstDrainPerSecond * multiplier * dt), 0f, _maxThirst);
     }
 
     private void TickHunger(float dt)
     {
-        float multiplier = _locomotionState switch
-        {
-            PlayerLocomotionState.Idle => _hungerIdleMultiplier,
-            PlayerLocomotionState.Walking => _hungerWalkMultiplier,
-            PlayerLocomotionState.Running => _hungerRunMultiplier,
-            _ => 1f
-        };
-
+        float multiplier = PlayerNeedsLocomotionMultiplierResolver.Resolve(_locomotionState, _hungerIdleMultiplier, _hungerWalkMultiplier, _hungerRunMultiplier);
         _hunger = Mathf.Clamp(_hunger - (_hungerDrainPerSecond * multiplier * dt), 0f, _maxHunger);
     }
 
