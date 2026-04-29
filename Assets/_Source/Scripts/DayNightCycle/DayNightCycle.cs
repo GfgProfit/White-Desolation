@@ -51,10 +51,10 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] private AnimationCurve _fogDensityCurve = new(new Keyframe(0.00f, 0.015f), new Keyframe(0.25f, 0.010f), new Keyframe(0.50f, 0.004f), new Keyframe(0.75f, 0.010f), new Keyframe(1.00f, 0.015f));
 
     public int CurrentDay { get; private set; }
-    public int CurrentHour => Mathf.FloorToInt(_timeOfDayMinutes / 60f) % 24;
-    public int CurrentMinute => Mathf.FloorToInt(_timeOfDayMinutes % 60f);
+    public int CurrentHour => DayNightTimeMath.GetHour(_timeOfDayMinutes);
+    public int CurrentMinute => DayNightTimeMath.GetMinute(_timeOfDayMinutes);
     public float TimeOfDayMinutes => _timeOfDayMinutes;
-    public float NormalizedTimeOfDay => _timeOfDayMinutes / 1440f;
+    public float NormalizedTimeOfDay => DayNightTimeMath.GetNormalizedTimeOfDay(_timeOfDayMinutes);
     public float DayFactor => EvaluateDayFactor(NormalizedTimeOfDay);
     public float NightFactor => 1f - DayFactor;
     public bool IsRunning => _isRunning;
@@ -69,8 +69,8 @@ public class DayNightCycle : MonoBehaviour
 
     private void Awake()
     {
-        CurrentDay = Mathf.Max(1, _startDay);
-        _timeOfDayMinutes = Mathf.Clamp(_startHour, 0, 23) * 60f + Mathf.Clamp(_startMinute, 0, 59);
+        CurrentDay = DayNightTimeMath.ClampDay(_startDay);
+        _timeOfDayMinutes = DayNightTimeMath.ToTimeOfDayMinutes(_startHour, _startMinute);
         _isRunning = _autoStart;
 
         if (_sunLight != null)
@@ -88,7 +88,7 @@ public class DayNightCycle : MonoBehaviour
             _moonLight.color = _moonLightColor;
         }
 
-        _lastReportedWholeMinute = Mathf.FloorToInt(_timeOfDayMinutes);
+        _lastReportedWholeMinute = DayNightTimeMath.GetWholeMinute(_timeOfDayMinutes);
         ApplyVisuals();
     }
 
@@ -115,11 +115,11 @@ public class DayNightCycle : MonoBehaviour
 
     public void SetTime(int hour, int minute)
     {
-        hour = Mathf.Clamp(hour, 0, 23);
-        minute = Mathf.Clamp(minute, 0, 59);
+        hour = DayNightTimeMath.ClampHour(hour);
+        minute = DayNightTimeMath.ClampMinute(minute);
 
-        _timeOfDayMinutes = hour * 60f + minute;
-        _lastReportedWholeMinute = Mathf.FloorToInt(_timeOfDayMinutes);
+        _timeOfDayMinutes = DayNightTimeMath.ToTimeOfDayMinutes(hour, minute);
+        _lastReportedWholeMinute = DayNightTimeMath.GetWholeMinute(_timeOfDayMinutes);
 
         ApplyVisuals();
         OnTimeChanged?.Invoke(CurrentDay, CurrentHour, CurrentMinute);
@@ -127,19 +127,19 @@ public class DayNightCycle : MonoBehaviour
 
     public void SetDay(int day)
     {
-        CurrentDay = Mathf.Max(1, day);
+        CurrentDay = DayNightTimeMath.ClampDay(day);
         OnDayChanged?.Invoke(CurrentDay);
         OnTimeChanged?.Invoke(CurrentDay, CurrentHour, CurrentMinute);
     }
 
     public void SetDateTime(int day, int hour, int minute)
     {
-        CurrentDay = Mathf.Max(1, day);
-        hour = Mathf.Clamp(hour, 0, 23);
-        minute = Mathf.Clamp(minute, 0, 59);
+        CurrentDay = DayNightTimeMath.ClampDay(day);
+        hour = DayNightTimeMath.ClampHour(hour);
+        minute = DayNightTimeMath.ClampMinute(minute);
 
-        _timeOfDayMinutes = hour * 60f + minute;
-        _lastReportedWholeMinute = Mathf.FloorToInt(_timeOfDayMinutes);
+        _timeOfDayMinutes = DayNightTimeMath.ToTimeOfDayMinutes(hour, minute);
+        _lastReportedWholeMinute = DayNightTimeMath.GetWholeMinute(_timeOfDayMinutes);
 
         ApplyVisuals();
         OnDayChanged?.Invoke(CurrentDay);
@@ -148,57 +148,48 @@ public class DayNightCycle : MonoBehaviour
 
     public string GetFormattedTime()
     {
-        return $"{CurrentHour:00}:{CurrentMinute:00}";
+        return DayNightTimeMath.FormatTime(_timeOfDayMinutes);
     }
 
     public float RealSecondsToGameMinutes(float realSeconds)
     {
-        if (_realSecondsPerGameDay <= 0.01f)
-        {
-            return 0f;
-        }
-
-        return Mathf.Max(0f, realSeconds) * 1440f / _realSecondsPerGameDay;
+        return DayNightTimeMath.RealSecondsToGameMinutes(realSeconds, _realSecondsPerGameDay);
     }
 
     public float GameMinutesToRealSeconds(float gameMinutes)
     {
-        if (_realSecondsPerGameDay <= 0.01f)
-        {
-            return 0f;
-        }
-
-        return Mathf.Max(0f, gameMinutes) * _realSecondsPerGameDay / 1440f;
+        return DayNightTimeMath.GameMinutesToRealSeconds(gameMinutes, _realSecondsPerGameDay);
     }
 
     private void AdvanceTime(float deltaTime)
     {
-        if (_realSecondsPerGameDay <= 0.01f)
+        float gameMinutesPerSecond = DayNightTimeMath.GetGameMinutesPerRealSecond(_realSecondsPerGameDay);
+
+        if (gameMinutesPerSecond <= 0f)
         {
             return;
         }
 
-        float gameMinutesPerSecond = 1440f / _realSecondsPerGameDay;
         _timeOfDayMinutes += gameMinutesPerSecond * deltaTime;
 
-        while (_timeOfDayMinutes >= 1440f)
+        while (_timeOfDayMinutes >= DayNightTimeMath.MinutesPerDay)
         {
-            _timeOfDayMinutes -= 1440f;
+            _timeOfDayMinutes -= DayNightTimeMath.MinutesPerDay;
             CurrentDay++;
             OnDayChanged?.Invoke(CurrentDay);
         }
 
         while (_timeOfDayMinutes < 0f)
         {
-            _timeOfDayMinutes += 1440f;
-            CurrentDay = Mathf.Max(1, CurrentDay - 1);
+            _timeOfDayMinutes += DayNightTimeMath.MinutesPerDay;
+            CurrentDay = DayNightTimeMath.ClampDay(CurrentDay - 1);
             OnDayChanged?.Invoke(CurrentDay);
         }
     }
 
     private void ReportMinuteChangeIfNeeded()
     {
-        int wholeMinute = Mathf.FloorToInt(_timeOfDayMinutes);
+        int wholeMinute = DayNightTimeMath.GetWholeMinute(_timeOfDayMinutes);
 
         if (wholeMinute == _lastReportedWholeMinute)
         {
@@ -354,8 +345,8 @@ public class DayNightCycle : MonoBehaviour
 
     public void SetTimeOfDayMinutes(float timeOfDayMinutes)
     {
-        _timeOfDayMinutes = Mathf.Repeat(timeOfDayMinutes, 1440f);
-        _lastReportedWholeMinute = Mathf.FloorToInt(_timeOfDayMinutes);
+        _timeOfDayMinutes = DayNightTimeMath.RepeatTimeOfDayMinutes(timeOfDayMinutes);
+        _lastReportedWholeMinute = DayNightTimeMath.GetWholeMinute(_timeOfDayMinutes);
 
         ApplyVisuals();
         OnTimeChanged?.Invoke(CurrentDay, CurrentHour, CurrentMinute);
@@ -386,10 +377,10 @@ public class DayNightCycle : MonoBehaviour
             return;
         }
 
-        CurrentDay = Mathf.Max(1, saveData.DayNight.Day);
-        _timeOfDayMinutes = Mathf.Repeat(saveData.DayNight.TimeOfDayMinutes, 1440f);
+        CurrentDay = DayNightTimeMath.ClampDay(saveData.DayNight.Day);
+        _timeOfDayMinutes = DayNightTimeMath.RepeatTimeOfDayMinutes(saveData.DayNight.TimeOfDayMinutes);
         _isRunning = saveData.DayNight.IsRunning;
-        _lastReportedWholeMinute = Mathf.FloorToInt(_timeOfDayMinutes);
+        _lastReportedWholeMinute = DayNightTimeMath.GetWholeMinute(_timeOfDayMinutes);
 
         ApplyVisuals();
 
