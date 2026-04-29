@@ -44,7 +44,7 @@ public static class InventoryStackableAddService
             int freeSpace = slot.MaxStack - slot.Count;
             int amountToAdd = Mathf.Min(freeSpace, remaining);
 
-            slot.Count += amountToAdd;
+            slot.AddCount(amountToAdd);
             remaining -= amountToAdd;
 
             if (remaining <= 0)

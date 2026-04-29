@@ -21,7 +21,7 @@ public static class InventorySlotRemovalService
         }
 
         int amountToRemove = Mathf.Min(count, slot.Count);
-        slot.Count -= amountToRemove;
+        slot.RemoveCount(amountToRemove);
 
         if (slot.Count <= 0)
         {

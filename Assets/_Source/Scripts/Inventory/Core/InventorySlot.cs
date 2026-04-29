@@ -6,12 +6,12 @@ public class InventorySlot
 {
     private const float ZeroTolerance = 0.0001f;
 
-    public ItemData Item;
-    public int Count = 1;
-    public float CurrentDurability = 100f;
-    public float CurrentAmount = 0f;
-    public float CurrentHydration = 0f;
-    public float CurrentCalories = 0f;
+    public ItemData Item { get; private set; }
+    public int Count { get; private set; } = 1;
+    public float CurrentDurability { get; private set; } = 100f;
+    public float CurrentAmount { get; private set; } = 0f;
+    public float CurrentHydration { get; private set; } = 0f;
+    public float CurrentCalories { get; private set; } = 0f;
 
     public int MaxStack => Item != null ? Item.MaxStack : 1;
     public bool IsEmpty => Item == null || Count <= 0;
@@ -55,7 +55,7 @@ public class InventorySlot
         }
     }
 
-    public void Initialize(ItemData item, int count, float? currentDurabilityOverride = null, float? currentAmountOverride = null, float? currentHydrationOverride = null, float? currentCaloriesOverride = null)
+    internal void Initialize(ItemData item, int count, float? currentDurabilityOverride = null, float? currentAmountOverride = null, float? currentHydrationOverride = null, float? currentCaloriesOverride = null)
     {
         Item = item;
         Count = Mathf.Max(1, count);
@@ -96,5 +96,78 @@ public class InventorySlot
 
         CurrentHydration = currentHydrationOverride ?? Item.RestoreHydration;
         CurrentCalories = currentCaloriesOverride ?? Item.RestoreCalories;
+    }
+
+    public void AddCount(int amount)
+    {
+        if (amount <= 0)
+        {
+            return;
+        }
+
+        Count = Mathf.Min(MaxStack, Count + amount);
+    }
+
+    public int RemoveCount(int amount)
+    {
+        if (amount <= 0)
+        {
+            return 0;
+        }
+
+        int removed = Mathf.Min(Count, amount);
+        Count -= removed;
+
+        return removed;
+    }
+
+    public void ConsumeDurability(float amount)
+    {
+        if (amount <= 0f || !HasDurability)
+        {
+            return;
+        }
+
+        CurrentDurability = Mathf.Max(0f, CurrentDurability - amount);
+    }
+
+    public void ConsumeHydration(float amount, float zeroTolerance)
+    {
+        if (Mathf.Approximately(amount, 0f))
+        {
+            return;
+        }
+
+        CurrentHydration -= amount;
+
+        if (Mathf.Abs(CurrentHydration) <= zeroTolerance)
+        {
+            CurrentHydration = 0f;
+        }
+    }
+
+    public void ConsumeCalories(float amount, float zeroTolerance)
+    {
+        if (Mathf.Approximately(amount, 0f))
+        {
+            return;
+        }
+
+        CurrentCalories -= amount;
+
+        if (Mathf.Abs(CurrentCalories) <= zeroTolerance)
+        {
+            CurrentCalories = 0f;
+        }
+    }
+
+    public void ConsumeAmount(float amount)
+    {
+        if (Mathf.Approximately(amount, 0f))
+        {
+            return;
+        }
+
+        CurrentAmount = Mathf.Max(0f, CurrentAmount - amount);
     }
 }

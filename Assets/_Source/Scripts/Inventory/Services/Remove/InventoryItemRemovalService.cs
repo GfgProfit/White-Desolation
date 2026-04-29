@@ -43,7 +43,7 @@ public static class InventoryItemRemovalService
 
             int amountToRemove = Mathf.Min(slot.Count, remainingToRemove);
 
-            slot.Count -= amountToRemove;
+            slot.RemoveCount(amountToRemove);
             remainingToRemove -= amountToRemove;
 
             if (slot.Count <= 0)

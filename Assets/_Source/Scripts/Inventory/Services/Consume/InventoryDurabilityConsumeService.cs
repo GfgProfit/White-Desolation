@@ -39,7 +39,7 @@ public static class InventoryDurabilityConsumeService
                 continue;
             }
 
-            slot.CurrentDurability = Mathf.Max(0f, slot.CurrentDurability - durabilityCost);
+            slot.ConsumeDurability(durabilityCost);
 
             return InventoryDurabilityConsumeResult.Mutated;
         }
