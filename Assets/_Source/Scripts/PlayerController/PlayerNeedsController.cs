@@ -102,8 +102,12 @@ public class PlayerNeedsController : MonoBehaviour
     private float _thirst;
     private float _hunger;
 
+    private PlayerNeedsPresenter _presenter;
+
     private void Awake()
     {
+        _presenter = new PlayerNeedsPresenter(_temperatureFill, _fatigueFill, _thirstFill, _hungerFill);
+
         _temperature = Mathf.Clamp(_startTemperature, 0f, _maxTemperature);
         _fatigue = Mathf.Clamp(_startFatigue, 0f, _maxFatigue);
         _thirst = Mathf.Clamp(_startThirst, 0f, _maxThirst);
@@ -250,25 +254,7 @@ public class PlayerNeedsController : MonoBehaviour
 
     private void RefreshUI()
     {
-        if (_temperatureFill != null)
-        {
-            _temperatureFill.fillAmount = TemperatureNormalized;
-        }
-
-        if (_fatigueFill != null)
-        {
-            _fatigueFill.fillAmount = FatigueNormalized;
-        }
-
-        if (_thirstFill != null)
-        {
-            _thirstFill.fillAmount = ThirstNormalized;
-        }
-
-        if (_hungerFill != null)
-        {
-            _hungerFill.fillAmount = HungerNormalized;
-        }
+        _presenter?.Refresh(TemperatureNormalized, FatigueNormalized, ThirstNormalized, HungerNormalized);
     }
 
     public void CaptureState(GameSaveData saveData)
