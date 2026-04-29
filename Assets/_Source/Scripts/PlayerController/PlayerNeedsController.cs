@@ -55,18 +55,18 @@ public class PlayerNeedsController : MonoBehaviour
     public bool IsCool => PlayerTemperatureStateResolver.IsCool(_temperature);
     public bool IsWarm => PlayerTemperatureStateResolver.IsWarm(_temperature);
 
-    public float MissingThirst => Mathf.Max(0f, _maxThirst - _thirst);
-    public float MissingHunger => Mathf.Max(0f, _maxHunger - _hunger);
+    public float MissingThirst => PlayerNeedValueMath.Missing(_thirst, _maxThirst);
+    public float MissingHunger => PlayerNeedValueMath.Missing(_hunger, _maxHunger);
 
     public float Temperature => _temperature;
     public float Fatigue => _fatigue;
     public float Thirst => _thirst;
     public float Hunger => _hunger;
 
-    public float TemperatureNormalized => Mathf.Clamp01(_temperature / _maxTemperature);
-    public float FatigueNormalized => Mathf.Clamp01(_fatigue / _maxFatigue);
-    public float ThirstNormalized => Mathf.Clamp01(_thirst / _maxThirst);
-    public float HungerNormalized => Mathf.Clamp01(_hunger / _maxHunger);
+    public float TemperatureNormalized => PlayerNeedValueMath.Normalize(_temperature, _maxTemperature);
+    public float FatigueNormalized => PlayerNeedValueMath.Normalize(_fatigue, _maxFatigue);
+    public float ThirstNormalized => PlayerNeedValueMath.Normalize(_thirst, _maxThirst);
+    public float HungerNormalized => PlayerNeedValueMath.Normalize(_hunger, _maxHunger);
 
     private PlayerLocomotionState _locomotionState = PlayerLocomotionState.Idle;
 
@@ -81,10 +81,10 @@ public class PlayerNeedsController : MonoBehaviour
     {
         _presenter = new PlayerNeedsPresenter(_temperatureFill, _fatigueFill, _thirstFill, _hungerFill);
 
-        _temperature = Mathf.Clamp(_startTemperature, 0f, _maxTemperature);
-        _fatigue = Mathf.Clamp(_startFatigue, 0f, _maxFatigue);
-        _thirst = Mathf.Clamp(_startThirst, 0f, _maxThirst);
-        _hunger = Mathf.Clamp(_startHunger, 0f, _maxHunger);
+        _temperature = PlayerNeedValueMath.Clamp(_startTemperature, _maxTemperature);
+        _fatigue = PlayerNeedValueMath.Clamp(_startFatigue, _maxFatigue);
+        _thirst = PlayerNeedValueMath.Clamp(_startThirst, _maxThirst);
+        _hunger = PlayerNeedValueMath.Clamp(_startHunger, _maxHunger);
 
         RefreshUI();
     }
@@ -113,53 +113,45 @@ public class PlayerNeedsController : MonoBehaviour
 
     public void AddTemperature(float delta)
     {
-        _temperature = Mathf.Clamp(_temperature + delta, 0f, _maxTemperature);
+        _temperature = PlayerNeedValueMath.Clamp(_temperature + delta, _maxTemperature);
         RefreshUI();
     }
 
     public void AddFatigue(float delta)
     {
-        _fatigue = Mathf.Clamp(_fatigue + delta, 0f, _maxFatigue);
+        _fatigue = PlayerNeedValueMath.Clamp(_fatigue + delta, _maxFatigue);
         RefreshUI();
     }
 
     public void AddThirst(float delta)
     {
-        _thirst = Mathf.Clamp(_thirst + delta, 0f, _maxThirst);
+        _thirst = PlayerNeedValueMath.Clamp(_thirst + delta, _maxThirst);
         RefreshUI();
     }
 
     public void AddHunger(float delta)
     {
-        _hunger = Mathf.Clamp(_hunger + delta, 0f, _maxHunger);
+        _hunger = PlayerNeedValueMath.Clamp(_hunger + delta, _maxHunger);
         RefreshUI();
     }
 
     public float RestoreThirstUpTo(float availableHydration)
     {
-        if (availableHydration <= 0f)
-        {
-            return 0f;
-        }
+        float restored = PlayerNeedValueMath.GetRestoreAmount(_thirst, _maxThirst, availableHydration);
 
-        float restored = Mathf.Min(MissingThirst, availableHydration);
         if (restored <= 0f)
         {
             return 0f;
         }
 
         AddThirst(restored);
+
         return restored;
     }
 
     public float RestoreHungerUpTo(float availableCalories)
     {
-        if (availableCalories <= 0f)
-        {
-            return 0f;
-        }
-
-        float restored = Mathf.Min(MissingHunger, availableCalories);
+        float restored = PlayerNeedValueMath.GetRestoreAmount(_hunger, _maxHunger, availableCalories);
 
         if (restored <= 0f)
         {
@@ -167,6 +159,7 @@ public class PlayerNeedsController : MonoBehaviour
         }
 
         AddHunger(restored);
+
         return restored;
     }
 
@@ -183,25 +176,25 @@ public class PlayerNeedsController : MonoBehaviour
             return;
         }
 
-        _temperature = Mathf.Clamp(_temperature + (_temperatureDeltaPerSecond * dt), 0f, _maxTemperature);
+        _temperature = PlayerNeedValueMath.Clamp(_temperature + (_temperatureDeltaPerSecond * dt), _maxTemperature);
     }
 
     private void TickFatigue(float dt)
     {
         float multiplier = PlayerNeedsLocomotionMultiplierResolver.Resolve(_locomotionState, _fatigueIdleMultiplier, _fatigueWalkMultiplier, _fatigueRunMultiplier);
-        _fatigue = Mathf.Clamp(_fatigue - (_fatigueDrainPerSecond * multiplier * dt), 0f, _maxFatigue);
+        _fatigue = PlayerNeedValueMath.Clamp(_fatigue - (_fatigueDrainPerSecond * multiplier * dt), _maxFatigue);
     }
 
     private void TickThirst(float dt)
     {
         float multiplier = PlayerNeedsLocomotionMultiplierResolver.Resolve(_locomotionState, _thirstIdleMultiplier, _thirstWalkMultiplier, _thirstRunMultiplier);
-        _thirst = Mathf.Clamp(_thirst - (_thirstDrainPerSecond * multiplier * dt), 0f, _maxThirst);
+        _thirst = PlayerNeedValueMath.Clamp(_thirst - (_thirstDrainPerSecond * multiplier * dt), _maxThirst);
     }
 
     private void TickHunger(float dt)
     {
         float multiplier = PlayerNeedsLocomotionMultiplierResolver.Resolve(_locomotionState, _hungerIdleMultiplier, _hungerWalkMultiplier, _hungerRunMultiplier);
-        _hunger = Mathf.Clamp(_hunger - (_hungerDrainPerSecond * multiplier * dt), 0f, _maxHunger);
+        _hunger = PlayerNeedValueMath.Clamp(_hunger - (_hungerDrainPerSecond * multiplier * dt), _maxHunger);
     }
 
     private void RefreshUI()
@@ -230,10 +223,10 @@ public class PlayerNeedsController : MonoBehaviour
             return;
         }
 
-        _temperature = Mathf.Clamp(saveData.PlayerNeeds.Temperature, 0f, _maxTemperature);
-        _fatigue = Mathf.Clamp(saveData.PlayerNeeds.Fatigue, 0f, _maxFatigue);
-        _thirst = Mathf.Clamp(saveData.PlayerNeeds.Thirst, 0f, _maxThirst);
-        _hunger = Mathf.Clamp(saveData.PlayerNeeds.Hunger, 0f, _maxHunger);
+        _temperature = PlayerNeedValueMath.Clamp(saveData.PlayerNeeds.Temperature, _maxTemperature);
+        _fatigue = PlayerNeedValueMath.Clamp(saveData.PlayerNeeds.Fatigue, _maxFatigue);
+        _thirst = PlayerNeedValueMath.Clamp(saveData.PlayerNeeds.Thirst, _maxThirst);
+        _hunger = PlayerNeedValueMath.Clamp(saveData.PlayerNeeds.Hunger, _maxHunger);
 
         RefreshUI();
     }
