@@ -142,22 +142,8 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateNeedsState(bool isMoving, bool isRunning, bool isCrouching)
     {
-        if (isCrouching)
-        {
-            _needsController.SetLocomotionState(PlayerLocomotionState.Walking);
-        }
-        else if (isRunning)
-        {
-            _needsController.SetLocomotionState(PlayerLocomotionState.Running);
-        }
-        else if (isMoving)
-        {
-            _needsController.SetLocomotionState(PlayerLocomotionState.Walking);
-        }
-        else
-        {
-            _needsController.SetLocomotionState(PlayerLocomotionState.Idle);
-        }
+        PlayerLocomotionState locomotionState = PlayerLocomotionStateResolver.Resolve(isMoving, isRunning, isCrouching);
+        _needsController.SetLocomotionState(locomotionState);
     }
 
     private void HandleCrouch()
