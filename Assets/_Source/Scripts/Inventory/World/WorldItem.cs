@@ -1,5 +1,4 @@
 using NaughtyAttributes;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SaveId))]
@@ -74,11 +73,7 @@ public class WorldItem : MonoBehaviour, IInteractable, IInteractHoverInfo, IInsp
             return false;
         }
 
-        bool success = _inventoryController.TryAddItem(
-            _itemData,
-            _count,
-            _overrideCurrentAmount ? _currentAmount : null,
-            _overrideCurrentDurability ? _currentDurability : null);
+        bool success = _inventoryController.TryAddItem(_itemData, _count, _overrideCurrentAmount ? _currentAmount : null, _overrideCurrentDurability ? _currentDurability : null);
 
         if (!success)
         {
@@ -106,7 +101,7 @@ public class WorldItem : MonoBehaviour, IInteractable, IInteractHoverInfo, IInsp
             return;
         }
 
-        RemoveOldState(saveData.WorldItems, SaveId);
+        WorldItemSaveDataCollection.RemoveBySaveId(saveData.WorldItems, SaveId);
 
         saveData.WorldItems.Add(new WorldItemSaveData
         {
@@ -130,17 +125,14 @@ public class WorldItem : MonoBehaviour, IInteractable, IInteractHoverInfo, IInsp
             return;
         }
 
-        WorldItemSaveData itemSaveData = FindState(saveData.WorldItems, SaveId);
+        WorldItemSaveData itemSaveData = WorldItemSaveDataCollection.FindBySaveId(saveData.WorldItems, SaveId);
 
         if (itemSaveData == null)
         {
             return;
         }
 
-        if (context != null &&
-            context.ItemDatabase != null &&
-            !string.IsNullOrWhiteSpace(itemSaveData.ItemId) &&
-            context.ItemDatabase.TryGetItem(itemSaveData.ItemId, out ItemData restoredItem))
+        if (context != null && context.ItemDatabase != null && !string.IsNullOrWhiteSpace(itemSaveData.ItemId) && context.ItemDatabase.TryGetItem(itemSaveData.ItemId, out ItemData restoredItem))
         {
             _itemData = restoredItem;
         }
@@ -153,9 +145,7 @@ public class WorldItem : MonoBehaviour, IInteractable, IInteractHoverInfo, IInsp
         _overrideCurrentDurability = itemSaveData.OverrideCurrentDurability;
         _currentDurability = itemSaveData.CurrentDurability;
 
-        transform.SetPositionAndRotation(
-            itemSaveData.Position.ToVector3(),
-            itemSaveData.Rotation.ToQuaternion());
+        transform.SetPositionAndRotation(itemSaveData.Position.ToVector3(), itemSaveData.Rotation.ToQuaternion());
 
         SetPickedUp(itemSaveData.PickedUp);
     }
@@ -164,42 +154,6 @@ public class WorldItem : MonoBehaviour, IInteractable, IInteractHoverInfo, IInsp
     {
         _pickedUp = pickedUp;
         gameObject.SetActive(!pickedUp);
-    }
-
-    private static WorldItemSaveData FindState(List<WorldItemSaveData> states, string saveId)
-    {
-        if (states == null || string.IsNullOrWhiteSpace(saveId))
-        {
-            return null;
-        }
-
-        for (int i = 0; i < states.Count; i++)
-        {
-            WorldItemSaveData state = states[i];
-
-            if (state != null && state.SaveId == saveId)
-            {
-                return state;
-            }
-        }
-
-        return null;
-    }
-
-    private static void RemoveOldState(List<WorldItemSaveData> states, string saveId)
-    {
-        if (states == null || string.IsNullOrWhiteSpace(saveId))
-        {
-            return;
-        }
-
-        for (int i = states.Count - 1; i >= 0; i--)
-        {
-            if (states[i] != null && states[i].SaveId == saveId)
-            {
-                states.RemoveAt(i);
-            }
-        }
     }
 
     public InteractionHoverInfo GetHoverInfo()

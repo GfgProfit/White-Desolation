@@ -29,14 +29,7 @@ public static class WorldItemInteractionInfoBuilder
             return InteractionInspectInfo.Empty;
         }
 
-        return new InteractionInspectInfo(
-            itemData.Icon,
-            itemData.DisplayName,
-            itemData.Description,
-            FormatDurabilityText(itemData, currentDurability),
-            HasDurability(itemData),
-            ResolveDurabilityColor(itemData, currentDurability),
-            FormatWeightText(currentWeightKg));
+        return new InteractionInspectInfo(itemData.Icon, itemData.DisplayName, itemData.Description, FormatDurabilityText(itemData, currentDurability), HasDurability(itemData), ResolveDurabilityColor(itemData, currentDurability), FormatWeightText(currentWeightKg));
     }
 
     private static bool IsBroken(ItemData itemData, float currentDurability)
