@@ -14,6 +14,8 @@ public sealed class SaveManager : MonoBehaviour
     [SerializeField] private DayNightCycle _dayNightCycle;
 
     private readonly JsonSaveFileService _fileService = new();
+    private readonly SaveHotkeyInputService _hotkeyInputService = new();
+
     private PlayerTransformSaveService _playerTransformSaveService;
     private SceneSaveableStateService _sceneSaveableStateService;
     private ReferencedSaveableStateService _referencedSaveableStateService;
@@ -30,12 +32,12 @@ public sealed class SaveManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F5))
+        if (_hotkeyInputService.IsSavePressed())
         {
             Save();
         }
 
-        if (Input.GetKeyDown(KeyCode.F6))
+        if (_hotkeyInputService.IsLoadPressed())
         {
             Load();
         }
