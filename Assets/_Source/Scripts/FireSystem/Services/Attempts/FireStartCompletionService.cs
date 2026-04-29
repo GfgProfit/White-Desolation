@@ -21,6 +21,12 @@ public sealed class FireStartCompletionService
             return;
         }
 
+        if (source == null)
+        {
+            Debug.LogWarning("[FireStarting] Cannot complete successful attempt: fire source is missing.");
+            return;
+        }
+
         bool consumed = FireStartCostConsumer.TryPay(_inventory, plan.SuccessCost);
 
         if (consumed)

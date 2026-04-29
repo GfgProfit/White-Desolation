@@ -81,29 +81,48 @@ public static class Utils
 
     public static void SetDurabilityColor(WorldItem worldItem, TMP_Text durabilityText, Image durabilityIcon = null)
     {
-        SetDurability(worldItem.CurrentDurability, durabilityText, durabilityIcon);
+        if (worldItem == null || worldItem.ItemData == null)
+        {
+            return;
+        }
+
+        float durabilityPercent = worldItem.ItemData.IsUnbreakable ? 100f : Mathf.Clamp01(worldItem.CurrentDurability / Mathf.Max(0.0001f, worldItem.ItemData.MaxDurability)) * 100f;
+
+        SetDurability(durabilityPercent, durabilityText, durabilityIcon);
     }
 
     public static void SetDurabilityColor(InventorySlot slot, TMP_Text durabilityText, Image durabilityIcon = null)
     {
-        SetDurability(slot.CurrentDurability, durabilityText, durabilityIcon);
+        if (slot == null)
+        {
+            return;
+        }
+
+        SetDurability(slot.Durability01 * 100f, durabilityText, durabilityIcon);
     }
 
-    private static void SetDurability(float durability, TMP_Text durabilityText, Image durabilityIcon)
+    private static void SetDurability(float durabilityPercent, TMP_Text durabilityText, Image durabilityIcon)
     {
-        if (durability >= 66)
+        if (durabilityPercent >= 66)
         {
-            durabilityText.color = Color.white;
+            if (durabilityText != null)
+            {
+                durabilityText.color = Color.white;
+            }
 
             if (durabilityIcon != null)
             {
                 durabilityIcon.color = ParseHexColor("#61766F");
             }
         }
-        else if (durability >= 33 && durability < 66)
+        else if (durabilityPercent >= 33 && durabilityPercent < 66)
         {
             Color a = ParseHexColor("#D7A14C");
-            durabilityText.color = a;
+
+            if (durabilityText != null)
+            {
+                durabilityText.color = a;
+            }
 
             if (durabilityIcon != null)
             {
@@ -113,7 +132,11 @@ public static class Utils
         else
         {
             Color a = ParseHexColor("#9E2F3C");
-            durabilityText.color = a;
+
+            if (durabilityText != null)
+            {
+                durabilityText.color = a;
+            }
 
             if (durabilityIcon != null)
             {

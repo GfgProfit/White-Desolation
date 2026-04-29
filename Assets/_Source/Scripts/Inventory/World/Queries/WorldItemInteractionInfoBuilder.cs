@@ -69,7 +69,8 @@ public static class WorldItemInteractionInfoBuilder
             return "Неразрушаемый";
         }
 
-        return $"{currentDurability:0.##}%";
+        int percent = Mathf.RoundToInt(GetDurability01(itemData, currentDurability) * 100f);
+        return $"{percent}%";
     }
 
     private static string FormatWeightText(float currentWeightKg)
@@ -99,8 +100,7 @@ public static class WorldItemInteractionInfoBuilder
             return Color.white;
         }
 
-        float maxDurability = Mathf.Max(0.0001f, itemData.MaxDurability);
-        float normalized = Mathf.Clamp01(currentDurability / maxDurability);
+        float normalized = GetDurability01(itemData, currentDurability);
 
         if (normalized >= 0.66f)
         {
@@ -114,5 +114,16 @@ public static class WorldItemInteractionInfoBuilder
         {
             return Utils.ParseHexColor("#9E2F3C");
         }
+    }
+
+    private static float GetDurability01(ItemData itemData, float currentDurability)
+    {
+        if (itemData == null || itemData.IsUnbreakable)
+        {
+            return 1f;
+        }
+
+        float maxDurability = Mathf.Max(0.0001f, itemData.MaxDurability);
+        return Mathf.Clamp01(currentDurability / maxDurability);
     }
 }

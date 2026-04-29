@@ -17,8 +17,8 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
     [Header("Save")]
     [SerializeField] private SaveId _saveId;
 
-    [Inject] private readonly FireUIController _fireStartingUI;
-    [Inject] private readonly DayNightCycle _dayNightCycle;
+    [Inject] private FireUIController _fireStartingUI;
+    [Inject] private DayNightCycle _dayNightCycle;
 
     public string SaveId => _saveId != null ? _saveId.Id : string.Empty;
 
@@ -61,6 +61,12 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
     {
         if (_isBurning)
         {
+            return;
+        }
+
+        if (_fireStartingUI == null)
+        {
+            Debug.LogWarning("[FireSource] Fire starting UI is missing.");
             return;
         }
 
