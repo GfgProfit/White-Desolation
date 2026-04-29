@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public sealed partial class SaveManager : MonoBehaviour
 {
@@ -7,7 +8,8 @@ public sealed partial class SaveManager : MonoBehaviour
     [SerializeField] private bool _loadOnStart = true;
 
     [Header("References")]
-    [SerializeField] private ItemDatabase _itemDatabase;
+    [FormerlySerializedAs("_itemDatabase")]
+    [SerializeField] private ScriptableObject _itemDatabaseAsset;
     [SerializeField] private Transform _playerTransform;
 
     private readonly JsonSaveFileService _fileService = new();

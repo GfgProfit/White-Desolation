@@ -1,9 +1,32 @@
+using System;
+using System.Collections.Generic;
+
 public sealed class SaveContext
 {
-    public readonly ItemDatabase ItemDatabase;
+    private readonly Dictionary<Type, object> _servicesByType = new();
 
-    public SaveContext(ItemDatabase itemDatabase)
+    public void Register(object service)
     {
-        ItemDatabase = itemDatabase;
+        if (service == null)
+        {
+            return;
+        }
+
+        _servicesByType[service.GetType()] = service;
+    }
+
+    public bool TryGet<T>(out T service) where T : class
+    {
+        foreach (object candidate in _servicesByType.Values)
+        {
+            if (candidate is T typed)
+            {
+                service = typed;
+                return true;
+            }
+        }
+
+        service = null;
+        return false;
     }
 }

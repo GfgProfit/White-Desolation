@@ -46,7 +46,7 @@ public partial class WorldItem
             return;
         }
 
-        if (context != null && context.ItemDatabase != null && !string.IsNullOrWhiteSpace(itemSaveData.ItemId) && context.ItemDatabase.TryGetItem(itemSaveData.ItemId, out ItemData restoredItem))
+        if (context != null && context.TryGet(out ItemDatabase itemDatabase) && !string.IsNullOrWhiteSpace(itemSaveData.ItemId) && itemDatabase.TryGetItem(itemSaveData.ItemId, out ItemData restoredItem))
         {
             _itemData = restoredItem;
         }

@@ -13,5 +13,6 @@ public class TestSceneInstaller : SceneInstaller
         container.BindInstance(_inventoryController).AsSingle();
         container.BindInstance(_fireUIController).AsSingle();
         container.BindInstance(_dayNightCycle).AsSingle();
+        container.Bind<IGameTimeConverter>(_ => _dayNightCycle).AsSingle();
     }
 }

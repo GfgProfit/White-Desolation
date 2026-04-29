@@ -18,7 +18,7 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
     [SerializeField] private SaveId _saveId;
 
     [Inject] private FireUIController _fireStartingUI = null;
-    [Inject] private DayNightCycle _dayNightCycle = null;
+    [Inject] private IGameTimeConverter _gameTimeConverter = null;
 
     public string SaveId => _saveId != null ? _saveId.Id : string.Empty;
 
@@ -151,22 +151,22 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
 
     private float RealSecondsToGameMinutes(float realSeconds)
     {
-        if (_dayNightCycle == null)
+        if (_gameTimeConverter == null)
         {
             return realSeconds / 60f;
         }
 
-        return _dayNightCycle.RealSecondsToGameMinutes(realSeconds);
+        return _gameTimeConverter.RealSecondsToGameMinutes(realSeconds);
     }
 
     private float GameMinutesToRealSeconds(float gameMinutes)
     {
-        if (_dayNightCycle == null)
+        if (_gameTimeConverter == null)
         {
             return gameMinutes * 60f;
         }
 
-        return _dayNightCycle.GameMinutesToRealSeconds(gameMinutes);
+        return _gameTimeConverter.GameMinutesToRealSeconds(gameMinutes);
     }
 
     private static string FormatMinutes(float gameMinutes)

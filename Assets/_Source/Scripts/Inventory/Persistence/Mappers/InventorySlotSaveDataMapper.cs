@@ -33,13 +33,13 @@ public static class InventorySlotSaveDataMapper
             return false;
         }
 
-        if (context == null || context.ItemDatabase == null)
+        if (context == null || !context.TryGet(out ItemDatabase itemDatabase))
         {
             Debug.LogWarning("[Inventory] Cannot restore inventory: ItemDatabase is missing.");
             return false;
         }
 
-        if (!context.ItemDatabase.TryGetItem(slotData.ItemId, out ItemData itemData))
+        if (!itemDatabase.TryGetItem(slotData.ItemId, out ItemData itemData))
         {
             Debug.LogWarning($"[Inventory] Cannot restore item. Unknown item id: {slotData.ItemId}");
             return false;

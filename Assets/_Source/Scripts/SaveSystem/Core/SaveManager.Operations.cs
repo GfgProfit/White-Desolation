@@ -25,7 +25,7 @@ public sealed partial class SaveManager
 
         EnsureRuntimeServices();
 
-        SaveContext context = new(_itemDatabase);
+        SaveContext context = CreateSaveContext();
 
         _playerTransformSaveService.Restore(saveData);
         _referencedSaveableStateService.Restore(saveData, context);
@@ -37,5 +37,13 @@ public sealed partial class SaveManager
     public void DeleteSave()
     {
         _fileService.Delete(_slotName);
+    }
+
+    private SaveContext CreateSaveContext()
+    {
+        SaveContext context = new();
+        context.Register(_itemDatabaseAsset);
+
+        return context;
     }
 }
