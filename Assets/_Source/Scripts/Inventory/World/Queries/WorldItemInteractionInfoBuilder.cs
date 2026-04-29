@@ -102,21 +102,17 @@ public static class WorldItemInteractionInfoBuilder
         float maxDurability = Mathf.Max(0.0001f, itemData.MaxDurability);
         float normalized = Mathf.Clamp01(currentDurability / maxDurability);
 
-        if (normalized <= 0.0001f)
+        if (normalized >= 0.66f)
         {
-            return Color.red;
+            return Color.white;
         }
-
-        if (normalized <= 0.25f)
+        else if (normalized >= 0.33f && normalized < 0.66f)
         {
-            return new Color(1f, 0.45f, 0.25f);
+            return Utils.ParseHexColor("#D7A14C");
         }
-
-        if (normalized <= 0.5f)
+        else
         {
-            return Color.yellow;
+            return Utils.ParseHexColor("#9E2F3C");
         }
-
-        return Color.white;
     }
 }

@@ -57,7 +57,7 @@ public sealed class SaveManager : MonoBehaviour
             _dayNightCycle.CaptureState(saveData);
         }
 
-        ISaveable[] saveables = FindSaveables();
+        ISaveable[] saveables = SaveableObjectQuery.FindAll();
 
         for (int i = 0; i < saveables.Length; i++)
         {
@@ -107,7 +107,7 @@ public sealed class SaveManager : MonoBehaviour
             _dayNightCycle.RestoreState(saveData, context);
         }
 
-        ISaveable[] saveables = FindSaveables();
+        ISaveable[] saveables = SaveableObjectQuery.FindAll();
 
         for (int i = 0; i < saveables.Length; i++)
         {
@@ -163,40 +163,5 @@ public sealed class SaveManager : MonoBehaviour
         {
             characterController.enabled = true;
         }
-    }
-
-    private static ISaveable[] FindSaveables()
-    {
-#if UNITY_2023_1_OR_NEWER
-        MonoBehaviour[] behaviours = Object.FindObjectsByType<MonoBehaviour>(
-            FindObjectsInactive.Include,
-            FindObjectsSortMode.None);
-#else
-        MonoBehaviour[] behaviours = Object.FindObjectsOfType<MonoBehaviour>(true);
-#endif
-
-        int count = 0;
-
-        for (int i = 0; i < behaviours.Length; i++)
-        {
-            if (behaviours[i] is ISaveable)
-            {
-                count++;
-            }
-        }
-
-        ISaveable[] saveables = new ISaveable[count];
-        int index = 0;
-
-        for (int i = 0; i < behaviours.Length; i++)
-        {
-            if (behaviours[i] is ISaveable saveable)
-            {
-                saveables[index] = saveable;
-                index++;
-            }
-        }
-
-        return saveables;
     }
 }

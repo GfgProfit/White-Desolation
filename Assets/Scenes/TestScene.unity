@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 16256871}
   - component: {fileID: 16256870}
   - component: {fileID: 16256869}
-  - component: {fileID: 16256867}
+  - component: {fileID: 16256873}
   - component: {fileID: 16256872}
   m_Layer: 0
   m_Name: '[Item] - ID: firestriker'
@@ -308,27 +308,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &16256867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 16256865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: fb60772c6b971ed4091925ade5856fae, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 1
-  _currentDurability: 0
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &16256869
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -420,6 +399,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 5fee09c847f0476eae0af4d2b36b1eaa
+--- !u!114 &16256873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16256865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: fb60772c6b971ed4091925ade5856fae, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 1
+  _currentDurability: 0
+  _saveId: {fileID: 16256872}
+  _pickedUp: 0
 --- !u!1001 &59246393
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2675,7 +2675,7 @@ GameObject:
   - component: {fileID: 254319099}
   - component: {fileID: 254319098}
   - component: {fileID: 254319097}
-  - component: {fileID: 254319095}
+  - component: {fileID: 254319101}
   - component: {fileID: 254319100}
   m_Layer: 0
   m_Name: '[Item] - ID: newsprint'
@@ -2699,27 +2699,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &254319095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 254319093}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 97ce2d83449843d4982169e90c32225d, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &254319097
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2811,6 +2790,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: ec4653384526449a9c0b094c999091cf
+--- !u!114 &254319101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254319093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 97ce2d83449843d4982169e90c32225d, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 254319100}
+  _pickedUp: 0
 --- !u!1 &255570503
 GameObject:
   m_ObjectHideFlags: 0
@@ -4407,7 +4407,7 @@ GameObject:
   - component: {fileID: 457670627}
   - component: {fileID: 457670626}
   - component: {fileID: 457670629}
-  - component: {fileID: 457670623}
+  - component: {fileID: 457670631}
   - component: {fileID: 457670630}
   m_Layer: 0
   m_Name: '[Item] - ID: rifle_ammo'
@@ -4416,27 +4416,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &457670623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 457670622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: ccc7a204f9fe5734d89bf925f9d1db99, type: 2}
-  _count: 13
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!23 &457670626
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4543,6 +4522,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: c66cb20249404eab86589fcf104a3a19
+--- !u!114 &457670631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457670622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: ccc7a204f9fe5734d89bf925f9d1db99, type: 2}
+  _count: 13
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 457670630}
+  _pickedUp: 0
 --- !u!1 &459784634
 GameObject:
   m_ObjectHideFlags: 0
@@ -5014,7 +5014,7 @@ GameObject:
   - component: {fileID: 533700655}
   - component: {fileID: 533700654}
   - component: {fileID: 533700657}
-  - component: {fileID: 533700651}
+  - component: {fileID: 533700659}
   - component: {fileID: 533700658}
   m_Layer: 0
   m_Name: '[Item] - ID: bottle_of_water'
@@ -5023,27 +5023,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &533700651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 533700650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: d5781ff96151fa14e8421e21085e7eb6, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 1
-  _currentAmount: 2.53
-  _overrideCurrentDurability: 1
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!23 &533700654
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -5150,6 +5129,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 2072afdcb22c488dac6bd8cfda42c50e
+--- !u!114 &533700659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533700650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: d5781ff96151fa14e8421e21085e7eb6, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 1
+  _currentAmount: 2.53
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 533700658}
+  _pickedUp: 0
 --- !u!1 &546252246
 GameObject:
   m_ObjectHideFlags: 0
@@ -5228,7 +5228,7 @@ GameObject:
   - component: {fileID: 549376229}
   - component: {fileID: 549376228}
   - component: {fileID: 549376227}
-  - component: {fileID: 549376225}
+  - component: {fileID: 549376231}
   - component: {fileID: 549376230}
   m_Layer: 0
   m_Name: '[Item] - ID: coal'
@@ -5252,27 +5252,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &549376225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 549376223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 32980f66202aad0489e5d18adcf51606, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &549376227
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5364,6 +5343,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 040460e4493d4189a05114e77d3a6615
+--- !u!114 &549376231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549376223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 32980f66202aad0489e5d18adcf51606, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 549376230}
+  _pickedUp: 0
 --- !u!1 &561452329
 GameObject:
   m_ObjectHideFlags: 0
@@ -5717,7 +5717,7 @@ GameObject:
   - component: {fileID: 614310015}
   - component: {fileID: 614310014}
   - component: {fileID: 614310013}
-  - component: {fileID: 614310011}
+  - component: {fileID: 614310018}
   - component: {fileID: 614310017}
   m_Layer: 0
   m_Name: '[Item] - ID: tomato_soup'
@@ -5726,27 +5726,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &614310011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 614310010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 26e6abb5960b2724fbbbf7bf0a97b5b2, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &614310013
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5853,6 +5832,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: f150c391a54b42d7b248b0ab5a401450
+--- !u!114 &614310018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614310010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 26e6abb5960b2724fbbbf7bf0a97b5b2, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 614310017}
+  _pickedUp: 0
 --- !u!1 &624426553
 GameObject:
   m_ObjectHideFlags: 0
@@ -7137,7 +7137,7 @@ GameObject:
   - component: {fileID: 832992029}
   - component: {fileID: 832992028}
   - component: {fileID: 832992027}
-  - component: {fileID: 832992025}
+  - component: {fileID: 832992031}
   - component: {fileID: 832992030}
   m_Layer: 0
   m_Name: '[Item] - ID: tinder_plug'
@@ -7161,27 +7161,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &832992025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 832992023}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 58aa546926d3d1e40b5b3846680a1ca2, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &832992027
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7273,6 +7252,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: de1de8b39f254717bdf7ba790913ecd0
+--- !u!114 &832992031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832992023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 58aa546926d3d1e40b5b3846680a1ca2, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 832992030}
+  _pickedUp: 0
 --- !u!1 &850703724
 GameObject:
   m_ObjectHideFlags: 0
@@ -9373,7 +9373,7 @@ GameObject:
   - component: {fileID: 942097606}
   - component: {fileID: 942097605}
   - component: {fileID: 942097608}
-  - component: {fileID: 942097602}
+  - component: {fileID: 942097610}
   - component: {fileID: 942097609}
   m_Layer: 0
   m_Name: '[Item] - ID: green_tea'
@@ -9382,27 +9382,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &942097602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 942097601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 8a80253f52bde114c82cd3791377d00d, type: 2}
-  _count: 4
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!23 &942097605
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -9509,6 +9488,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 0f145d710e8c41a3a8f673e368e1998a
+--- !u!114 &942097610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942097601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 8a80253f52bde114c82cd3791377d00d, type: 2}
+  _count: 4
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 942097609}
+  _pickedUp: 0
 --- !u!1 &944109328
 GameObject:
   m_ObjectHideFlags: 0
@@ -9600,7 +9600,7 @@ GameObject:
   - component: {fileID: 963974680}
   - component: {fileID: 963974679}
   - component: {fileID: 963974678}
-  - component: {fileID: 963974676}
+  - component: {fileID: 963974682}
   - component: {fileID: 963974681}
   m_Layer: 0
   m_Name: '[Item] - ID: wood'
@@ -9624,27 +9624,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &963974676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963974674}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 28c5e4501c7ad374e9a2d492ad998964, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &963974678
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9736,6 +9715,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: b86f80351d5641a38d4a129f598cc1b8
+--- !u!114 &963974682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963974674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 28c5e4501c7ad374e9a2d492ad998964, type: 2}
+  _count: 5
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 963974681}
+  _pickedUp: 0
 --- !u!1 &980980499
 GameObject:
   m_ObjectHideFlags: 0
@@ -9964,7 +9964,7 @@ GameObject:
   - component: {fileID: 1016140136}
   - component: {fileID: 1016140135}
   - component: {fileID: 1016140134}
-  - component: {fileID: 1016140132}
+  - component: {fileID: 1016140138}
   - component: {fileID: 1016140137}
   m_Layer: 0
   m_Name: '[Item] - ID: fuel'
@@ -9988,27 +9988,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1016140132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1016140130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 659d196027718fd47aded8b6499549c5, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &1016140134
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10100,6 +10079,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 5a3956e780764ddf906f642574b20db6
+--- !u!114 &1016140138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016140130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 659d196027718fd47aded8b6499549c5, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1016140137}
+  _pickedUp: 0
 --- !u!1 &1019117576
 GameObject:
   m_ObjectHideFlags: 0
@@ -11577,7 +11577,7 @@ GameObject:
   - component: {fileID: 1122080178}
   - component: {fileID: 1122080177}
   - component: {fileID: 1122080176}
-  - component: {fileID: 1122080174}
+  - component: {fileID: 1122080181}
   - component: {fileID: 1122080180}
   m_Layer: 0
   m_Name: '[Item] - ID: empty_can'
@@ -11586,27 +11586,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1122080174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1122080173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: c1aa1b9a4afeb65448ab0f80bc986bbe, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &1122080176
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11713,6 +11692,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 16297a340acf4472a63603703962315d
+--- !u!114 &1122080181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122080173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: c1aa1b9a4afeb65448ab0f80bc986bbe, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1122080180}
+  _pickedUp: 0
 --- !u!1 &1123090744
 GameObject:
   m_ObjectHideFlags: 0
@@ -11725,7 +11725,7 @@ GameObject:
   - component: {fileID: 1123090750}
   - component: {fileID: 1123090749}
   - component: {fileID: 1123090748}
-  - component: {fileID: 1123090746}
+  - component: {fileID: 1123090752}
   - component: {fileID: 1123090751}
   m_Layer: 0
   m_Name: '[Item] - ID: newsprint_roll'
@@ -11749,27 +11749,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1123090746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1123090744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 5f63bd1bcad1be047b45c3b2790a6818, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &1123090748
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11861,6 +11840,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: f12f64e20ea64d73ae8cb918370b3139
+--- !u!114 &1123090752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123090744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 5f63bd1bcad1be047b45c3b2790a6818, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1123090751}
+  _pickedUp: 0
 --- !u!1 &1130207311
 GameObject:
   m_ObjectHideFlags: 0
@@ -12174,7 +12174,7 @@ GameObject:
   - component: {fileID: 1167761903}
   - component: {fileID: 1167761902}
   - component: {fileID: 1167761901}
-  - component: {fileID: 1167761899}
+  - component: {fileID: 1167761905}
   - component: {fileID: 1167761904}
   m_Layer: 0
   m_Name: '[Item] - ID: log'
@@ -12198,27 +12198,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1167761899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1167761897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: eb9275a0645898b419d9f29656bfba47, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &1167761901
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12310,6 +12289,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 8293f4a313e440b0b79c1374e8c5e77d
+--- !u!114 &1167761905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167761897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: eb9275a0645898b419d9f29656bfba47, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1167761904}
+  _pickedUp: 0
 --- !u!1 &1219367266
 GameObject:
   m_ObjectHideFlags: 0
@@ -12932,7 +12932,7 @@ GameObject:
   - component: {fileID: 1289173837}
   - component: {fileID: 1289173836}
   - component: {fileID: 1289173839}
-  - component: {fileID: 1289173833}
+  - component: {fileID: 1289173841}
   - component: {fileID: 1289173840}
   m_Layer: 0
   m_Name: '[Item] - ID: soda_can'
@@ -12941,27 +12941,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1289173833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1289173832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 9e02d1f96b5d53143a1a2205a26b1dc2, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 1
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!23 &1289173836
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -13068,6 +13047,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 50109069150340f79dd37973fa66b23f
+--- !u!114 &1289173841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289173832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 9e02d1f96b5d53143a1a2205a26b1dc2, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1289173840}
+  _pickedUp: 0
 --- !u!1 &1301690669
 GameObject:
   m_ObjectHideFlags: 0
@@ -13565,7 +13565,7 @@ GameObject:
   - component: {fileID: 1337550709}
   - component: {fileID: 1337550708}
   - component: {fileID: 1337550707}
-  - component: {fileID: 1337550705}
+  - component: {fileID: 1337550711}
   - component: {fileID: 1337550710}
   m_Layer: 0
   m_Name: '[Item] - ID: book'
@@ -13589,27 +13589,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1337550705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1337550703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: a5d05f6acf1ecd04a84f430f552361fc, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &1337550707
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13701,6 +13680,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 915a1d45767a44ffb4d55f21fdff0820
+--- !u!114 &1337550711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337550703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: a5d05f6acf1ecd04a84f430f552361fc, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1337550710}
+  _pickedUp: 0
 --- !u!1 &1342285789
 GameObject:
   m_ObjectHideFlags: 0
@@ -13890,7 +13890,7 @@ GameObject:
   - component: {fileID: 1369023840}
   - component: {fileID: 1369023839}
   - component: {fileID: 1369023838}
-  - component: {fileID: 1369023836}
+  - component: {fileID: 1369023842}
   - component: {fileID: 1369023841}
   m_Layer: 0
   m_Name: '[Item] - ID: spruce_wood'
@@ -13914,27 +13914,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1369023836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1369023834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: aa4a10fb56e30524f8a7bfe3f70247d0, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &1369023838
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14026,6 +14005,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 9c5da8fca894409db9f24631dfa9d577
+--- !u!114 &1369023842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369023834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: aa4a10fb56e30524f8a7bfe3f70247d0, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1369023841}
+  _pickedUp: 0
 --- !u!1 &1371895413
 GameObject:
   m_ObjectHideFlags: 0
@@ -14075,7 +14075,7 @@ GameObject:
   - component: {fileID: 1403345656}
   - component: {fileID: 1403345655}
   - component: {fileID: 1403345654}
-  - component: {fileID: 1403345652}
+  - component: {fileID: 1403345658}
   - component: {fileID: 1403345657}
   m_Layer: 0
   m_Name: '[Item] - ID: papers_stack'
@@ -14099,27 +14099,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1403345652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1403345650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 2fc47cc522ff81d40a473c0c92f05c82, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &1403345654
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14211,6 +14190,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 7fe049dc08944fbbb41d7452699eddd8
+--- !u!114 &1403345658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403345650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 2fc47cc522ff81d40a473c0c92f05c82, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1403345657}
+  _pickedUp: 0
 --- !u!1 &1409316767
 GameObject:
   m_ObjectHideFlags: 0
@@ -14223,36 +14223,15 @@ GameObject:
   - component: {fileID: 1409316772}
   - component: {fileID: 1409316771}
   - component: {fileID: 1409316770}
-  - component: {fileID: 1409316768}
+  - component: {fileID: 1409316775}
   - component: {fileID: 1409316774}
   m_Layer: 0
-  m_Name: '[Item] - ID: rifle_ammo'
+  m_Name: '[Item] - ID: can_opener'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1409316768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1409316767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 658355adeb15a774e904ad4b5319969f, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 1
-  _currentDurability: 31
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &1409316770
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14359,6 +14338,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 592eb34b51e248ea9cf870d3be408aac
+--- !u!114 &1409316775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409316767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 658355adeb15a774e904ad4b5319969f, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 1
+  _currentDurability: 31
+  _saveId: {fileID: 1409316774}
+  _pickedUp: 0
 --- !u!1 &1409986032
 GameObject:
   m_ObjectHideFlags: 0
@@ -14620,7 +14620,7 @@ GameObject:
   - component: {fileID: 1457023357}
   - component: {fileID: 1457023356}
   - component: {fileID: 1457023355}
-  - component: {fileID: 1457023353}
+  - component: {fileID: 1457023360}
   - component: {fileID: 1457023359}
   m_Layer: 0
   m_Name: '[Item] - ID: crushed_tomato_soup'
@@ -14629,27 +14629,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1457023353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1457023352}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: ae95ea3b79bf96b4c82f83635bbd0f54, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &1457023355
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14756,6 +14735,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 9fee49bd8f2d46aca879585acfd1c0f3
+--- !u!114 &1457023360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457023352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: ae95ea3b79bf96b4c82f83635bbd0f54, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1457023359}
+  _pickedUp: 0
 --- !u!1 &1458500765
 GameObject:
   m_ObjectHideFlags: 0
@@ -15498,7 +15498,7 @@ GameObject:
   - component: {fileID: 1630951763}
   - component: {fileID: 1630951762}
   - component: {fileID: 1630951765}
-  - component: {fileID: 1630951759}
+  - component: {fileID: 1630951767}
   - component: {fileID: 1630951766}
   m_Layer: 0
   m_Name: '[Item] - ID: gas_can'
@@ -15507,27 +15507,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1630951759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1630951758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 3b62541978a078a49805cc5b8e00ad87, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 1
-  _currentAmount: 1.24
-  _overrideCurrentDurability: 1
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!23 &1630951762
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15634,6 +15613,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 5040a360f3e649aaa05bc47410a537f6
+--- !u!114 &1630951767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630951758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 3b62541978a078a49805cc5b8e00ad87, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 1
+  _currentAmount: 1.24
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1630951766}
+  _pickedUp: 0
 --- !u!1 &1647497368
 GameObject:
   m_ObjectHideFlags: 0
@@ -16824,7 +16824,7 @@ GameObject:
   - component: {fileID: 1796346386}
   - component: {fileID: 1796346385}
   - component: {fileID: 1796346384}
-  - component: {fileID: 1796346382}
+  - component: {fileID: 1796346388}
   - component: {fileID: 1796346387}
   m_Layer: 0
   m_Name: '[Item] - ID: cedar_wood'
@@ -16848,27 +16848,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1796346382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1796346380}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: e62fb6783217f3546b9b907a93d7b426, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &1796346384
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16960,6 +16939,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 2364c9ce8b0048f584c9f89e08654362
+--- !u!114 &1796346388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796346380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: e62fb6783217f3546b9b907a93d7b426, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1796346387}
+  _pickedUp: 0
 --- !u!1 &1823093616
 GameObject:
   m_ObjectHideFlags: 0
@@ -17191,7 +17191,7 @@ GameObject:
   - component: {fileID: 1869238655}
   - component: {fileID: 1869238654}
   - component: {fileID: 1869238653}
-  - component: {fileID: 1869238651}
+  - component: {fileID: 1869238658}
   - component: {fileID: 1869238657}
   m_Layer: 0
   m_Name: '[Item] - ID: cooked_wolf_meat'
@@ -17200,27 +17200,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1869238651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1869238650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 1a0063f8b6810234d9c9f98f8115224e, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 1
-  _currentDurability: 88
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &1869238653
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17327,6 +17306,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 9fef54269cdc43de9e9f5b10e795f261
+--- !u!114 &1869238658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869238650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 1a0063f8b6810234d9c9f98f8115224e, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1869238657}
+  _pickedUp: 0
 --- !u!1 &1871064381
 GameObject:
   m_ObjectHideFlags: 0
@@ -17571,7 +17571,7 @@ GameObject:
   - component: {fileID: 1877711246}
   - component: {fileID: 1877711245}
   - component: {fileID: 1877711244}
-  - component: {fileID: 1877711242}
+  - component: {fileID: 1877711248}
   - component: {fileID: 1877711247}
   m_Layer: 0
   m_Name: '[Item] - ID: wood_matches'
@@ -17595,27 +17595,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1877711242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877711240}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: c035c76b161f5404d8cc7cd2a084ab25, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &1877711244
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17707,6 +17686,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 7ba448cedc21442b932c4c3e4d2dd3cb
+--- !u!114 &1877711248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877711240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: c035c76b161f5404d8cc7cd2a084ab25, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1877711247}
+  _pickedUp: 0
 --- !u!1 &1887284454
 GameObject:
   m_ObjectHideFlags: 0
@@ -17918,7 +17918,7 @@ GameObject:
   - component: {fileID: 1902506315}
   - component: {fileID: 1902506314}
   - component: {fileID: 1902506313}
-  - component: {fileID: 1902506311}
+  - component: {fileID: 1902506317}
   - component: {fileID: 1902506316}
   m_Layer: 0
   m_Name: '[Item] - ID: stick'
@@ -17942,27 +17942,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1902506311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1902506309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 94930bf166afbc743bd3878b44d87a55, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &1902506313
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18054,6 +18033,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 3ad10916286c4d8eaa5e647bb005e80d
+--- !u!114 &1902506317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902506309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 94930bf166afbc743bd3878b44d87a55, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 1902506316}
+  _pickedUp: 0
 --- !u!1 &1911142801
 GameObject:
   m_ObjectHideFlags: 0
@@ -19733,7 +19733,7 @@ GameObject:
   - component: {fileID: 2063682733}
   - component: {fileID: 2063682732}
   - component: {fileID: 2063682735}
-  - component: {fileID: 2063682729}
+  - component: {fileID: 2063682737}
   - component: {fileID: 2063682736}
   m_Layer: 0
   m_Name: '[Item] - ID: rifle'
@@ -19742,27 +19742,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2063682729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2063682728}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 480525f918f4ca74684b87806eb067bd, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 1
-  _currentAmount: 1
-  _overrideCurrentDurability: 1
-  _currentDurability: 56
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!23 &2063682732
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -19869,6 +19848,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: 2e94a72831544b0b8849def90b6c95a8
+--- !u!114 &2063682737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063682728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 480525f918f4ca74684b87806eb067bd, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 1
+  _currentDurability: 56
+  _saveId: {fileID: 2063682736}
+  _pickedUp: 0
 --- !u!1 &2065134446
 GameObject:
   m_ObjectHideFlags: 0
@@ -19881,7 +19881,7 @@ GameObject:
   - component: {fileID: 2065134452}
   - component: {fileID: 2065134451}
   - component: {fileID: 2065134450}
-  - component: {fileID: 2065134448}
+  - component: {fileID: 2065134454}
   - component: {fileID: 2065134453}
   m_Layer: 0
   m_Name: '[Item] - ID: cardboard_matches'
@@ -19905,27 +19905,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1226543139}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2065134448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2065134446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ce2776d1ed135f489c53f587b2c11cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
-  _itemData: {fileID: 11400000, guid: 1b125c8626966904d9c175d5a78c3ee6, type: 2}
-  _count: 1
-  _stickingOffsetY: -0.5
-  _overrideCurrentAmount: 0
-  _currentAmount: 1
-  _overrideCurrentDurability: 0
-  _currentDurability: 100
-  _saveId: {fileID: 0}
-  _pickedUp: 0
 --- !u!65 &2065134450
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20017,6 +19996,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveId
   _id: fec31c81f0a144359c3f5dbe8da13510
+--- !u!114 &2065134454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065134446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2ba8b36dc015d4d97327981ac3aaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldItem
+  _itemData: {fileID: 11400000, guid: 1b125c8626966904d9c175d5a78c3ee6, type: 2}
+  _count: 1
+  _stickingOffsetY: -0.5
+  _overrideCurrentAmount: 0
+  _currentAmount: 1
+  _overrideCurrentDurability: 0
+  _currentDurability: 100
+  _saveId: {fileID: 2065134453}
+  _pickedUp: 0
 --- !u!1 &2065791161
 GameObject:
   m_ObjectHideFlags: 0
