@@ -14,9 +14,9 @@ public sealed class SaveManager : MonoBehaviour
     [SerializeField] private DayNightCycle _dayNightCycle;
 
     private readonly JsonSaveFileService _fileService = new();
-
     private PlayerTransformSaveService _playerTransformSaveService;
     private SceneSaveableStateService _sceneSaveableStateService;
+    private ReferencedSaveableStateService _referencedSaveableStateService;
 
     private void Start()
     {
@@ -45,6 +45,7 @@ public sealed class SaveManager : MonoBehaviour
     {
         _playerTransformSaveService ??= new PlayerTransformSaveService(_playerTransform);
         _sceneSaveableStateService ??= new SceneSaveableStateService();
+        _referencedSaveableStateService ??= new ReferencedSaveableStateService(_inventoryController, _playerNeedsController, _dayNightCycle);
     }
 
     public void Save()
@@ -54,22 +55,7 @@ public sealed class SaveManager : MonoBehaviour
         EnsureRuntimeServices();
 
         _playerTransformSaveService.Capture(saveData);
-
-        if (_inventoryController != null)
-        {
-            _inventoryController.CaptureState(saveData);
-        }
-
-        if (_playerNeedsController != null)
-        {
-            _playerNeedsController.CaptureState(saveData);
-        }
-
-        if (_dayNightCycle != null)
-        {
-            _dayNightCycle.CaptureState(saveData);
-        }
-
+        _referencedSaveableStateService.Capture(saveData);
         _sceneSaveableStateService.CaptureAll(saveData);
 
         _fileService.Save(_slotName, saveData);
@@ -88,22 +74,7 @@ public sealed class SaveManager : MonoBehaviour
         SaveContext context = new(_itemDatabase);
 
         _playerTransformSaveService.Restore(saveData);
-
-        if (_inventoryController != null)
-        {
-            _inventoryController.RestoreState(saveData, context);
-        }
-
-        if (_playerNeedsController != null)
-        {
-            _playerNeedsController.RestoreState(saveData, context);
-        }
-
-        if (_dayNightCycle != null)
-        {
-            _dayNightCycle.RestoreState(saveData, context);
-        }
-
+        _referencedSaveableStateService.Restore(saveData, context);
         _sceneSaveableStateService.RestoreAll(saveData, context);
 
         Debug.Log($"[Save] Loaded slot '{_slotName}'.");
