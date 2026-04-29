@@ -10,6 +10,13 @@ public abstract class SceneInstaller : MonoBehaviour
 
     protected abstract void Install(IContainer container);
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticState()
+    {
+        Container?.Dispose();
+        Container = null;
+    }
+
     private void Awake()
     {
         Container = new DiContainer();

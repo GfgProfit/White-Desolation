@@ -89,4 +89,12 @@ public partial class InventoryUIController : MonoBehaviour
     private readonly List<InventoryViewEntry> _visibleEntries = new();
     private InventorySortMode _activeSortMode = InventorySortMode.None;
     private InventorySortDirection _activeSortDirection = InventorySortDirection.Ascending;
+
+    private void OnValidate()
+    {
+        if (_playerNeedsSource != null && _playerNeedsSource is not IPlayerNeeds)
+        {
+            Debug.LogWarning($"{nameof(InventoryUIController)} player needs source should implement {nameof(IPlayerNeeds)}.", this);
+        }
+    }
 }

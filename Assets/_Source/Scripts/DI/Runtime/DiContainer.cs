@@ -242,13 +242,20 @@ public sealed class DiContainer : IContainer
     {
         try
         {
-            setter(resolver());
+            object value = resolver();
+
+            if (value == null && !optional)
+            {
+                throw new InvalidOperationException($"{ownerType.Name}.{member} ({kind}) requires {depType.Name}, but it resolved to null.");
+            }
+
+            setter(value);
         }
-        catch
+        catch (Exception exception)
         {
             if (!optional)
             {
-                throw new InvalidOperationException($"{ownerType.Name}.{member} ({kind}) requires {depType.Name}, but it couldn't be resolved.");
+                throw new InvalidOperationException($"{ownerType.Name}.{member} ({kind}) requires {depType.Name}, but it couldn't be resolved.", exception);
             }
         }
     }
