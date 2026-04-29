@@ -58,6 +58,15 @@ public static class CursorLockService
 
     public static bool IsLockedByAnyOwner => Owners.Count > 0;
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticState()
+    {
+        Owners.Clear();
+        _hasSnapshot = false;
+        _initialVisible = false;
+        _initialLockState = CursorLockMode.None;
+    }
+
     private static void RestoreInitialState()
     {
         if (_hasSnapshot)

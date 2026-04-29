@@ -6669,9 +6669,6 @@ MonoBehaviour:
   _loadOnStart: 1
   _itemDatabase: {fileID: 11400000, guid: d03a0cfc3993f5c4abf51d7af7c85c4b, type: 2}
   _playerTransform: {fileID: 899315759}
-  _inventoryController: {fileID: 899315761}
-  _playerNeedsController: {fileID: 899315763}
-  _dayNightCycle: {fileID: 133213263}
 --- !u!4 &712203191
 Transform:
   m_ObjectHideFlags: 0

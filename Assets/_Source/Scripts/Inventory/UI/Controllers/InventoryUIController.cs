@@ -64,20 +64,22 @@ public partial class InventoryUIController : MonoBehaviour
     [SerializeField, Min(0.01f)] private float _useDurationSeconds = 5f;
 
     [Header("Scene References")]
-    [SerializeField] private PlayerNeedsController _playerNeedsController;
+    [FormerlySerializedAs("_playerNeedsController")]
+    [SerializeField] private MonoBehaviour _playerNeedsSource;
 
     [Header("Optional")]
     [SerializeField] private Behaviour[] _disableWhileOpen;
     [FormerlySerializedAs("_obectDisableWhileOpen")]
     [SerializeField] private GameObject[] _objectDisableWhileOpen;
 
-    [Inject] private InventoryController _inventoryController;
-    [Inject] private IPlayerInput _playerInput;
+    [Inject] private InventoryController _inventoryController = null;
+    [Inject] private IPlayerInput _playerInput = null;
 
     private InventoryWindowStateController _windowState;
     private InventoryUseProgressModalPresenter _useProgressModal;
     private InventoryUseProgressApplier _useProgressApplier;
     private InventoryUseCompletionService _useCompletionService;
+    private IPlayerNeeds _playerNeeds;
     private readonly InventoryUseRoutineState _useRoutineState = new();
     private readonly InventorySelectionState _selectionState = new();
     private InventoryCategoryFilter _activeFilter = InventoryCategoryFilter.All;

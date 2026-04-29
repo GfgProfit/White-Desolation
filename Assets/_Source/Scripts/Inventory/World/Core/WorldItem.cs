@@ -21,7 +21,7 @@ public partial class WorldItem : MonoBehaviour, IInteractable, IInteractHoverInf
     [SerializeField] private SaveId _saveId;
     [SerializeField] private bool _pickedUp;
 
-    [Inject] private InventoryController _inventoryController;
+    [Inject] private InventoryController _inventoryController = null;
 
     public string SaveId => _saveId != null ? _saveId.Id : string.Empty;
     public ItemData ItemData => _itemData;

@@ -1,11 +1,11 @@
 public readonly struct ItemUseContext
 {
     public InventoryController Inventory { get; }
-    public PlayerNeedsController PlayerNeeds { get; }
+    public IPlayerNeeds PlayerNeeds { get; }
     public float UseDurationSeconds { get; }
     public bool IsUsingItem { get; }
 
-    public ItemUseContext(InventoryController inventory, PlayerNeedsController playerNeeds, float useDurationSeconds, bool isUsingItem)
+    public ItemUseContext(InventoryController inventory, IPlayerNeeds playerNeeds, float useDurationSeconds, bool isUsingItem)
     {
         Inventory = inventory;
         PlayerNeeds = playerNeeds;

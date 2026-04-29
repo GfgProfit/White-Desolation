@@ -28,6 +28,13 @@ public static class PlayerControlLockService
     private static readonly Dictionary<Behaviour, BehaviourLockState> BehaviourStates = new();
     private static readonly Dictionary<GameObject, GameObjectLockState> GameObjectStates = new();
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStaticState()
+    {
+        BehaviourStates.Clear();
+        GameObjectStates.Clear();
+    }
+
     public static void Lock(object owner, IReadOnlyList<Behaviour> behaviours, IReadOnlyList<GameObject> gameObjects)
     {
         if (owner == null)

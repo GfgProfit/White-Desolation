@@ -30,7 +30,7 @@ public partial class PlayerController : MonoBehaviour
     [SerializeField] private VignetteController _vignetteController;
     [SerializeField] private PlayerNeedsController _needsController;
 
-    [Inject] private IPlayerInput _playerInput;
+    [Inject] private IPlayerInput _playerInput = null;
 
     private float _xRotation;
     private float _currentSpeed;

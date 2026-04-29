@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using UnityEngine;
-
 public sealed class ReferencedSaveableStateService
 {
     public void Capture(GameSaveData saveData)
@@ -10,7 +7,7 @@ public sealed class ReferencedSaveableStateService
             return;
         }
 
-        IGlobalSaveable[] saveables = FindAll();
+        IGlobalSaveable[] saveables = SaveableObjectQuery.FindAll<IGlobalSaveable>();
 
         for (int i = 0; i < saveables.Length; i++)
         {
@@ -25,7 +22,7 @@ public sealed class ReferencedSaveableStateService
             return;
         }
 
-        IGlobalSaveable[] saveables = FindAll();
+        IGlobalSaveable[] saveables = SaveableObjectQuery.FindAll<IGlobalSaveable>();
 
         for (int i = 0; i < saveables.Length; i++)
         {
@@ -33,19 +30,4 @@ public sealed class ReferencedSaveableStateService
         }
     }
 
-    private static IGlobalSaveable[] FindAll()
-    {
-        MonoBehaviour[] behaviours = Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        List<IGlobalSaveable> saveables = new();
-
-        for (int i = 0; i < behaviours.Length; i++)
-        {
-            if (behaviours[i] is IGlobalSaveable saveable)
-            {
-                saveables.Add(saveable);
-            }
-        }
-
-        return saveables.ToArray();
-    }
 }

@@ -17,8 +17,8 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
     [Header("Save")]
     [SerializeField] private SaveId _saveId;
 
-    [Inject] private FireUIController _fireStartingUI;
-    [Inject] private DayNightCycle _dayNightCycle;
+    [Inject] private FireUIController _fireStartingUI = null;
+    [Inject] private DayNightCycle _dayNightCycle = null;
 
     public string SaveId => _saveId != null ? _saveId.Id : string.Empty;
 

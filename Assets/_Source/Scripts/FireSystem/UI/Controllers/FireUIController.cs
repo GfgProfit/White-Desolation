@@ -34,7 +34,7 @@ public partial class FireUIController : MonoBehaviour
     [SerializeField] private Behaviour[] _disableWhileOpen;
     [SerializeField] private GameObject[] _objectsDisableWhileOpen;
 
-    [Inject] private InventoryController _inventory;
+    [Inject] private InventoryController _inventory = null;
 
     private readonly List<ItemData> _availableIgniters = new ();
     private readonly List<ItemData> _availableTinders = new();

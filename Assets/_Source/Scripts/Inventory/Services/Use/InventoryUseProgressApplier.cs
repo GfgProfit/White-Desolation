@@ -2,15 +2,15 @@ using UnityEngine;
 
 public sealed class InventoryUseProgressApplier
 {
-    private readonly PlayerNeedsController _playerNeedsController;
+    private readonly IPlayerNeeds _playerNeeds;
     private readonly float _zeroTolerance;
 
     private float _appliedHydration;
     private float _appliedCalories;
 
-    public InventoryUseProgressApplier(PlayerNeedsController playerNeedsController, float zeroTolerance)
+    public InventoryUseProgressApplier(IPlayerNeeds playerNeeds, float zeroTolerance)
     {
-        _playerNeedsController = playerNeedsController;
+        _playerNeeds = playerNeeds;
         _zeroTolerance = Mathf.Max(0f, zeroTolerance);
     }
 
@@ -50,7 +50,7 @@ public sealed class InventoryUseProgressApplier
 
     private float ApplyHydrationDelta(float hydrationDelta)
     {
-        if (_playerNeedsController == null)
+        if (_playerNeeds == null)
         {
             return 0f;
         }
@@ -62,17 +62,17 @@ public sealed class InventoryUseProgressApplier
 
         if (hydrationDelta > 0f)
         {
-            return _playerNeedsController.RestoreThirstUpTo(hydrationDelta);
+            return _playerNeeds.RestoreThirstUpTo(hydrationDelta);
         }
 
-        float before = _playerNeedsController.Thirst;
-        _playerNeedsController.AddThirst(hydrationDelta);
-        return _playerNeedsController.Thirst - before;
+        float before = _playerNeeds.Thirst;
+        _playerNeeds.AddThirst(hydrationDelta);
+        return _playerNeeds.Thirst - before;
     }
 
     private float ApplyCaloriesDelta(float caloriesDelta)
     {
-        if (_playerNeedsController == null)
+        if (_playerNeeds == null)
         {
             return 0f;
         }
@@ -84,11 +84,11 @@ public sealed class InventoryUseProgressApplier
 
         if (caloriesDelta > 0f)
         {
-            return _playerNeedsController.RestoreHungerUpTo(caloriesDelta);
+            return _playerNeeds.RestoreHungerUpTo(caloriesDelta);
         }
 
-        float before = _playerNeedsController.Hunger;
-        _playerNeedsController.AddHunger(caloriesDelta);
-        return _playerNeedsController.Hunger - before;
+        float before = _playerNeeds.Hunger;
+        _playerNeeds.AddHunger(caloriesDelta);
+        return _playerNeeds.Hunger - before;
     }
 }

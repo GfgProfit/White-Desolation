@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public partial class InventoryUIController
 {
     private void Awake()
@@ -73,11 +75,18 @@ public partial class InventoryUIController
 
     private void InitializeUseServices()
     {
+        _playerNeeds = _playerNeedsSource as IPlayerNeeds;
+
+        if (_playerNeedsSource != null && _playerNeeds == null)
+        {
+            Debug.LogWarning($"{nameof(InventoryUIController)} requires a player needs source that implements {nameof(IPlayerNeeds)}.", this);
+        }
+
         _useProgressModal = new InventoryUseProgressModalPresenter(_useProgressModalRoot, _useProgressFillImage, _useProgressText);
 
         _useProgressModal.InitializeHidden();
 
-        _useProgressApplier = new InventoryUseProgressApplier(_playerNeedsController, ZeroTolerance);
+        _useProgressApplier = new InventoryUseProgressApplier(_playerNeeds, ZeroTolerance);
 
         _useCompletionService = new InventoryUseCompletionService(_inventoryController);
     }

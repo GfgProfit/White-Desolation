@@ -4,15 +4,20 @@ public static class SaveableObjectQuery
 {
     public static ISaveable[] FindAll()
     {
+        return FindAll<ISaveable>();
+    }
+
+    public static T[] FindAll<T>() where T : class
+    {
         MonoBehaviour[] behaviours = Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
-        int count = CountSaveables(behaviours);
-        ISaveable[] saveables = new ISaveable[count];
+        int count = CountSaveables<T>(behaviours);
+        T[] saveables = new T[count];
         int index = 0;
 
         for (int i = 0; i < behaviours.Length; i++)
         {
-            if (behaviours[i] is ISaveable saveable)
+            if (behaviours[i] is T saveable)
             {
                 saveables[index] = saveable;
                 index++;
@@ -22,7 +27,7 @@ public static class SaveableObjectQuery
         return saveables;
     }
 
-    private static int CountSaveables(MonoBehaviour[] behaviours)
+    private static int CountSaveables<T>(MonoBehaviour[] behaviours) where T : class
     {
         if (behaviours == null)
         {
@@ -33,7 +38,7 @@ public static class SaveableObjectQuery
 
         for (int i = 0; i < behaviours.Length; i++)
         {
-            if (behaviours[i] is ISaveable)
+            if (behaviours[i] is T)
             {
                 count++;
             }

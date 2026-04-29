@@ -42,7 +42,7 @@ public partial class InteractController : MonoBehaviour
     [SerializeField] private Behaviour[] _disableWhileInspectOpen;
     [SerializeField] private GameObject[] _objectDisableWhileInspectOpen;
 
-    [Inject] private IPlayerInput _playerInput;
+    [Inject] private IPlayerInput _playerInput = null;
 
     private InteractionTargetService _targetService;
     private InteractionHoverInfoQuery _hoverInfoQuery;

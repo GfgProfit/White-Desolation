@@ -35,7 +35,7 @@ public partial class InventoryUIController
 
     private ItemUseContext BuildItemUseContext()
     {
-        return new ItemUseContext(_inventoryController, _playerNeedsController, _useDurationSeconds, _useRoutineState.IsUsingItem);
+        return new ItemUseContext(_inventoryController, _playerNeeds, _useDurationSeconds, _useRoutineState.IsUsingItem);
     }
 
     private IEnumerator ExecuteUseRoutine(ItemUsePlan plan)
