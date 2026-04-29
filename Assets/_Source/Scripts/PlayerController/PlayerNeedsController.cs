@@ -48,39 +48,12 @@ public class PlayerNeedsController : MonoBehaviour
     public float MaxThirst => _maxThirst;
     public float MaxHunger => _maxHunger;
 
-    public PlayerTemperatureState TemperatureState
-    {
-        get
-        {
-            if (_temperature <= 0f)
-            {
-                return PlayerTemperatureState.FatalHypothermia;
-            }
-
-            if (_temperature <= 25f)
-            {
-                return PlayerTemperatureState.Hypothermia;
-            }
-
-            if (_temperature <= 50f)
-            {
-                return PlayerTemperatureState.Cold;
-            }
-
-            if (_temperature <= 75f)
-            {
-                return PlayerTemperatureState.Cool;
-            }
-
-            return PlayerTemperatureState.Warm;
-        }
-    }
-
-    public bool IsFatalHypothermia => _temperature <= 0f;
-    public bool IsHypothermia => _temperature > 0f && _temperature <= 25f;
-    public bool IsCold => _temperature > 25f && _temperature <= 50f;
-    public bool IsCool => _temperature > 50f && _temperature <= 75f;
-    public bool IsWarm => _temperature > 75f;
+    public PlayerTemperatureState TemperatureState => PlayerTemperatureStateResolver.Resolve(_temperature);
+    public bool IsFatalHypothermia => PlayerTemperatureStateResolver.IsFatalHypothermia(_temperature);
+    public bool IsHypothermia => PlayerTemperatureStateResolver.IsHypothermia(_temperature);
+    public bool IsCold => PlayerTemperatureStateResolver.IsCold(_temperature);
+    public bool IsCool => PlayerTemperatureStateResolver.IsCool(_temperature);
+    public bool IsWarm => PlayerTemperatureStateResolver.IsWarm(_temperature);
 
     public float MissingThirst => Mathf.Max(0f, _maxThirst - _thirst);
     public float MissingHunger => Mathf.Max(0f, _maxHunger - _hunger);
