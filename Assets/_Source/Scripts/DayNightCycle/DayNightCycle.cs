@@ -55,8 +55,8 @@ public class DayNightCycle : MonoBehaviour
     public int CurrentMinute => DayNightTimeMath.GetMinute(_timeOfDayMinutes);
     public float TimeOfDayMinutes => _timeOfDayMinutes;
     public float NormalizedTimeOfDay => DayNightTimeMath.GetNormalizedTimeOfDay(_timeOfDayMinutes);
-    public float DayFactor => EvaluateDayFactor(NormalizedTimeOfDay);
-    public float NightFactor => 1f - DayFactor;
+    public float DayFactor => DayNightBlendMath.EvaluateDayFactor(NormalizedTimeOfDay, _sunriseStart, _sunriseEnd, _sunsetStart, _sunsetEnd);
+    public float NightFactor => DayNightBlendMath.EvaluateNightFactor(DayFactor);
     public bool IsRunning => _isRunning;
 
     public event Action<int, int, int> OnTimeChanged;
@@ -204,8 +204,8 @@ public class DayNightCycle : MonoBehaviour
     {
         float t = NormalizedTimeOfDay;
 
-        float dayFactor = EvaluateDayFactor(t);
-        float nightFactor = 1f - dayFactor;
+        float dayFactor = DayNightBlendMath.EvaluateDayFactor(t, _sunriseStart, _sunriseEnd, _sunsetStart, _sunsetEnd);
+        float nightFactor = DayNightBlendMath.EvaluateNightFactor(dayFactor);
 
         ApplySun(t, dayFactor);
         ApplyMoon(t, nightFactor);
@@ -323,24 +323,6 @@ public class DayNightCycle : MonoBehaviour
 
         RenderSettings.fogColor = _fogColorGradient.Evaluate(t);
         RenderSettings.fogDensity = _fogDensityCurve.Evaluate(t);
-    }
-
-    private float EvaluateDayFactor(float t)
-    {
-        float sunrise = SmoothStep01(_sunriseStart, _sunriseEnd, t);
-        float sunset = 1f - SmoothStep01(_sunsetStart, _sunsetEnd, t);
-        return Mathf.Clamp01(sunrise * sunset);
-    }
-
-    private static float SmoothStep01(float start, float end, float value)
-    {
-        if (Mathf.Approximately(start, end))
-        {
-            return value >= end ? 1f : 0f;
-        }
-
-        float x = Mathf.InverseLerp(start, end, value);
-        return x * x * (3f - 2f * x);
     }
 
     public void SetTimeOfDayMinutes(float timeOfDayMinutes)
