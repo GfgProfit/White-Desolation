@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public partial class InventoryController
 {
-    public bool CanAddItem(ItemData itemData, int count, float? currentAmountOverride = null) => InventoryAddCapacityPolicy.CanAddItem(CurrentCarryWeightKg, _maxCarryWeightKg, itemData, count, currentAmountOverride);
+    public bool CanAddItem(ItemData itemData, int count, float? currentAmountOverride = null) => InventoryAddCapacityPolicy.CanAddItem(itemData, count, currentAmountOverride);
     public InventorySlot GetSlotAt(int slotIndex) => InventorySlotQuery.GetSlotOrNull(_items, slotIndex);
     public bool ContainsUsableItem(ItemData itemData, int count = 1) => InventoryItemQuery.ContainsUsableItem(_items, itemData, count);
     public int GetTotalCount(ItemData itemData) => InventoryItemQuery.GetTotalCount(_items, itemData);

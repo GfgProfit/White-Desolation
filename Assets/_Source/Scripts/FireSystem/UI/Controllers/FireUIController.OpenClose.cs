@@ -20,9 +20,43 @@
 
         _progressView?.Hide();
 
+        _burningWindowPresenter?.Hide();
+
         _controlLockSession.Open();
 
         _startWindowPresenter.Show();
+    }
+
+    public void OpenBurningFire(FireSourceInteractable source)
+    {
+        if (source == null)
+        {
+            return;
+        }
+
+        if (_startRoutine != null)
+        {
+            return;
+        }
+
+        if (!source.IsBurning)
+        {
+            OpenFireStarting(source);
+            return;
+        }
+
+        _currentSource = source;
+
+        ResetBurningState();
+        RefreshBurningWindow();
+
+        _progressView?.Hide();
+
+        _startWindowPresenter?.Hide();
+
+        _controlLockSession.Open();
+
+        _burningWindowPresenter.Show();
     }
 
     public void CloseAll()
@@ -34,6 +68,7 @@
         }
 
         _startWindowPresenter.Hide();
+        _burningWindowPresenter.Hide();
 
         _progressView?.Hide();
 

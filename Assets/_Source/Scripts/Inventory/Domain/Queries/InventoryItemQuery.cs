@@ -111,7 +111,12 @@ public static class InventoryItemQuery
 
     public static bool HasCustomAmount(IReadOnlyList<InventorySlot> slots, ItemData itemData, float requiredAmount)
     {
-        return TryFindCustomAmountSlotIndex(slots, itemData, requiredAmount, out _);
+        if (requiredAmount <= 0f)
+        {
+            return false;
+        }
+
+        return GetTotalAmount(slots, itemData) >= requiredAmount;
     }
 
     public static bool TryFindCustomAmountSlotIndex(IReadOnlyList<InventorySlot> slots, ItemData itemData, float requiredAmount, out int slotIndex)

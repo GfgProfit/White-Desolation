@@ -44,7 +44,7 @@ public static class FireStartCostConsumer
         return entry.Type switch
         {
             FireStartCostType.ItemCount => inventory.TryRemoveItem(entry.Item, entry.Count),
-            FireStartCostType.CustomAmount => inventory.TryConsumeCustomAmountFromFirstMatchingItem(entry.Item, entry.Amount),
+            FireStartCostType.CustomAmount => inventory.TryConsumeCustomAmountAcrossSlots(entry.Item, entry.Amount),
             FireStartCostType.Durability => inventory.TryConsumeDurabilityFromFirstMatchingItem(entry.Item, entry.DurabilityCost),
             _ => false,
         };

@@ -61,7 +61,7 @@ public sealed class FireStartAvailableItemService
 
             if (isAccelerant && item.UsesCustomAmount)
             {
-                available = HasCustomAmount(item, _accelerantAmountCost);
+                available = _inventory != null && _inventory.HasCustomAmount(item, _accelerantAmountCost);
             }
             else
             {
@@ -73,41 +73,6 @@ public sealed class FireStartAvailableItemService
                 result.Add(item);
             }
         }
-    }
-
-    private bool HasCustomAmount(ItemData item, float requiredAmount)
-    {
-        if (_inventory == null || item == null)
-        {
-            return false;
-        }
-
-        for (int i = 0; i < _inventory.Items.Count; i++)
-        {
-            InventorySlot slot = _inventory.Items[i];
-
-            if (slot == null || slot.IsEmpty || slot.Item == null)
-            {
-                continue;
-            }
-
-            if (!ItemDataComparer.AreSame(slot.Item, item))
-            {
-                continue;
-            }
-
-            if (!slot.HasAmount)
-            {
-                continue;
-            }
-
-            if (slot.CurrentAmount >= requiredAmount)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private static bool ContainsSameItem(List<ItemData> items, ItemData item)

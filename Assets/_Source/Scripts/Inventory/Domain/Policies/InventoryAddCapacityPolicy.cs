@@ -1,6 +1,6 @@
 public static class InventoryAddCapacityPolicy
 {
-    public static bool CanAddItem(float currentCarryWeightKg, float maxCarryWeightKg, ItemData itemData, int count, float? currentAmountOverride = null)
+    public static bool CanAddItem(ItemData itemData, int count, float? currentAmountOverride = null)
     {
         if (itemData == null)
         {
@@ -12,8 +12,21 @@ public static class InventoryAddCapacityPolicy
             return false;
         }
 
-        float incomingWeightKg = InventoryWeightCalculator.CalculateIncomingWeightKg(itemData, count, currentAmountOverride);
+        if (itemData.UsesCustomAmount && itemData.MaxAmount <= 0f)
+        {
+            return false;
+        }
 
-        return InventoryCapacityPolicy.CanAcceptWeight(currentCarryWeightKg, maxCarryWeightKg, incomingWeightKg);
+        if (currentAmountOverride.HasValue && currentAmountOverride.Value <= 0f)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static bool CanAddItem(float currentCarryWeightKg, float maxCarryWeightKg, ItemData itemData, int count, float? currentAmountOverride = null)
+    {
+        return CanAddItem(itemData, count, currentAmountOverride);
     }
 }

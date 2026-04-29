@@ -38,6 +38,11 @@ public static class InventoryWeightCalculator
 
         if (itemData.UsesCustomAmount)
         {
+            if (itemData.MaxAmount <= ZeroTolerance)
+            {
+                return 0f;
+            }
+
             float amountPerItem = currentAmountOverride ?? itemData.MaxAmount;
             float totalWeight = 0f;
 

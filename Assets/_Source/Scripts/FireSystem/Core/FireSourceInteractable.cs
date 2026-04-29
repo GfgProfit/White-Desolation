@@ -17,7 +17,7 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
     [Header("Save")]
     [SerializeField] private SaveId _saveId;
 
-    [Inject] private FireUIController _fireStartingUI = null;
+    [Inject] private IFireSourceInteractionHandler _interactionHandler = null;
     [Inject] private IGameTimeConverter _gameTimeConverter = null;
 
     public string SaveId => _saveId != null ? _saveId.Id : string.Empty;
@@ -59,18 +59,13 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
 
     public void Interact()
     {
-        if (_isBurning)
+        if (_interactionHandler == null)
         {
+            Debug.LogWarning("[FireSource] Fire interaction handler is missing.");
             return;
         }
 
-        if (_fireStartingUI == null)
-        {
-            Debug.LogWarning("[FireSource] Fire starting UI is missing.");
-            return;
-        }
-
-        _fireStartingUI.OpenFireStarting(this);
+        _interactionHandler.InteractWith(this);
     }
 
     public void Ignite(float burnGameMinutes)
@@ -87,7 +82,7 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
 
     public InteractionHoverInfo GetHoverInfo()
     {
-        InteractionHoverInfo info = new InteractionHoverInfo
+        InteractionHoverInfo info = new()
         {
             InteractionText = _displayName
         };
@@ -146,6 +141,37 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
         if (_remainingBurnGameMinutes <= 0f)
         {
             _isBurning = false;
+        }
+    }
+
+    public void AddFuel(float burnGameMinutes)
+    {
+        if (burnGameMinutes <= 0f)
+        {
+            return;
+        }
+
+        _remainingBurnGameMinutes = Mathf.Max(0f, _remainingBurnGameMinutes) + burnGameMinutes;
+        _isBurning = _remainingBurnGameMinutes > 0f;
+    }
+
+    public bool HasEnoughBurnTime(float gameMinutes)
+    {
+        return _isBurning && _remainingBurnGameMinutes >= Mathf.Max(0f, gameMinutes);
+    }
+
+    public void ConsumeBurnTime(float gameMinutes)
+    {
+        if (!_isBurning || gameMinutes <= 0f)
+        {
+            return;
+        }
+
+        _remainingBurnGameMinutes = Mathf.Max(0f, _remainingBurnGameMinutes - gameMinutes);
+
+        if (_remainingBurnGameMinutes <= 0f)
+        {
+            Extinguish();
         }
     }
 

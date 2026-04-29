@@ -55,6 +55,15 @@ public class ItemData : ScriptableObject
     [SerializeField, ShowIf(nameof(ShowFireIgniterDurabilityCost)), Range(0f, 1f)]
     private float _fireIgniterDurabilityCost01 = 0.02f;
 
+    [Header("Cooking")]
+    [SerializeField] private bool _canBeCooked;
+    [SerializeField, ShowIf(nameof(_canBeCooked))] private ItemData _cookedResult;
+    [SerializeField, ShowIf(nameof(_canBeCooked)), Min(0.01f)] private float _cookGameMinutes = 60f;
+
+    public bool CanBeCooked => _canBeCooked && _cookedResult != null && _cookGameMinutes > 0f;
+    public ItemData CookedResult => _cookedResult;
+    public float CookGameMinutes => _cookGameMinutes;
+
     public float BurnMinutes => _burnMinutes;
     public float StartChanceBonus => _startChanceBonus;
 
@@ -154,6 +163,11 @@ public class ItemData : ScriptableObject
         if (!_usesCustomAmount)
         {
             _weightDependsOnAmount = false;
+        }
+
+        if (_cookGameMinutes < 0.01f)
+        {
+            _cookGameMinutes = 0.01f;
         }
 
         _fireIgniterDurabilityCost01 = Mathf.Clamp01(_fireIgniterDurabilityCost01);

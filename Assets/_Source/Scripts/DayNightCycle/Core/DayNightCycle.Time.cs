@@ -1,4 +1,6 @@
-﻿public partial class DayNightCycle
+﻿using UnityEngine;
+
+public partial class DayNightCycle
 {
     public void StartTime()
     {
@@ -81,7 +83,12 @@
             return;
         }
 
-        _timeOfDayMinutes += gameMinutesPerSecond * deltaTime;
+        AdvanceGameMinutes(gameMinutesPerSecond * deltaTime);
+    }
+
+    private void AdvanceGameMinutes(float gameMinutes)
+    {
+        _timeOfDayMinutes += gameMinutes;
 
         while (_timeOfDayMinutes >= DayNightTimeMath.MinutesPerDay)
         {
@@ -108,6 +115,21 @@
         }
 
         _lastReportedWholeMinute = wholeMinute;
+        OnTimeChanged?.Invoke(CurrentDay, CurrentHour, CurrentMinute);
+    }
+
+    public void AddGameMinutes(float gameMinutes)
+    {
+        if (Mathf.Approximately(gameMinutes, 0f))
+        {
+            return;
+        }
+
+        AdvanceGameMinutes(gameMinutes);
+
+        _lastReportedWholeMinute = DayNightTimeMath.GetWholeMinute(_timeOfDayMinutes);
+
+        ApplyVisuals();
         OnTimeChanged?.Invoke(CurrentDay, CurrentHour, CurrentMinute);
     }
 }

@@ -170,4 +170,29 @@ public class InventorySlot
 
         CurrentAmount = Mathf.Max(0f, CurrentAmount - amount);
     }
+
+    public float AddAmount(float amount)
+    {
+        if (amount <= 0f || !HasAmount)
+        {
+            return 0f;
+        }
+
+        float availableAmount = Mathf.Max(0f, Item.MaxAmount - CurrentAmount);
+        float addedAmount = Mathf.Min(availableAmount, amount);
+
+        if (addedAmount <= ZeroTolerance)
+        {
+            return 0f;
+        }
+
+        CurrentAmount = Mathf.Min(Item.MaxAmount, CurrentAmount + addedAmount);
+
+        if (Mathf.Abs(Item.MaxAmount - CurrentAmount) <= ZeroTolerance)
+        {
+            CurrentAmount = Item.MaxAmount;
+        }
+
+        return addedAmount;
+    }
 }
