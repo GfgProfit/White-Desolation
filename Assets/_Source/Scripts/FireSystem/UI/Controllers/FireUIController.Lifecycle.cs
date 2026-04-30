@@ -34,6 +34,8 @@ public partial class FireUIController
             _startRoutine = null;
         }
 
+        EndBurningOperationTimeAdvance();
+
         _startWindowPresenter?.Hide();
         _burningWindowPresenter?.Hide();
         _progressView?.Hide();
@@ -55,7 +57,7 @@ public partial class FireUIController
 
         if (burningWindowOpen)
         {
-            RefreshBurningTimeText();
+            RefreshBurningRuntimeState();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))

@@ -88,6 +88,11 @@ public partial class DayNightCycle
 
     private void AdvanceGameMinutes(float gameMinutes)
     {
+        if (Mathf.Approximately(gameMinutes, 0f))
+        {
+            return;
+        }
+
         _timeOfDayMinutes += gameMinutes;
 
         while (_timeOfDayMinutes >= DayNightTimeMath.MinutesPerDay)
@@ -103,6 +108,8 @@ public partial class DayNightCycle
             CurrentDay = DayNightTimeMath.ClampDay(CurrentDay - 1);
             OnDayChanged?.Invoke(CurrentDay);
         }
+
+        OnGameMinutesAdvanced?.Invoke(gameMinutes);
     }
 
     private void ReportMinuteChangeIfNeeded()

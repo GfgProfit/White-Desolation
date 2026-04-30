@@ -19,6 +19,7 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
 
     [Inject] private IFireSourceInteractionHandler _interactionHandler = null;
     [Inject] private IGameTimeConverter _gameTimeConverter = null;
+    [Inject] private IGameTimeAdvanceNotifier _gameTimeAdvanceNotifier = null;
 
     public string SaveId => _saveId != null ? _saveId.Id : string.Empty;
 
@@ -27,6 +28,8 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
     public float RemainingBurnSeconds => GameMinutesToRealSeconds(_remainingBurnGameMinutes);
     public float RemainingBurnMinutes => _remainingBurnGameMinutes;
     public float TemperatureCelsius => _temperatureCelsius;
+
+    private IGameTimeAdvanceNotifier _subscribedGameTimeNotifier;
 
     private void Reset()
     {
@@ -41,20 +44,47 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
         }
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        if (!_isBurning)
+        SubscribeToGameTime();
+    }
+
+    private void Start()
+    {
+        SubscribeToGameTime();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeFromGameTime();
+    }
+
+    private void SubscribeToGameTime()
+    {
+        if (_gameTimeAdvanceNotifier == null || _subscribedGameTimeNotifier == _gameTimeAdvanceNotifier)
         {
             return;
         }
 
-        float gameMinutesDelta = RealSecondsToGameMinutes(Time.deltaTime);
-        _remainingBurnGameMinutes = Mathf.Max(0f, _remainingBurnGameMinutes - gameMinutesDelta);
+        UnsubscribeFromGameTime();
+        _subscribedGameTimeNotifier = _gameTimeAdvanceNotifier;
+        _subscribedGameTimeNotifier.OnGameMinutesAdvanced += HandleGameMinutesAdvanced;
+    }
 
-        if (_remainingBurnGameMinutes <= 0f)
+    private void UnsubscribeFromGameTime()
+    {
+        if (_subscribedGameTimeNotifier == null)
         {
-            Extinguish();
+            return;
         }
+
+        _subscribedGameTimeNotifier.OnGameMinutesAdvanced -= HandleGameMinutesAdvanced;
+        _subscribedGameTimeNotifier = null;
+    }
+
+    private void HandleGameMinutesAdvanced(float gameMinutes)
+    {
+        ConsumeBurnTime(gameMinutes);
     }
 
     public void Interact()
@@ -173,16 +203,6 @@ public sealed class FireSourceInteractable : MonoBehaviour, IInteractable, IInte
         {
             Extinguish();
         }
-    }
-
-    private float RealSecondsToGameMinutes(float realSeconds)
-    {
-        if (_gameTimeConverter == null)
-        {
-            return realSeconds / 60f;
-        }
-
-        return _gameTimeConverter.RealSecondsToGameMinutes(realSeconds);
     }
 
     private float GameMinutesToRealSeconds(float gameMinutes)

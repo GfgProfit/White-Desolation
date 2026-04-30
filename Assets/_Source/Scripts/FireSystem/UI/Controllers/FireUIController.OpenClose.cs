@@ -63,8 +63,7 @@
     {
         if (_startRoutine != null)
         {
-            StopCoroutine(_startRoutine);
-            _startRoutine = null;
+            return;
         }
 
         _startWindowPresenter.Hide();

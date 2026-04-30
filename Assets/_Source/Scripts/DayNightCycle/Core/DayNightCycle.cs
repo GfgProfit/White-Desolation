@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public partial class DayNightCycle : MonoBehaviour, IGameTimeConverter, IGameTimeAdvancer, IGlobalSaveable
+public partial class DayNightCycle : MonoBehaviour, IGameTimeConverter, IGameTimeAdvancer, IGameTimeRunController, IGameTimeAdvanceNotifier, IGlobalSaveable
 {
     [Header("Time")]
     [SerializeField, Min(1f)] private float _realSecondsPerGameDay = 1800f;
@@ -61,6 +61,7 @@ public partial class DayNightCycle : MonoBehaviour, IGameTimeConverter, IGameTim
 
     public event Action<int, int, int> OnTimeChanged;
     public event Action<int> OnDayChanged;
+    public event Action<float> OnGameMinutesAdvanced;
 
     private float _timeOfDayMinutes;
     private int _lastReportedWholeMinute = -1;

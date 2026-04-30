@@ -45,6 +45,7 @@ public partial class FireUIController : MonoBehaviour
 
     [Inject] private InventoryController _inventory = null;
     [Inject] private IGameTimeAdvancer _gameTimeAdvancer = null;
+    [Inject(true)] private IGameTimeRunController _gameTimeRunController = null;
 
     private readonly List<ItemData> _availableIgniters = new();
     private readonly List<ItemData> _availableTinders = new();
@@ -59,6 +60,11 @@ public partial class FireUIController : MonoBehaviour
     private FireSourceInteractable _currentSource;
 
     private Coroutine _startRoutine;
+    private bool _burningOperationAdvancingTime;
+    private bool _restoreGameTimeRunning;
+    private bool _previousGameTimeRunning;
+    private bool _lastBurningWindowIsBurning;
+    private int _lastBurningWindowRemainingMinutes = -1;
 
     private FireUIControlLockSession _controlLockSession;
     private FireStartWindowPresenter _startWindowPresenter;

@@ -51,20 +51,21 @@ public sealed class FireBurningOperationWindowPresenter
 
     public void RebuildList(IReadOnlyList<FireBurningOperationListEntry> entries, int selectedIndex, Action<int> onSelected, string amountText, bool canDecreaseAmount, bool canIncreaseAmount)
     {
-        ClearList();
-
         if (_view == null || _view.ListRoot == null || _view.ListItemPrefab == null || entries == null)
         {
+            HideUnusedItems(0);
             return;
         }
 
         for (int i = 0; i < entries.Count; i++)
         {
             int capturedIndex = i;
-            FireOperationListItemView itemView = UnityEngine.Object.Instantiate(_view.ListItemPrefab, _view.ListRoot);
+            FireOperationListItemView itemView = GetOrCreateItem(i);
+            itemView.gameObject.SetActive(true);
             itemView.Refresh(entries[i], i == selectedIndex, () => onSelected?.Invoke(capturedIndex), amountText, canDecreaseAmount, canIncreaseAmount, _onDecreaseAmount, _onIncreaseAmount);
-            _spawnedItems.Add(itemView);
         }
+
+        HideUnusedItems(entries.Count);
     }
 
     public void SetBurningTime(string text)
@@ -120,5 +121,37 @@ public sealed class FireBurningOperationWindowPresenter
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() => action?.Invoke());
+    }
+
+    private FireOperationListItemView GetOrCreateItem(int index)
+    {
+        if (index < _spawnedItems.Count && _spawnedItems[index] != null)
+        {
+            return _spawnedItems[index];
+        }
+
+        FireOperationListItemView itemView = UnityEngine.Object.Instantiate(_view.ListItemPrefab, _view.ListRoot);
+
+        if (index < _spawnedItems.Count)
+        {
+            _spawnedItems[index] = itemView;
+        }
+        else
+        {
+            _spawnedItems.Add(itemView);
+        }
+
+        return itemView;
+    }
+
+    private void HideUnusedItems(int usedCount)
+    {
+        for (int i = usedCount; i < _spawnedItems.Count; i++)
+        {
+            if (_spawnedItems[i] != null)
+            {
+                _spawnedItems[i].gameObject.SetActive(false);
+            }
+        }
     }
 }

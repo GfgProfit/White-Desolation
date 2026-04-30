@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public partial class FireUIController
 {
     private void RefreshBurningWindow()
@@ -16,6 +18,7 @@ public partial class FireUIController
         RefreshBurningTimeText();
         _burningWindowPresenter.RebuildList(_burningOperationList.Entries, _burningSelectionState.SelectedIndex, SelectBurningListItem, amountText, canDecreaseAmount, canIncreaseAmount);
         _burningWindowPresenter.SetAction(FireBurningDisplayFormatter.GetActionText(plan.Type), plan.CanExecute);
+        RememberBurningWindowRuntimeState();
     }
 
     private FireBurningOperationPlan BuildBurningOperationPlan()
@@ -54,6 +57,39 @@ public partial class FireUIController
     {
         float remainingMinutes = _currentSource != null ? _currentSource.RemainingBurnMinutes : 0f;
         _burningWindowPresenter.SetBurningTime(FireBurningDisplayFormatter.BuildRemainingBurnTimeText(remainingMinutes));
+    }
+
+    private void RefreshBurningRuntimeState()
+    {
+        if (_startRoutine != null)
+        {
+            RefreshBurningTimeText();
+            return;
+        }
+
+        bool isBurning = _currentSource != null && _currentSource.IsBurning;
+
+        if (_currentSource != null && !isBurning)
+        {
+            CloseAll();
+            return;
+        }
+
+        int remainingMinutes = Mathf.CeilToInt(Mathf.Max(0f, _currentSource != null ? _currentSource.RemainingBurnMinutes : 0f));
+
+        if (isBurning != _lastBurningWindowIsBurning || remainingMinutes != _lastBurningWindowRemainingMinutes)
+        {
+            RefreshBurningWindow();
+            return;
+        }
+
+        RefreshBurningTimeText();
+    }
+
+    private void RememberBurningWindowRuntimeState()
+    {
+        _lastBurningWindowIsBurning = _currentSource != null && _currentSource.IsBurning;
+        _lastBurningWindowRemainingMinutes = Mathf.CeilToInt(Mathf.Max(0f, _currentSource != null ? _currentSource.RemainingBurnMinutes : 0f));
     }
 
     private float GetSelectedMaxWaterAmount()
