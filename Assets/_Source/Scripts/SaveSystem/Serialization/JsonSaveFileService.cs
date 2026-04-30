@@ -2,31 +2,26 @@ using System;
 using System.IO;
 using UnityEngine;
 
-public sealed class JsonSaveFileService
+public sealed class JsonSaveFileService : ISaveFileService
 {
-    private const string SaveDirectoryName = "Saves";
-    private const string SaveExtension = ".json";
-    private const string DefaultSlotName = "default";
+    private readonly ISavePathProvider _pathProvider;
+    private readonly IGameSaveSerializer _serializer;
 
-    private readonly string _rootDirectory;
-
-    public JsonSaveFileService(string rootDirectory = null)
+    public JsonSaveFileService(string rootDirectory = null) : this(
+        new SaveFilePathProvider(rootDirectory),
+        new JsonGameSaveSerializer())
     {
-        _rootDirectory = string.IsNullOrWhiteSpace(rootDirectory) ? Application.persistentDataPath : rootDirectory;
+    }
+
+    public JsonSaveFileService(ISavePathProvider pathProvider, IGameSaveSerializer serializer)
+    {
+        _pathProvider = pathProvider ?? throw new ArgumentNullException(nameof(pathProvider));
+        _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
     }
 
     public string GetSavePath(string slotName)
     {
-        string safeSlotName = GetSafeSlotName(slotName);
-
-        string directory = Path.Combine(_rootDirectory, SaveDirectoryName);
-
-        if (!Directory.Exists(directory))
-        {
-            Directory.CreateDirectory(directory);
-        }
-
-        return Path.Combine(directory, safeSlotName + SaveExtension);
+        return _pathProvider.GetSavePath(slotName);
     }
 
     public void Save(string slotName, GameSaveData saveData)
@@ -39,7 +34,7 @@ public sealed class JsonSaveFileService
         try
         {
             string path = GetSavePath(slotName);
-            string json = JsonUtility.ToJson(saveData, true);
+            string json = _serializer.Serialize(saveData);
 
             File.WriteAllText(path, json);
 
@@ -64,7 +59,7 @@ public sealed class JsonSaveFileService
             }
 
             string json = File.ReadAllText(path);
-            saveData = JsonUtility.FromJson<GameSaveData>(json);
+            saveData = _serializer.Deserialize(json);
 
             return saveData != null;
         }
@@ -104,56 +99,5 @@ public sealed class JsonSaveFileService
         {
             Debug.LogException(exception);
         }
-    }
-
-    private static string GetSafeSlotName(string slotName)
-    {
-        if (string.IsNullOrWhiteSpace(slotName))
-        {
-            return DefaultSlotName;
-        }
-
-        string trimmedSlotName = slotName.Trim();
-        char[] invalidChars = Path.GetInvalidFileNameChars();
-        char[] safeChars = new char[trimmedSlotName.Length];
-        int safeLength = 0;
-
-        for (int i = 0; i < trimmedSlotName.Length; i++)
-        {
-            char character = trimmedSlotName[i];
-
-            if (IsInvalidFileNameCharacter(character, invalidChars))
-            {
-                safeChars[safeLength] = '_';
-            }
-            else
-            {
-                safeChars[safeLength] = character;
-            }
-
-            safeLength++;
-        }
-
-        string safeSlotName = new(safeChars, 0, safeLength);
-
-        return string.IsNullOrWhiteSpace(safeSlotName) ? DefaultSlotName : safeSlotName;
-    }
-
-    private static bool IsInvalidFileNameCharacter(char character, char[] invalidChars)
-    {
-        if (character == Path.DirectorySeparatorChar || character == Path.AltDirectorySeparatorChar)
-        {
-            return true;
-        }
-
-        for (int i = 0; i < invalidChars.Length; i++)
-        {
-            if (character == invalidChars[i])
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

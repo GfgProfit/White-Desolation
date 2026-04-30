@@ -2,8 +2,21 @@
 {
     private void EnsureRuntimeServices()
     {
-        _playerTransformSaveService ??= new PlayerTransformSaveService(_playerTransform);
-        _sceneSaveableStateService ??= new SceneSaveableStateService();
-        _referencedSaveableStateService ??= new ReferencedSaveableStateService();
+        _saveContextFactory ??= new SaveContextFactory();
+
+        if (_gameStateService != null)
+        {
+            return;
+        }
+
+        ISaveableObjectProvider saveableObjectProvider = new SceneSaveableObjectProvider();
+        PlayerTransformSaveService playerTransformSaveService = new(_playerTransform);
+        ReferencedSaveableStateService referencedSaveableStateService = new(saveableObjectProvider);
+        SceneSaveableStateService sceneSaveableStateService = new(saveableObjectProvider);
+
+        _gameStateService = new SaveGameStateService(
+            playerTransformSaveService,
+            referencedSaveableStateService,
+            sceneSaveableStateService);
     }
 }

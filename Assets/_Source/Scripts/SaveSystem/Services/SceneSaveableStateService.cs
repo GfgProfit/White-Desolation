@@ -2,6 +2,13 @@
 
 public sealed class SceneSaveableStateService
 {
+    private readonly ISaveableObjectProvider _saveableObjectProvider;
+
+    public SceneSaveableStateService(ISaveableObjectProvider saveableObjectProvider = null)
+    {
+        _saveableObjectProvider = saveableObjectProvider ?? new SceneSaveableObjectProvider();
+    }
+
     public void CaptureAll(GameSaveData saveData)
     {
         if (saveData == null)
@@ -9,7 +16,7 @@ public sealed class SceneSaveableStateService
             return;
         }
 
-        ISaveable[] saveables = SaveableObjectQuery.FindAll();
+        ISaveable[] saveables = _saveableObjectProvider.FindAll<ISaveable>();
 
         for (int i = 0; i < saveables.Length; i++)
         {
@@ -37,7 +44,7 @@ public sealed class SceneSaveableStateService
             return;
         }
 
-        ISaveable[] saveables = SaveableObjectQuery.FindAll();
+        ISaveable[] saveables = _saveableObjectProvider.FindAll<ISaveable>();
 
         for (int i = 0; i < saveables.Length; i++)
         {

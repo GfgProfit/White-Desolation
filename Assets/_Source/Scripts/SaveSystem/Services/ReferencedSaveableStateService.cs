@@ -1,5 +1,12 @@
 public sealed class ReferencedSaveableStateService
 {
+    private readonly ISaveableObjectProvider _saveableObjectProvider;
+
+    public ReferencedSaveableStateService(ISaveableObjectProvider saveableObjectProvider = null)
+    {
+        _saveableObjectProvider = saveableObjectProvider ?? new SceneSaveableObjectProvider();
+    }
+
     public void Capture(GameSaveData saveData)
     {
         if (saveData == null)
@@ -7,7 +14,7 @@ public sealed class ReferencedSaveableStateService
             return;
         }
 
-        IGlobalSaveable[] saveables = SaveableObjectQuery.FindAll<IGlobalSaveable>();
+        IGlobalSaveable[] saveables = _saveableObjectProvider.FindAll<IGlobalSaveable>();
 
         for (int i = 0; i < saveables.Length; i++)
         {
@@ -22,12 +29,11 @@ public sealed class ReferencedSaveableStateService
             return;
         }
 
-        IGlobalSaveable[] saveables = SaveableObjectQuery.FindAll<IGlobalSaveable>();
+        IGlobalSaveable[] saveables = _saveableObjectProvider.FindAll<IGlobalSaveable>();
 
         for (int i = 0; i < saveables.Length; i++)
         {
             saveables[i]?.RestoreState(saveData, context);
         }
     }
-
 }

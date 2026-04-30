@@ -12,10 +12,9 @@ public sealed partial class SaveManager : MonoBehaviour
     [SerializeField] private ScriptableObject _itemDatabaseAsset;
     [SerializeField] private Transform _playerTransform;
 
-    private readonly JsonSaveFileService _fileService = new();
+    private readonly ISaveFileService _fileService = new JsonSaveFileService();
     private readonly SaveHotkeyInputService _hotkeyInputService = new();
 
-    private PlayerTransformSaveService _playerTransformSaveService;
-    private SceneSaveableStateService _sceneSaveableStateService;
-    private ReferencedSaveableStateService _referencedSaveableStateService;
+    private SaveContextFactory _saveContextFactory;
+    private SaveGameStateService _gameStateService;
 }

@@ -15,6 +15,19 @@ public sealed class SaveContext
         _servicesByType[service.GetType()] = service;
     }
 
+    public void RegisterRange(params object[] services)
+    {
+        if (services == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < services.Length; i++)
+        {
+            Register(services[i]);
+        }
+    }
+
     public bool TryGet<T>(out T service) where T : class
     {
         foreach (object candidate in _servicesByType.Values)

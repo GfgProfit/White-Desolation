@@ -4,13 +4,9 @@ public sealed partial class SaveManager
 {
     public void Save()
     {
-        GameSaveData saveData = new();
-
         EnsureRuntimeServices();
 
-        _playerTransformSaveService.Capture(saveData);
-        _referencedSaveableStateService.Capture(saveData);
-        _sceneSaveableStateService.CaptureAll(saveData);
+        GameSaveData saveData = _gameStateService.Capture();
 
         _fileService.Save(_slotName, saveData);
     }
@@ -27,9 +23,7 @@ public sealed partial class SaveManager
 
         SaveContext context = CreateSaveContext();
 
-        _playerTransformSaveService.Restore(saveData);
-        _referencedSaveableStateService.Restore(saveData, context);
-        _sceneSaveableStateService.RestoreAll(saveData, context);
+        _gameStateService.Restore(saveData, context);
 
         Debug.Log($"[Save] Loaded slot '{_slotName}'.");
     }
@@ -41,9 +35,7 @@ public sealed partial class SaveManager
 
     private SaveContext CreateSaveContext()
     {
-        SaveContext context = new();
-        context.Register(_itemDatabaseAsset);
-
-        return context;
+        EnsureRuntimeServices();
+        return _saveContextFactory.Create(_itemDatabaseAsset);
     }
 }
