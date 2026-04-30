@@ -1,10 +1,15 @@
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [DefaultExecutionOrder(-1000)]
 public abstract class SceneInstaller : MonoBehaviour
 {
     [Header("Auto-inject scene on Awake")]
-    [SerializeField] private bool InjectOnAwake = true;
+    [FormerlySerializedAs("InjectOnAwake")]
+    [SerializeField] private bool _injectOnAwake = true;
+
+    private IContainer _container;
 
     public static IContainer Container { get; private set; }
 
@@ -19,28 +24,66 @@ public abstract class SceneInstaller : MonoBehaviour
 
     private void Awake()
     {
-        Container = new DiContainer();
-        Install(Container);
+        _container = CreateContainer();
 
-        if (InjectOnAwake)
+        if (_container == null)
         {
-            Inject();
+            throw new InvalidOperationException($"{GetType().Name} returned null container.");
         }
-    }
 
-    private void Inject()
-    {
-        GameObject[] roots = gameObject.scene.GetRootGameObjects();
+        Container = _container;
 
-        for (int i = 0; i < roots.Length; i++)
+        try
         {
-            Container.InjectGameObject(roots[i], true);
+            Install(_container);
+
+            if (_injectOnAwake)
+            {
+                InjectScene();
+            }
+        }
+        catch
+        {
+            DisposeContainer();
+            throw;
         }
     }
 
     private void OnDestroy()
     {
-        Container?.Dispose();
-        Container = null;
+        DisposeContainer();
+    }
+
+    protected virtual IContainer CreateContainer()
+    {
+        return new DiContainer();
+    }
+
+    protected void InjectScene()
+    {
+        if (_container == null)
+        {
+            return;
+        }
+
+        GameObject[] roots = gameObject.scene.GetRootGameObjects();
+
+        for (int i = 0; i < roots.Length; i++)
+        {
+            _container.InjectGameObject(roots[i], true);
+        }
+    }
+
+    private void DisposeContainer()
+    {
+        IContainer container = _container;
+        _container = null;
+
+        if (ReferenceEquals(Container, container))
+        {
+            Container = null;
+        }
+
+        container?.Dispose();
     }
 }

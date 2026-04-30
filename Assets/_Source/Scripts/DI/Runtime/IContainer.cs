@@ -7,6 +7,8 @@ public interface IContainer : IDisposable
     BindingBuilder Bind<TAbstraction>(Func<IContainer, TAbstraction> factory);
     BindingBuilder BindInstance<T>(T instance);
 
+    bool IsRegistered<T>();
+    bool IsRegistered(Type type);
     T Resolve<T>();
     bool TryResolve<T>(out T value);
     object Resolve(Type type);
