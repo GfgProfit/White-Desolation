@@ -13,13 +13,13 @@ public sealed partial class SaveManager
 
     public void Load()
     {
+        EnsureRuntimeServices();
+
         if (!_fileService.TryLoad(_slotName, out GameSaveData saveData))
         {
             Debug.Log($"[Save] No save file for slot '{_slotName}'.");
             return;
         }
-
-        EnsureRuntimeServices();
 
         SaveContext context = CreateSaveContext();
 
@@ -30,6 +30,8 @@ public sealed partial class SaveManager
 
     public void DeleteSave()
     {
+        EnsureRuntimeServices();
+
         _fileService.Delete(_slotName);
     }
 

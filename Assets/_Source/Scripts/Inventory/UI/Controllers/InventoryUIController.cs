@@ -57,6 +57,9 @@ public partial class InventoryUIController : MonoBehaviour
     [SerializeField] private TMP_Text _useButtonLabel;
     [SerializeField] private Button _dropOneButton;
 
+    [Header("Drop")]
+    [SerializeField] private InventoryItemDropper _itemDropper;
+
     [Header("Use Progress Modal")]
     [SerializeField] private GameObject _useProgressModalRoot;
     [SerializeField] private Image _useProgressFillImage;

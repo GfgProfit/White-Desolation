@@ -34,6 +34,9 @@ public class ItemData : ScriptableObject
     [SerializeField] private bool _weightDependsOnAmount;
     [SerializeField, Min(0f)] private float _weightPerUnit = 0f;
 
+    [Header("World")]
+    [SerializeField] private WorldItem _worldPrefab;
+
     [Header("Consumable Effects")]
     [SerializeField] private float _restoreHydration;
     [SerializeField] private int _restoreCalories;
@@ -110,6 +113,7 @@ public class ItemData : ScriptableObject
     public float BaseWeightKg => _baseWeightKg;
     public bool WeightDependsOnAmount => _weightDependsOnAmount && _usesCustomAmount;
     public float WeightPerUnit => _weightPerUnit;
+    public WorldItem WorldPrefab => _worldPrefab;
 
     public float RestoreHydration => _restoreHydration;
     public int RestoreCalories => _restoreCalories;

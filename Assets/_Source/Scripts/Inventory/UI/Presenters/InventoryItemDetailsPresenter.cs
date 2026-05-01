@@ -1,6 +1,6 @@
 public static class InventoryItemDetailsPresenter
 {
-    public static InventoryItemDetailsViewModel Build(InventorySlot slot, ItemUseContext useContext, bool isUsingItem)
+    public static InventoryItemDetailsViewModel Build(InventorySlot slot, ItemUseContext useContext, bool canDrop)
     {
         bool hasSelection = slot != null && !slot.IsEmpty && slot.Item != null;
 
@@ -10,7 +10,6 @@ public static class InventoryItemDetailsPresenter
         }
 
         bool canUse = ItemUseService.CanUseSlot(useContext, slot);
-        bool canDrop = !isUsingItem;
 
         return new InventoryItemDetailsViewModel(
             slot,

@@ -82,7 +82,8 @@ public partial class InventoryUIController
 
         InventorySlot slot = _inventoryController != null ? _inventoryController.GetSlotAt(selectedSlotIndex) : null;
 
-        InventoryItemDetailsViewModel viewModel = InventoryItemDetailsPresenter.Build(slot, BuildItemUseContext(), _useRoutineState.IsUsingItem);
+        bool canDrop = _itemDropper != null && _itemDropper.CanDrop(slot) && !_useRoutineState.IsUsingItem;
+        InventoryItemDetailsViewModel viewModel = InventoryItemDetailsPresenter.Build(slot, BuildItemUseContext(), canDrop);
 
         ApplyDetailsViewModel(viewModel);
     }

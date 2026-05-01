@@ -2,6 +2,7 @@
 {
     private void EnsureRuntimeServices()
     {
+        _fileService ??= new JsonSaveFileService();
         _saveContextFactory ??= new SaveContextFactory();
 
         if (_gameStateService != null)
@@ -13,10 +14,12 @@
         PlayerTransformSaveService playerTransformSaveService = new(_playerTransform);
         ReferencedSaveableStateService referencedSaveableStateService = new(saveableObjectProvider);
         SceneSaveableStateService sceneSaveableStateService = new(saveableObjectProvider);
+        SavedWorldItemSpawnService savedWorldItemSpawnService = new(saveableObjectProvider, _fallbackWorldItemPrefab);
 
         _gameStateService = new SaveGameStateService(
             playerTransformSaveService,
             referencedSaveableStateService,
-            sceneSaveableStateService);
+            sceneSaveableStateService,
+            savedWorldItemSpawnService);
     }
 }

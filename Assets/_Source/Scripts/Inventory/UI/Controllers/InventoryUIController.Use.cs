@@ -111,6 +111,6 @@ public partial class InventoryUIController
             return;
         }
 
-        _inventoryController.TryRemoveFromSlot(selectedSlotIndex, 1);
+        _itemDropper?.TryDropFromSlot(selectedSlotIndex, 1);
     }
 }

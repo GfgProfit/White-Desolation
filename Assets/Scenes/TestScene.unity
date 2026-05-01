@@ -284,6 +284,7 @@ GameObject:
   - component: {fileID: 16256871}
   - component: {fileID: 16256870}
   - component: {fileID: 16256869}
+  - component: {fileID: 16256874}
   - component: {fileID: 16256873}
   - component: {fileID: 16256872}
   m_Layer: 0
@@ -413,13 +414,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: fb60772c6b971ed4091925ade5856fae, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 1
   _currentDurability: 0
   _saveId: {fileID: 16256872}
   _pickedUp: 0
+--- !u!54 &16256874
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16256865}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &59246393
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2740,6 +2767,7 @@ GameObject:
   - component: {fileID: 254319099}
   - component: {fileID: 254319098}
   - component: {fileID: 254319097}
+  - component: {fileID: 254319102}
   - component: {fileID: 254319101}
   - component: {fileID: 254319100}
   m_Layer: 0
@@ -2869,13 +2897,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 97ce2d83449843d4982169e90c32225d, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 254319100}
   _pickedUp: 0
+--- !u!54 &254319102
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 254319093}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &255570503
 GameObject:
   m_ObjectHideFlags: 0
@@ -4939,6 +4993,7 @@ GameObject:
   - component: {fileID: 457670627}
   - component: {fileID: 457670626}
   - component: {fileID: 457670629}
+  - component: {fileID: 457670632}
   - component: {fileID: 457670631}
   - component: {fileID: 457670630}
   m_Layer: 0
@@ -5068,13 +5123,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: ccc7a204f9fe5734d89bf925f9d1db99, type: 2}
   _count: 13
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 457670630}
   _pickedUp: 0
+--- !u!54 &457670632
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457670622}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &459784634
 GameObject:
   m_ObjectHideFlags: 0
@@ -5547,6 +5628,7 @@ GameObject:
   - component: {fileID: 533700655}
   - component: {fileID: 533700654}
   - component: {fileID: 533700657}
+  - component: {fileID: 533700660}
   - component: {fileID: 533700659}
   - component: {fileID: 533700658}
   m_Layer: 0
@@ -5676,13 +5758,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: d5781ff96151fa14e8421e21085e7eb6, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 1
   _currentAmount: 2.53
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 533700658}
   _pickedUp: 0
+--- !u!54 &533700660
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533700650}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &546252246
 GameObject:
   m_ObjectHideFlags: 0
@@ -5761,6 +5869,7 @@ GameObject:
   - component: {fileID: 549376229}
   - component: {fileID: 549376228}
   - component: {fileID: 549376227}
+  - component: {fileID: 549376232}
   - component: {fileID: 549376231}
   - component: {fileID: 549376230}
   m_Layer: 0
@@ -5890,13 +5999,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 32980f66202aad0489e5d18adcf51606, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 549376230}
   _pickedUp: 0
+--- !u!54 &549376232
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549376223}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &561452329
 GameObject:
   m_ObjectHideFlags: 0
@@ -6250,6 +6385,7 @@ GameObject:
   - component: {fileID: 614310015}
   - component: {fileID: 614310014}
   - component: {fileID: 614310013}
+  - component: {fileID: 614310019}
   - component: {fileID: 614310018}
   - component: {fileID: 614310017}
   m_Layer: 0
@@ -6379,13 +6515,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 26e6abb5960b2724fbbbf7bf0a97b5b2, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 614310017}
   _pickedUp: 0
+--- !u!54 &614310019
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614310010}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &624426553
 GameObject:
   m_ObjectHideFlags: 0
@@ -7202,6 +7364,7 @@ MonoBehaviour:
   _loadOnStart: 1
   _itemDatabaseAsset: {fileID: 11400000, guid: d03a0cfc3993f5c4abf51d7af7c85c4b, type: 2}
   _playerTransform: {fileID: 899315759}
+  _fallbackWorldItemPrefab: {fileID: 2254717776865417175, guid: 498406430a9c2664e86234a5c293b339, type: 3}
 --- !u!4 &712203191
 Transform:
   m_ObjectHideFlags: 0
@@ -7788,6 +7951,7 @@ GameObject:
   - component: {fileID: 832992029}
   - component: {fileID: 832992028}
   - component: {fileID: 832992027}
+  - component: {fileID: 832992032}
   - component: {fileID: 832992031}
   - component: {fileID: 832992030}
   m_Layer: 0
@@ -7917,13 +8081,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 58aa546926d3d1e40b5b3846680a1ca2, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 832992030}
   _pickedUp: 0
+--- !u!54 &832992032
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832992023}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &850703724
 GameObject:
   m_ObjectHideFlags: 0
@@ -9130,6 +9320,7 @@ GameObject:
   - component: {fileID: 899315764}
   - component: {fileID: 899315766}
   - component: {fileID: 899315765}
+  - component: {fileID: 899315767}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -9450,6 +9641,7 @@ MonoBehaviour:
   _useButton: {fileID: 1134596933}
   _useButtonLabel: {fileID: 1048818550}
   _dropOneButton: {fileID: 1226217744}
+  _itemDropper: {fileID: 899315767}
   _useProgressModalRoot: {fileID: 1893761921}
   _useProgressFillImage: {fileID: 1007497162}
   _useProgressText: {fileID: 337111549}
@@ -9577,6 +9769,24 @@ MonoBehaviour:
   _actionButton: {fileID: 768584851}
   _actionButtonText: {fileID: 1285091389}
   _closeButton: {fileID: 2107410463}
+--- !u!114 &899315767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899315754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7d7f3d78d2e47189aa79fdc9248c4b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryItemDropper
+  _fallbackWorldItemPrefab: {fileID: 2254717776865417175, guid: 498406430a9c2664e86234a5c293b339, type: 3}
+  _dropOrigin: {fileID: 330585546}
+  _dropForwardDistance: 1
+  _dropBlockerMask:
+    serializedVersion: 2
+    m_Bits: 55
 --- !u!1 &909946005
 GameObject:
   m_ObjectHideFlags: 0
@@ -10051,6 +10261,7 @@ GameObject:
   - component: {fileID: 942097606}
   - component: {fileID: 942097605}
   - component: {fileID: 942097608}
+  - component: {fileID: 942097611}
   - component: {fileID: 942097610}
   - component: {fileID: 942097609}
   m_Layer: 0
@@ -10180,13 +10391,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 8a80253f52bde114c82cd3791377d00d, type: 2}
   _count: 4
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 942097609}
   _pickedUp: 0
+--- !u!54 &942097611
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942097601}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &944109328
 GameObject:
   m_ObjectHideFlags: 0
@@ -10278,6 +10515,7 @@ GameObject:
   - component: {fileID: 963974680}
   - component: {fileID: 963974679}
   - component: {fileID: 963974678}
+  - component: {fileID: 963974683}
   - component: {fileID: 963974682}
   - component: {fileID: 963974681}
   m_Layer: 0
@@ -10407,13 +10645,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 28c5e4501c7ad374e9a2d492ad998964, type: 2}
   _count: 5
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 963974681}
   _pickedUp: 0
+--- !u!54 &963974683
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963974674}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &963992048
 GameObject:
   m_ObjectHideFlags: 0
@@ -11049,6 +11313,7 @@ GameObject:
   - component: {fileID: 1016140136}
   - component: {fileID: 1016140135}
   - component: {fileID: 1016140134}
+  - component: {fileID: 1016140139}
   - component: {fileID: 1016140138}
   - component: {fileID: 1016140137}
   m_Layer: 0
@@ -11178,13 +11443,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 659d196027718fd47aded8b6499549c5, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1016140137}
   _pickedUp: 0
+--- !u!54 &1016140139
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016140130}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1019117576
 GameObject:
   m_ObjectHideFlags: 0
@@ -12662,6 +12953,7 @@ GameObject:
   - component: {fileID: 1122080178}
   - component: {fileID: 1122080177}
   - component: {fileID: 1122080176}
+  - component: {fileID: 1122080182}
   - component: {fileID: 1122080181}
   - component: {fileID: 1122080180}
   m_Layer: 0
@@ -12791,13 +13083,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: c1aa1b9a4afeb65448ab0f80bc986bbe, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1122080180}
   _pickedUp: 0
+--- !u!54 &1122080182
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1122080173}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1123090744
 GameObject:
   m_ObjectHideFlags: 0
@@ -12810,6 +13128,7 @@ GameObject:
   - component: {fileID: 1123090750}
   - component: {fileID: 1123090749}
   - component: {fileID: 1123090748}
+  - component: {fileID: 1123090753}
   - component: {fileID: 1123090752}
   - component: {fileID: 1123090751}
   m_Layer: 0
@@ -12939,13 +13258,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 5f63bd1bcad1be047b45c3b2790a6818, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1123090751}
   _pickedUp: 0
+--- !u!54 &1123090753
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123090744}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1130207311
 GameObject:
   m_ObjectHideFlags: 0
@@ -13259,6 +13604,7 @@ GameObject:
   - component: {fileID: 1167761903}
   - component: {fileID: 1167761902}
   - component: {fileID: 1167761901}
+  - component: {fileID: 1167761906}
   - component: {fileID: 1167761905}
   - component: {fileID: 1167761904}
   m_Layer: 0
@@ -13388,13 +13734,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: eb9275a0645898b419d9f29656bfba47, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1167761904}
   _pickedUp: 0
+--- !u!54 &1167761906
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1167761897}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1206718705
 GameObject:
   m_ObjectHideFlags: 0
@@ -14472,6 +14844,7 @@ GameObject:
   - component: {fileID: 1289173837}
   - component: {fileID: 1289173836}
   - component: {fileID: 1289173839}
+  - component: {fileID: 1289173842}
   - component: {fileID: 1289173841}
   - component: {fileID: 1289173840}
   m_Layer: 0
@@ -14601,13 +14974,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 9e02d1f96b5d53143a1a2205a26b1dc2, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1289173840}
   _pickedUp: 0
+--- !u!54 &1289173842
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289173832}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1301690669
 GameObject:
   m_ObjectHideFlags: 0
@@ -15105,6 +15504,7 @@ GameObject:
   - component: {fileID: 1337550709}
   - component: {fileID: 1337550708}
   - component: {fileID: 1337550707}
+  - component: {fileID: 1337550712}
   - component: {fileID: 1337550711}
   - component: {fileID: 1337550710}
   m_Layer: 0
@@ -15234,13 +15634,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: a5d05f6acf1ecd04a84f430f552361fc, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1337550710}
   _pickedUp: 0
+--- !u!54 &1337550712
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337550703}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1342285789
 GameObject:
   m_ObjectHideFlags: 0
@@ -15430,6 +15856,7 @@ GameObject:
   - component: {fileID: 1369023840}
   - component: {fileID: 1369023839}
   - component: {fileID: 1369023838}
+  - component: {fileID: 1369023843}
   - component: {fileID: 1369023842}
   - component: {fileID: 1369023841}
   m_Layer: 0
@@ -15559,13 +15986,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: aa4a10fb56e30524f8a7bfe3f70247d0, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1369023841}
   _pickedUp: 0
+--- !u!54 &1369023843
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369023834}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1371895413
 GameObject:
   m_ObjectHideFlags: 0
@@ -15615,6 +16068,7 @@ GameObject:
   - component: {fileID: 1403345656}
   - component: {fileID: 1403345655}
   - component: {fileID: 1403345654}
+  - component: {fileID: 1403345659}
   - component: {fileID: 1403345658}
   - component: {fileID: 1403345657}
   m_Layer: 0
@@ -15744,13 +16198,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 2fc47cc522ff81d40a473c0c92f05c82, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1403345657}
   _pickedUp: 0
+--- !u!54 &1403345659
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403345650}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1409316767
 GameObject:
   m_ObjectHideFlags: 0
@@ -15763,6 +16243,7 @@ GameObject:
   - component: {fileID: 1409316772}
   - component: {fileID: 1409316771}
   - component: {fileID: 1409316770}
+  - component: {fileID: 1409316776}
   - component: {fileID: 1409316775}
   - component: {fileID: 1409316774}
   m_Layer: 0
@@ -15892,13 +16373,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 658355adeb15a774e904ad4b5319969f, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 1
   _currentDurability: 31
   _saveId: {fileID: 1409316774}
   _pickedUp: 0
+--- !u!54 &1409316776
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409316767}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1409986032
 GameObject:
   m_ObjectHideFlags: 0
@@ -16197,6 +16704,7 @@ GameObject:
   - component: {fileID: 1457023357}
   - component: {fileID: 1457023356}
   - component: {fileID: 1457023355}
+  - component: {fileID: 1457023361}
   - component: {fileID: 1457023360}
   - component: {fileID: 1457023359}
   m_Layer: 0
@@ -16326,13 +16834,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: ae95ea3b79bf96b4c82f83635bbd0f54, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1457023359}
   _pickedUp: 0
+--- !u!54 &1457023361
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457023352}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1458500765
 GameObject:
   m_ObjectHideFlags: 0
@@ -17075,6 +17609,7 @@ GameObject:
   - component: {fileID: 1630951763}
   - component: {fileID: 1630951762}
   - component: {fileID: 1630951765}
+  - component: {fileID: 1630951768}
   - component: {fileID: 1630951767}
   - component: {fileID: 1630951766}
   m_Layer: 0
@@ -17204,13 +17739,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 3b62541978a078a49805cc5b8e00ad87, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 1
   _currentAmount: 1.24
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1630951766}
   _pickedUp: 0
+--- !u!54 &1630951768
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630951758}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1639649414
 GameObject:
   m_ObjectHideFlags: 0
@@ -18542,6 +19103,7 @@ GameObject:
   - component: {fileID: 1796346386}
   - component: {fileID: 1796346385}
   - component: {fileID: 1796346384}
+  - component: {fileID: 1796346389}
   - component: {fileID: 1796346388}
   - component: {fileID: 1796346387}
   m_Layer: 0
@@ -18671,13 +19233,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: e62fb6783217f3546b9b907a93d7b426, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1796346387}
   _pickedUp: 0
+--- !u!54 &1796346389
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796346380}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1823093616
 GameObject:
   m_ObjectHideFlags: 0
@@ -18909,6 +19497,7 @@ GameObject:
   - component: {fileID: 1869238655}
   - component: {fileID: 1869238654}
   - component: {fileID: 1869238653}
+  - component: {fileID: 1869238659}
   - component: {fileID: 1869238658}
   - component: {fileID: 1869238657}
   m_Layer: 0
@@ -19038,13 +19627,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: efc9cb2c140121347a98a877e6fac9c0, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1869238657}
   _pickedUp: 0
+--- !u!54 &1869238659
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869238650}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1871064381
 GameObject:
   m_ObjectHideFlags: 0
@@ -19289,6 +19904,7 @@ GameObject:
   - component: {fileID: 1877711246}
   - component: {fileID: 1877711245}
   - component: {fileID: 1877711244}
+  - component: {fileID: 1877711249}
   - component: {fileID: 1877711248}
   - component: {fileID: 1877711247}
   m_Layer: 0
@@ -19418,13 +20034,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: c035c76b161f5404d8cc7cd2a084ab25, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1877711247}
   _pickedUp: 0
+--- !u!54 &1877711249
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877711240}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1887284454
 GameObject:
   m_ObjectHideFlags: 0
@@ -19636,6 +20278,7 @@ GameObject:
   - component: {fileID: 1902506315}
   - component: {fileID: 1902506314}
   - component: {fileID: 1902506313}
+  - component: {fileID: 1902506318}
   - component: {fileID: 1902506317}
   - component: {fileID: 1902506316}
   m_Layer: 0
@@ -19765,13 +20408,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 94930bf166afbc743bd3878b44d87a55, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 1902506316}
   _pickedUp: 0
+--- !u!54 &1902506318
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902506309}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1911142801
 GameObject:
   m_ObjectHideFlags: 0
@@ -21017,7 +21686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb3d5546b6199a046be00955cb0aca99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestSceneInstaller
-  InjectOnAwake: 1
+  _injectOnAwake: 1
   _inventoryController: {fileID: 899315761}
   _fireUIController: {fileID: 899315764}
   _dayNightCycle: {fileID: 133213263}
@@ -21588,6 +22257,7 @@ GameObject:
   - component: {fileID: 2063682733}
   - component: {fileID: 2063682732}
   - component: {fileID: 2063682735}
+  - component: {fileID: 2063682738}
   - component: {fileID: 2063682737}
   - component: {fileID: 2063682736}
   m_Layer: 0
@@ -21717,13 +22387,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 480525f918f4ca74684b87806eb067bd, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 1
   _currentDurability: 56
   _saveId: {fileID: 2063682736}
   _pickedUp: 0
+--- !u!54 &2063682738
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2063682728}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2065134446
 GameObject:
   m_ObjectHideFlags: 0
@@ -21736,6 +22432,7 @@ GameObject:
   - component: {fileID: 2065134452}
   - component: {fileID: 2065134451}
   - component: {fileID: 2065134450}
+  - component: {fileID: 2065134455}
   - component: {fileID: 2065134454}
   - component: {fileID: 2065134453}
   m_Layer: 0
@@ -21865,13 +22562,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorldItem
   _itemData: {fileID: 11400000, guid: 1b125c8626966904d9c175d5a78c3ee6, type: 2}
   _count: 1
-  _stickingOffsetY: -0.5
   _overrideCurrentAmount: 0
   _currentAmount: 1
   _overrideCurrentDurability: 0
   _currentDurability: 100
   _saveId: {fileID: 2065134453}
   _pickedUp: 0
+--- !u!54 &2065134455
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065134446}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2065791161
 GameObject:
   m_ObjectHideFlags: 0

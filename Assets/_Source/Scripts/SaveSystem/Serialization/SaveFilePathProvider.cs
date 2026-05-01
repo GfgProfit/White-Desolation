@@ -6,16 +6,17 @@ public sealed class SaveFilePathProvider : ISavePathProvider
     private const string SaveDirectoryName = "Saves";
     private const string SaveExtension = ".json";
 
-    private readonly string _rootDirectory;
+    private readonly string _rootDirectoryOverride;
 
     public SaveFilePathProvider(string rootDirectory = null)
     {
-        _rootDirectory = string.IsNullOrWhiteSpace(rootDirectory) ? Application.persistentDataPath : rootDirectory;
+        _rootDirectoryOverride = rootDirectory;
     }
 
     public string GetSavePath(string slotName)
     {
-        string directory = Path.Combine(_rootDirectory, SaveDirectoryName);
+        string rootDirectory = string.IsNullOrWhiteSpace(_rootDirectoryOverride) ? Application.persistentDataPath : _rootDirectoryOverride;
+        string directory = Path.Combine(rootDirectory, SaveDirectoryName);
 
         if (!Directory.Exists(directory))
         {

@@ -13,6 +13,19 @@ public sealed class SaveId : MonoBehaviour
 
     public string Id => _id;
 
+    public void AssignNewId()
+    {
+        _id = Guid.NewGuid().ToString("N");
+    }
+
+    public void AssignId(string id)
+    {
+        if (!string.IsNullOrWhiteSpace(id))
+        {
+            _id = id;
+        }
+    }
+
 #if UNITY_EDITOR
     private void OnValidate()
     {

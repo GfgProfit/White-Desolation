@@ -4,6 +4,7 @@ public partial class InventoryUIController
 {
     private void Awake()
     {
+        ResolveOptionalReferences();
         InitializeWindowState();
         InitializeUseServices();
         InitializeMainButtons();
@@ -73,6 +74,19 @@ public partial class InventoryUIController
         _windowState.InitializeClosed();
     }
 
+    private void ResolveOptionalReferences()
+    {
+        if (_itemDropper == null)
+        {
+            _itemDropper = GetComponent<InventoryItemDropper>();
+        }
+
+        if (_itemDropper == null)
+        {
+            _itemDropper = gameObject.AddComponent<InventoryItemDropper>();
+        }
+    }
+
     private void InitializeUseServices()
     {
         _playerNeeds = _playerNeedsSource as IPlayerNeeds;
@@ -89,6 +103,8 @@ public partial class InventoryUIController
         _useProgressApplier = new InventoryUseProgressApplier(_playerNeeds, ZeroTolerance);
 
         _useCompletionService = new InventoryUseCompletionService(_inventoryController);
+
+        _itemDropper?.SetInventoryController(_inventoryController);
     }
 
     private void StopUseRoutineAndResetProgress()
