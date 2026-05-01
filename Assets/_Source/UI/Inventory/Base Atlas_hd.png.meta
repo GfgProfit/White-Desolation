@@ -520,7 +520,7 @@ TextureImporter:
         serializedVersion: 2
         x: 1508
         y: 4040
-        width: 21
+        width: 32
         height: 35
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -532,28 +532,6 @@ TextureImporter:
       bones: []
       spriteID: 28c3e45c683ffc24ab212b48cfc9a3b1
       internalID: 1176094242
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Base Atlas_hd_20
-      rect:
-        serializedVersion: 2
-        x: 1533
-        y: 4056
-        width: 7
-        height: 15
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9569f2b7d31d34840a49b5d80ede5493
-      internalID: -1598246664
       vertices: []
       indices: 
       edges: []
@@ -585,9 +563,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2154
-        y: 4053
-        width: 9
-        height: 15
+        y: 4044
+        width: 30
+        height: 24
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -598,50 +576,6 @@ TextureImporter:
       bones: []
       spriteID: 3483123295835c648b25bb01af44b29c
       internalID: -1320050308
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Base Atlas_hd_23
-      rect:
-        serializedVersion: 2
-        x: 2161
-        y: 4044
-        width: 12
-        height: 18
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 714ceedf88bafc8468c53996d17b7c8f
-      internalID: -608008624
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Base Atlas_hd_24
-      rect:
-        serializedVersion: 2
-        x: 2176
-        y: 4051
-        width: 8
-        height: 13
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 17379749721061f429b9e92d8e21b582
-      internalID: -1524305112
       vertices: []
       indices: 
       edges: []

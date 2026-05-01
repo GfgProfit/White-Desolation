@@ -34,6 +34,23 @@ public partial class InventoryController
         return true;
     }
 
+    public bool TryConsumeDurabilityFromSlot(int slotIndex, ItemData expectedItem, float durabilityCost)
+    {
+        InventoryDurabilityConsumeResult result = InventoryDurabilityConsumeService.TryConsumeFromSlot(_items, slotIndex, expectedItem, durabilityCost);
+
+        if (result == InventoryDurabilityConsumeResult.Failed)
+        {
+            return false;
+        }
+
+        if (result == InventoryDurabilityConsumeResult.Mutated)
+        {
+            NotifyChanged();
+        }
+
+        return true;
+    }
+
     public bool TryConsumeCustomAmountFromFirstMatchingItem(ItemData itemData, float amount)
     {
         if (itemData == null)

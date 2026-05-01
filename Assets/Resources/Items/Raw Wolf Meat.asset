@@ -32,6 +32,7 @@ MonoBehaviour:
   _baseWeightKg: 1
   _weightDependsOnAmount: 0
   _weightPerUnit: 0
+  _worldPrefab: {fileID: 0}
   _restoreHydration: -0.1
   _restoreCalories: 880
   _needsToOpen: {fileID: 0}

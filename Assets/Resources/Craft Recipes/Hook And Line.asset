@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e56177eedaa625b43a4810eb142b2190, type: 3}
+  m_Name: Hook And Line
+  m_EditorClassIdentifier: Assembly-CSharp::CraftRecipe
+  _id: hook_and_line_recipe
+  _resultItem: {fileID: 11400000, guid: d9fb099c1bbd73d498bbabbd67fb75ee, type: 2}
+  _craftListIcon: {fileID: 21300000, guid: f7abca32a77dfda49820e9fb782c8d1d, type: 3}
+  _resultCount: 1
+  _requirements:
+  - _item: {fileID: 11400000, guid: 0c5c079ff7cd5fa4e8622730bb11b03c, type: 2}
+    _count: 1
+  - _item: {fileID: 11400000, guid: c38a3de3fec23df4dacbc5940fda3d93, type: 2}
+    _count: 1
+  _toolRequirements: []
+  _gameMinutes: 10

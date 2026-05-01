@@ -113,6 +113,7 @@ public partial class InventoryUIController : MonoBehaviour
     private IPlayerNeeds _playerNeeds;
     private readonly InventoryUseRoutineState _useRoutineState = new();
     private readonly InventorySelectionState _selectionState = new();
+    private readonly HashSet<object> _openBlockOwners = new();
     private InventoryCategoryFilter _activeFilter = InventoryCategoryFilter.All;
     private readonly List<InventoryButtonBinding> _categoryFilterButtonBindings = new();
     private readonly List<InventoryButtonBinding> _sortButtonBindings = new();
@@ -126,6 +127,28 @@ public partial class InventoryUIController : MonoBehaviour
     {
         ExternalGridRefreshRequested?.Invoke();
     }
+
+    public void BlockOpenRequests(object owner)
+    {
+        if (owner == null)
+        {
+            return;
+        }
+
+        _openBlockOwners.Add(owner);
+    }
+
+    public void UnblockOpenRequests(object owner)
+    {
+        if (owner == null)
+        {
+            return;
+        }
+
+        _openBlockOwners.Remove(owner);
+    }
+
+    private bool AreOpenRequestsBlocked => _openBlockOwners.Count > 0;
 
     private void OnValidate()
     {

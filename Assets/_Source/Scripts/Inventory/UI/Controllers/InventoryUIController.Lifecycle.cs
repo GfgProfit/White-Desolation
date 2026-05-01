@@ -8,6 +8,7 @@ public partial class InventoryUIController
         InitializeWindowState();
         InitializeUseServices();
         InitializeMainButtons();
+        InitializeCrafting();
         InitializeCategoryFilters();
         InitializeSorting();
     }
@@ -27,16 +28,19 @@ public partial class InventoryUIController
     {
         _windowState?.ReleaseOwner();
         StopUseRoutineAndResetProgress();
+        StopCraftRoutineAndResetProgress();
     }
 
     private void OnDestroy()
     {
         CleanupInventoryEvents();
         CleanupMainButtons();
+        CleanupCrafting();
         CleanupCategoryFilterButtons();
         CleanupSortButtons();
 
         StopUseRoutineAndResetProgress();
+        StopCraftRoutineAndResetProgress();
 
         _windowState?.ReleaseOwner();
 
@@ -55,7 +59,12 @@ public partial class InventoryUIController
             return;
         }
 
-        if (_windowState != null && !_windowState.IsOpen && _playerInput.IsInventoryPressed())
+        if (IsCrafting)
+        {
+            return;
+        }
+
+        if (_windowState != null && !_windowState.IsOpen && !AreOpenRequestsBlocked && _playerInput.IsInventoryPressed())
         {
             Open();
             return;

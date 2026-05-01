@@ -12,6 +12,7 @@ public partial class InventoryUIController
             return;
         }
 
+        ShowInventoryWindowTab(false);
         RefreshView();
     }
 
@@ -22,7 +23,7 @@ public partial class InventoryUIController
             return;
         }
 
-        if (_useRoutineState.IsUsingItem)
+        if (_useRoutineState.IsUsingItem || IsCrafting)
         {
             return;
         }

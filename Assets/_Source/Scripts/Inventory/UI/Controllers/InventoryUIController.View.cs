@@ -14,6 +14,13 @@ public partial class InventoryUIController
             return;
         }
 
+        if (_activeWindowTab == InventoryWindowTab.Craft)
+        {
+            RefreshCraftView();
+            RefreshInventoryWindowTabVisuals();
+            return;
+        }
+
         if (_inventoryController == null)
         {
             return;

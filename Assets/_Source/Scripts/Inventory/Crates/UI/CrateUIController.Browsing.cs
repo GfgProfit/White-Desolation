@@ -47,7 +47,7 @@ public sealed partial class CrateUIController
             return;
         }
 
-        InteractionInspectInfo info = WorldItemInteractionInfoBuilder.BuildInspectInfo(slot.Item, slot.CurrentDurability, InventoryWeightCalculator.GetSlotWeightKg(slot));
+        InteractionInspectInfo info = WorldItemInteractionInfoBuilder.BuildInspectInfo(slot.Item, slot.Count, slot.CurrentDurability, InventoryWeightCalculator.GetSlotWeightKg(slot));
         _takeItemPresenter.Show(info);
     }
 
@@ -98,6 +98,7 @@ public sealed partial class CrateUIController
         if (!_isBrowsingSearchResults)
         {
             _takeItemPresenter?.Hide();
+            UnblockInventoryOpenRequests();
             return;
         }
 
@@ -105,6 +106,7 @@ public sealed partial class CrateUIController
         _searchedSlots.Clear();
         _searchedSlotCursor = 0;
         _takeItemPresenter?.Hide();
+        UnblockInventoryOpenRequests();
         UnlockPlayerControls();
     }
 }

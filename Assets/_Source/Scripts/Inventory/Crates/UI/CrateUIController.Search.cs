@@ -18,6 +18,7 @@ public sealed partial class CrateUIController
         StopSearchRoutine();
 
         _activeCrate = crate;
+        BlockInventoryOpenRequests();
         _searchRoutine = StartCoroutine(SearchRoutine(crate));
     }
 
@@ -68,6 +69,17 @@ public sealed partial class CrateUIController
     {
         _searchRoutine = null;
         _searchProgress?.HideAndReset();
+        UnblockInventoryOpenRequests();
         UnlockPlayerControls();
+    }
+
+    private void BlockInventoryOpenRequests()
+    {
+        _inventoryUIController?.BlockOpenRequests(this);
+    }
+
+    private void UnblockInventoryOpenRequests()
+    {
+        _inventoryUIController?.UnblockOpenRequests(this);
     }
 }

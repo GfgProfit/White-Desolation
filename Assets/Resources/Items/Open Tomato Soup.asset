@@ -35,9 +35,17 @@ MonoBehaviour:
   _baseWeightKg: 0.25
   _weightDependsOnAmount: 0
   _weightPerUnit: 0
+  _worldPrefab: {fileID: 0}
   _restoreHydration: 0.08
   _restoreCalories: 500
   _needsToOpen: {fileID: 0}
   _afterOpen: {fileID: 0}
   _afterUse: {fileID: 11400000, guid: c1aa1b9a4afeb65448ab0f80bc986bbe, type: 2}
-  _openDurationSeconds: 5
+  _needsToOpenDurabilityCost: 1
+  _burnMinutes: 0
+  _startChanceBonus: 0
+  _fireIgniterConsumeMode: 0
+  _fireIgniterDurabilityCost01: 0.02
+  _canBeCooked: 0
+  _cookedResult: {fileID: 0}
+  _cookGameMinutes: 60

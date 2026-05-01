@@ -22,14 +22,24 @@ public static class WorldItemInteractionInfoBuilder
         return info;
     }
 
-    public static InteractionInspectInfo BuildInspectInfo(ItemData itemData, float currentDurability, float currentWeightKg)
+    public static InteractionInspectInfo BuildInspectInfo(ItemData itemData, int count, float currentDurability, float currentWeightKg)
     {
         if (itemData == null)
         {
             return InteractionInspectInfo.Empty;
         }
 
-        return new InteractionInspectInfo(itemData.Icon, itemData.DisplayName, itemData.Description, FormatDurabilityText(itemData, currentDurability), HasDurability(itemData), ResolveDurabilityColor(itemData, currentDurability), FormatWeightText(currentWeightKg));
+        return new InteractionInspectInfo(itemData.Icon, FormatName(itemData.DisplayName, count), itemData.Description, FormatDurabilityText(itemData, currentDurability), HasDurability(itemData), ResolveDurabilityColor(itemData, currentDurability), FormatWeightText(currentWeightKg));
+    }
+
+    private static string FormatName(string displayName, int count)
+    {
+        if (string.IsNullOrWhiteSpace(displayName))
+        {
+            return string.Empty;
+        }
+
+        return count > 1 ? $"{displayName} <color=#E78300>x{count}</color>" : displayName;
     }
 
     private static bool IsBroken(ItemData itemData, float currentDurability)
