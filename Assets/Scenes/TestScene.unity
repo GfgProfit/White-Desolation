@@ -214,7 +214,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8247226
 RectTransform:
   m_ObjectHideFlags: 0
@@ -501,19 +501,19 @@ MonoBehaviour:
   _maxGeneratedItemCount: 4
   _lootTable:
   - _item: {fileID: 11400000, guid: 97ce2d83449843d4982169e90c32225d, type: 2}
-    _chance: 0.25
+    _chance: 0.5
     _minCount: 1
     _maxCount: 1
   - _item: {fileID: 11400000, guid: 5f63bd1bcad1be047b45c3b2790a6818, type: 2}
-    _chance: 0.25
+    _chance: 0.5
     _minCount: 1
     _maxCount: 1
   - _item: {fileID: 11400000, guid: 58aa546926d3d1e40b5b3846680a1ca2, type: 2}
-    _chance: 0.25
+    _chance: 0.5
     _minCount: 1
     _maxCount: 1
   - _item: {fileID: 11400000, guid: 2fc47cc522ff81d40a473c0c92f05c82, type: 2}
-    _chance: 0.25
+    _chance: 0.5
     _minCount: 1
     _maxCount: 1
   _saveId: {fileID: 30564583}
@@ -746,7 +746,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &68259676
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2851,7 +2851,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &246135310
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3848,7 +3848,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &323804235
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5247,7 +5247,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &421502430
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7698,7 +7698,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &689259021
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13191,7 +13191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1073539865
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13555,7 +13555,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1112801900
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14618,31 +14618,31 @@ MonoBehaviour:
   _maxGeneratedItemCount: 4
   _lootTable:
   - _item: {fileID: 11400000, guid: 659d196027718fd47aded8b6499549c5, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 1
     _maxCount: 1
   - _item: {fileID: 11400000, guid: 658355adeb15a774e904ad4b5319969f, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 1
     _maxCount: 1
   - _item: {fileID: 11400000, guid: 8a80253f52bde114c82cd3791377d00d, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 1
     _maxCount: 3
   - _item: {fileID: 11400000, guid: 28c5e4501c7ad374e9a2d492ad998964, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 1
     _maxCount: 2
   - _item: {fileID: 11400000, guid: c035c76b161f5404d8cc7cd2a084ab25, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 2
     _maxCount: 6
   - _item: {fileID: 11400000, guid: 2fc47cc522ff81d40a473c0c92f05c82, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 1
     _maxCount: 2
   - _item: {fileID: 11400000, guid: ccc7a204f9fe5734d89bf925f9d1db99, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 1
     _maxCount: 5
   _saveId: {fileID: 1151247472}
@@ -15716,7 +15716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1245128482
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15791,7 +15791,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1261460000
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17182,19 +17182,19 @@ MonoBehaviour:
   _maxGeneratedItemCount: 4
   _lootTable:
   - _item: {fileID: 11400000, guid: 97ce2d83449843d4982169e90c32225d, type: 2}
-    _chance: 0.25
+    _chance: 0.5
     _minCount: 1
     _maxCount: 1
   - _item: {fileID: 11400000, guid: 5f63bd1bcad1be047b45c3b2790a6818, type: 2}
-    _chance: 0.25
+    _chance: 0.5
     _minCount: 1
     _maxCount: 1
   - _item: {fileID: 11400000, guid: 58aa546926d3d1e40b5b3846680a1ca2, type: 2}
-    _chance: 0.25
+    _chance: 0.5
     _minCount: 1
     _maxCount: 1
   - _item: {fileID: 11400000, guid: 2fc47cc522ff81d40a473c0c92f05c82, type: 2}
-    _chance: 0.25
+    _chance: 0.5
     _minCount: 1
     _maxCount: 1
   _saveId: {fileID: 1350849416}
@@ -17674,31 +17674,31 @@ MonoBehaviour:
   _maxGeneratedItemCount: 4
   _lootTable:
   - _item: {fileID: 11400000, guid: 659d196027718fd47aded8b6499549c5, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 1
     _maxCount: 1
   - _item: {fileID: 11400000, guid: 658355adeb15a774e904ad4b5319969f, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 1
     _maxCount: 1
   - _item: {fileID: 11400000, guid: 8a80253f52bde114c82cd3791377d00d, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 1
     _maxCount: 3
   - _item: {fileID: 11400000, guid: 28c5e4501c7ad374e9a2d492ad998964, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 1
     _maxCount: 2
   - _item: {fileID: 11400000, guid: c035c76b161f5404d8cc7cd2a084ab25, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 2
     _maxCount: 6
   - _item: {fileID: 11400000, guid: 2fc47cc522ff81d40a473c0c92f05c82, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 1
     _maxCount: 2
   - _item: {fileID: 11400000, guid: ccc7a204f9fe5734d89bf925f9d1db99, type: 2}
-    _chance: 0.1
+    _chance: 0.5
     _minCount: 1
     _maxCount: 5
   _saveId: {fileID: 1394323744}
@@ -18915,7 +18915,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1516791888
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23233,7 +23233,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1999719582
 RectTransform:
   m_ObjectHideFlags: 0
