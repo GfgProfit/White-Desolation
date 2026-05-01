@@ -53,6 +53,7 @@ public sealed partial class CrateUIController : MonoBehaviour
     private InventoryUseProgressModalPresenter _searchProgress;
     private InteractionInspectPresenter _takeItemPresenter;
     private CrateWindowPresenter _crateWindowPresenter;
+    private PlayerControlLockSession _controlLockSession;
     private CrateContainer _activeCrate;
     private Coroutine _searchRoutine;
     private int _searchedSlotCursor;
@@ -88,6 +89,7 @@ public sealed partial class CrateUIController : MonoBehaviour
         StopSearchRoutine();
         CloseCrate();
         CloseBrowsing();
+        ReleasePlayerControls();
 
         InventoryGridRenderer.Clear(_playerCells);
         InventoryGridRenderer.Clear(_crateCells);

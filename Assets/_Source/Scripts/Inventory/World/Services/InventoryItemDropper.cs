@@ -84,7 +84,7 @@ public sealed class InventoryItemDropper : MonoBehaviour
         float? currentDurabilityOverride = slot.HasDurability ? slot.CurrentDurability : null;
 
         worldItem.InitializeRuntime(slot.Item, count, currentAmountOverride, currentDurabilityOverride);
-        SceneInstaller.Container?.InjectGameObject(worldItem.gameObject, true);
+        RuntimeObjectInjector.Inject(worldItem.gameObject);
 
         return worldItem;
     }

@@ -2,9 +2,7 @@ using UnityEngine;
 
 public sealed class InteractionInspectSessionController
 {
-    private readonly object _lockOwner;
-    private readonly Behaviour[] _disableWhileInspectOpen;
-    private readonly GameObject[] _objectDisableWhileInspectOpen;
+    private readonly PlayerControlLockSession _controlLockSession;
 
     public IInspectableInteractable Target { get; private set; }
 
@@ -12,9 +10,7 @@ public sealed class InteractionInspectSessionController
 
     public InteractionInspectSessionController(object lockOwner, Behaviour[] disableWhileInspectOpen, GameObject[] objectDisableWhileInspectOpen)
     {
-        _lockOwner = lockOwner;
-        _disableWhileInspectOpen = disableWhileInspectOpen;
-        _objectDisableWhileInspectOpen = objectDisableWhileInspectOpen;
+        _controlLockSession = PlayerControlLockService.CreateSession(lockOwner, disableWhileInspectOpen, objectDisableWhileInspectOpen);
     }
 
     public bool Open(IInspectableInteractable target)
@@ -41,29 +37,16 @@ public sealed class InteractionInspectSessionController
     {
         Target = null;
 
-        if (_lockOwner != null)
-        {
-            PlayerControlLockService.ReleaseOwner(_lockOwner);
-        }
+        _controlLockSession.Release();
     }
 
     private void LockControls()
     {
-        if (_lockOwner == null)
-        {
-            return;
-        }
-
-        PlayerControlLockService.Lock(_lockOwner, _disableWhileInspectOpen, _objectDisableWhileInspectOpen);
+        _controlLockSession.Lock();
     }
 
     private void UnlockControls()
     {
-        if (_lockOwner == null)
-        {
-            return;
-        }
-
-        PlayerControlLockService.Unlock(_lockOwner, _disableWhileInspectOpen, _objectDisableWhileInspectOpen);
+        _controlLockSession.Unlock();
     }
 }

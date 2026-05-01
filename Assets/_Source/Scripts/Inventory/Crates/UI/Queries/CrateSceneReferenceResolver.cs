@@ -2,6 +2,11 @@ using UnityEngine;
 
 public static class CrateSceneReferenceResolver
 {
+    public static T FindSceneObject<T>() where T : Object
+    {
+        return Object.FindFirstObjectByType<T>(FindObjectsInactive.Include);
+    }
+
     public static GameObject FindSceneGameObject(string objectName)
     {
         if (string.IsNullOrWhiteSpace(objectName))

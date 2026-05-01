@@ -65,13 +65,13 @@ public sealed partial class CrateContainer
             return _uiController;
         }
 
-        _uiController = FindFirstObjectByType<CrateUIController>(FindObjectsInactive.Include);
+        _uiController = CrateSceneReferenceResolver.FindSceneObject<CrateUIController>();
 
         if (_uiController == null)
         {
             GameObject controllerObject = new("Crate UI Controller");
             _uiController = controllerObject.AddComponent<CrateUIController>();
-            SceneInstaller.Container?.InjectGameObject(controllerObject, true);
+            RuntimeObjectInjector.Inject(controllerObject);
         }
 
         return _uiController;

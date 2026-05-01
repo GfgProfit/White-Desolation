@@ -13,7 +13,7 @@ public sealed partial class CrateUIController
 
         _activeCrate = crate;
         _isBrowsingSearchResults = true;
-        PlayerControlLockService.Lock(this, _disableWhileOpen, _objectDisableWhileOpen);
+        LockPlayerControls();
         ShowCurrentBrowseSlot();
     }
 
@@ -105,6 +105,6 @@ public sealed partial class CrateUIController
         _searchedSlots.Clear();
         _searchedSlotCursor = 0;
         _takeItemPresenter?.Hide();
-        PlayerControlLockService.Unlock(this, _disableWhileOpen, _objectDisableWhileOpen);
+        UnlockPlayerControls();
     }
 }

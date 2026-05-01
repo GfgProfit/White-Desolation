@@ -138,7 +138,7 @@ public sealed class SavedWorldItemSpawnService
         float? currentDurability = state.OverrideCurrentDurability ? state.CurrentDurability : null;
 
         worldItem.InitializeRuntime(itemData, Mathf.Max(1, state.Count), currentAmount, currentDurability, regenerateSaveId: false, saveId: state.SaveId);
-        SceneInstaller.Container?.InjectGameObject(worldItem.gameObject, true);
+        RuntimeObjectInjector.Inject(worldItem.gameObject);
     }
 
     private WorldItem ResolvePrefab(ItemData itemData)

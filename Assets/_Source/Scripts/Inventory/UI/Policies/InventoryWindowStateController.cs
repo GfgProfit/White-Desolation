@@ -4,8 +4,7 @@ public sealed class InventoryWindowStateController
 {
     private readonly object _owner;
     private readonly GameObject _root;
-    private readonly Behaviour[] _disableWhileOpen;
-    private readonly GameObject[] _objectDisableWhileOpen;
+    private readonly PlayerControlLockSession _controlLockSession;
 
     public bool IsOpen { get; private set; }
 
@@ -13,8 +12,7 @@ public sealed class InventoryWindowStateController
     {
         _owner = owner;
         _root = root;
-        _disableWhileOpen = disableWhileOpen;
-        _objectDisableWhileOpen = objectDisableWhileOpen;
+        _controlLockSession = PlayerControlLockService.CreateSession(owner, disableWhileOpen, objectDisableWhileOpen);
     }
 
     public void InitializeClosed()
@@ -41,8 +39,7 @@ public sealed class InventoryWindowStateController
             _root.SetActive(true);
         }
 
-        LockBlockedBehaviours();
-        LockBlockedObjects();
+        LockBlockedControls();
         CursorLockService.ShowCursor(_owner);
 
         return true;
@@ -62,8 +59,7 @@ public sealed class InventoryWindowStateController
             _root.SetActive(false);
         }
 
-        UnlockBlockedBehaviours();
-        UnlockBlockedObjects();
+        UnlockBlockedControls();
         CursorLockService.ReleaseCursor(_owner);
 
         return true;
@@ -73,27 +69,17 @@ public sealed class InventoryWindowStateController
     {
         IsOpen = false;
 
-        PlayerControlLockService.ReleaseOwner(_owner);
+        _controlLockSession.Release();
         CursorLockService.ReleaseOwner(_owner);
     }
 
-    private void LockBlockedBehaviours()
+    private void LockBlockedControls()
     {
-        PlayerControlLockService.LockBehaviours(_owner, _disableWhileOpen);
+        _controlLockSession.Lock();
     }
 
-    private void UnlockBlockedBehaviours()
+    private void UnlockBlockedControls()
     {
-        PlayerControlLockService.UnlockBehaviours(_owner, _disableWhileOpen);
-    }
-
-    private void LockBlockedObjects()
-    {
-        PlayerControlLockService.LockGameObjects(_owner, _objectDisableWhileOpen);
-    }
-
-    private void UnlockBlockedObjects()
-    {
-        PlayerControlLockService.UnlockGameObjects(_owner, _objectDisableWhileOpen);
+        _controlLockSession.Unlock();
     }
 }

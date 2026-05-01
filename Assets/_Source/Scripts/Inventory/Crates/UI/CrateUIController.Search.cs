@@ -23,7 +23,7 @@ public sealed partial class CrateUIController
 
     private IEnumerator SearchRoutine(CrateContainer crate)
     {
-        PlayerControlLockService.Lock(this, _disableWhileOpen, _objectDisableWhileOpen);
+        LockPlayerControls();
         _searchProgress.Show(_searchProgressLabel);
 
         float elapsed = 0f;
@@ -48,7 +48,7 @@ public sealed partial class CrateUIController
         _searchRoutine = null;
 
         crate.MarkSearched();
-        PlayerControlLockService.Unlock(this, _disableWhileOpen, _objectDisableWhileOpen);
+        UnlockPlayerControls();
 
         BeginBrowseSearchResults(crate);
     }
@@ -68,6 +68,6 @@ public sealed partial class CrateUIController
     {
         _searchRoutine = null;
         _searchProgress?.HideAndReset();
-        PlayerControlLockService.Unlock(this, _disableWhileOpen, _objectDisableWhileOpen);
+        UnlockPlayerControls();
     }
 }

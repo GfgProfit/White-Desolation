@@ -46,6 +46,11 @@ public static class PlayerControlLockService
         LockGameObjects(owner, gameObjects);
     }
 
+    public static PlayerControlLockSession CreateSession(object owner, IReadOnlyList<Behaviour> behaviours, IReadOnlyList<GameObject> gameObjects)
+    {
+        return new PlayerControlLockSession(owner, behaviours, gameObjects);
+    }
+
     public static void Unlock(object owner, IReadOnlyList<Behaviour> behaviours, IReadOnlyList<GameObject> gameObjects)
     {
         if (owner == null)

@@ -8,22 +8,22 @@ public sealed partial class CrateUIController
     {
         if (_inventoryController == null)
         {
-            _inventoryController = FindFirstObjectByType<InventoryController>(FindObjectsInactive.Include);
+            _inventoryController = CrateSceneReferenceResolver.FindSceneObject<InventoryController>();
         }
 
-        _playerInput ??= new LegacyPlayerInput();
+        _playerInput = PlayerInputResolver.Resolve(_playerInput);
     }
 
     private void AutoWireSceneReferences()
     {
         if (_inventoryUIController == null)
         {
-            _inventoryUIController = FindFirstObjectByType<InventoryUIController>(FindObjectsInactive.Include);
+            _inventoryUIController = CrateSceneReferenceResolver.FindSceneObject<InventoryUIController>();
         }
 
         if (_interactController == null)
         {
-            _interactController = FindFirstObjectByType<InteractController>(FindObjectsInactive.Include);
+            _interactController = CrateSceneReferenceResolver.FindSceneObject<InteractController>();
         }
 
         if (_inventoryUIController != null)

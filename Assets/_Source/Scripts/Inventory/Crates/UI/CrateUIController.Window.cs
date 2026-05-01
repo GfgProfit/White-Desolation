@@ -37,7 +37,7 @@ public sealed partial class CrateUIController
 
         PrepareCrateWindowObjects();
 
-        PlayerControlLockService.Lock(this, _disableWhileOpen, _objectDisableWhileOpen);
+        LockPlayerControls();
         CursorLockService.ShowCursor(this);
 
         _selectionSource = CrateSelectionSource.None;
@@ -77,7 +77,7 @@ public sealed partial class CrateUIController
 
         RestoreCrateWindowObjects();
 
-        PlayerControlLockService.Unlock(this, _disableWhileOpen, _objectDisableWhileOpen);
+        UnlockPlayerControls();
         CursorLockService.ReleaseCursor(this);
     }
 
