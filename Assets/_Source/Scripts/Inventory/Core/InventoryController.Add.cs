@@ -1,6 +1,6 @@
 public partial class InventoryController
 {
-    public bool TryAddItem(ItemData itemData, int count, float? currentAmountOverride = null, float? currentDurabilityOverride = null)
+    public bool TryAddItem(ItemData itemData, int count, float? currentAmountOverride = null, float? currentDurabilityOverride = null, float? currentHydrationOverride = null, float? currentCaloriesOverride = null)
     {
         if (itemData == null)
         {
@@ -21,7 +21,7 @@ public partial class InventoryController
 
         if (InventoryConsumableInstancePolicy.RequiresDedicatedInstance(itemData))
         {
-            bool addedDedicatedConsumables = InventorySeparateSlotAddService.TryAddSeparateSlotItems(_items, itemData, count, currentDurabilityOverride, currentAmountOverride);
+            bool addedDedicatedConsumables = InventorySeparateSlotAddService.TryAddSeparateSlotItems(_items, itemData, count, currentDurabilityOverride, currentAmountOverride, currentHydrationOverride, currentCaloriesOverride);
 
             return FinishInventoryMutation(addedDedicatedConsumables);
         }
@@ -33,7 +33,7 @@ public partial class InventoryController
             return FinishInventoryMutation(addedStackableItems);
         }
 
-        bool addedNonStackableItems = InventorySeparateSlotAddService.TryAddSeparateSlotItems(_items, itemData, count, currentDurabilityOverride, currentAmountOverride);
+        bool addedNonStackableItems = InventorySeparateSlotAddService.TryAddSeparateSlotItems(_items, itemData, count, currentDurabilityOverride, currentAmountOverride, currentHydrationOverride, currentCaloriesOverride);
 
         return FinishInventoryMutation(addedNonStackableItems);
     }

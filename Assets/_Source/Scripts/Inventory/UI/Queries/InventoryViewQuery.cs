@@ -29,7 +29,41 @@ public static class InventoryViewQuery
             results.Add(new InventoryViewEntry(i, slot));
         }
 
-        if (sortMode == InventorySortMode.None || results.Count <= 1)
+        SortEntries(results, sortMode, sortDirection);
+    }
+
+    public static void BuildVisibleEntries(IReadOnlyList<InventorySlot> slots, InventoryCategoryFilter filter, InventorySortMode sortMode, InventorySortDirection sortDirection, List<InventoryViewEntry> results)
+    {
+        if (results == null)
+        {
+            return;
+        }
+
+        results.Clear();
+
+        if (slots == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < slots.Count; i++)
+        {
+            InventorySlot slot = slots[i];
+
+            if (!ShouldShowSlot(slot, filter))
+            {
+                continue;
+            }
+
+            results.Add(new InventoryViewEntry(i, slot));
+        }
+
+        SortEntries(results, sortMode, sortDirection);
+    }
+
+    private static void SortEntries(List<InventoryViewEntry> results, InventorySortMode sortMode, InventorySortDirection sortDirection)
+    {
+        if (results == null || sortMode == InventorySortMode.None || results.Count <= 1)
         {
             return;
         }

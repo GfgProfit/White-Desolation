@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public static class InventorySeparateSlotAddService
 {
-    public static bool TryAddSeparateSlotItems(List<InventorySlot> slots, ItemData itemData, int count, float? currentDurabilityOverride, float? currentAmountOverride)
+    public static bool TryAddSeparateSlotItems(List<InventorySlot> slots, ItemData itemData, int count, float? currentDurabilityOverride, float? currentAmountOverride, float? currentHydrationOverride = null, float? currentCaloriesOverride = null)
     {
         if (slots == null)
         {
@@ -21,7 +21,7 @@ public static class InventorySeparateSlotAddService
 
         for (int i = 0; i < count; i++)
         {
-            InventorySlot newSlot = InventorySlotFactory.Create(itemData, 1, currentDurabilityOverride, currentAmountOverride);
+            InventorySlot newSlot = InventorySlotFactory.Create(itemData, 1, currentDurabilityOverride, currentAmountOverride, currentHydrationOverride, currentCaloriesOverride);
 
             slots.Add(newSlot);
         }

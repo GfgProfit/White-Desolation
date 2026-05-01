@@ -44,6 +44,14 @@ public partial class InteractController : MonoBehaviour
 
     [Inject] private IPlayerInput _playerInput = null;
 
+    public GameObject InspectRoot => _inspectRoot;
+    public Image InspectIcon => _inspectIcon;
+    public Image InspectDurabilityIcon => _durabilityIcon;
+    public TMP_Text InspectNameText => _nameText;
+    public TMP_Text InspectDescriptionText => _descriptionText;
+    public TMP_Text InspectDurabilityText => _durabilityText;
+    public TMP_Text InspectWeightText => _weightText;
+
     private InteractionTargetService _targetService;
     private InteractionHoverInfoQuery _hoverInfoQuery;
     private InteractionInputReader _inputReader;

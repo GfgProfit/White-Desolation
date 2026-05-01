@@ -5,6 +5,15 @@ public partial class InventoryUIController
 {
     private void RefreshView()
     {
+        if (_isGridExternallyOwned)
+        {
+            RefreshCarryWeight();
+            RefreshCategoryFilterButtonVisuals();
+            RefreshSortButtonVisuals();
+            NotifyExternalGridRefreshRequested();
+            return;
+        }
+
         if (_inventoryController == null)
         {
             return;
@@ -12,8 +21,11 @@ public partial class InventoryUIController
 
         RefreshCarryWeight();
 
+        int preferredVisibleIndex = _selectionState.GetVisibleIndex(_visibleEntries);
+        InventorySlot preferredSlot = _selectionState.GetSelectedSlot(_visibleEntries);
+
         RebuildVisibleEntries();
-        _selectionState.ValidateForVisibleEntries(_visibleEntries);
+        _selectionState.ValidateForVisibleEntries(_visibleEntries, preferredVisibleIndex, preferredSlot);
 
         RebuildGrid();
         RefreshDetails();

@@ -78,6 +78,34 @@ public partial class InventoryUIController : MonoBehaviour
     [Inject] private InventoryController _inventoryController = null;
     [Inject] private IPlayerInput _playerInput = null;
 
+    public GameObject InventoryRoot => _inventoryRoot;
+    public Transform GridRoot => _gridRoot;
+    public InventoryItemCellView CellPrefab => _cellPrefab;
+    public GameObject UseProgressModalRoot => _useProgressModalRoot;
+    public Image UseProgressFillImage => _useProgressFillImage;
+    public TMP_Text UseProgressText => _useProgressText;
+    public Behaviour[] DisableWhileOpen => _disableWhileOpen;
+    public GameObject[] ObjectDisableWhileOpen => _objectDisableWhileOpen;
+    public InventoryCategoryFilter ActiveFilter => _activeFilter;
+    public InventorySortMode ActiveSortMode => _activeSortMode;
+    public InventorySortDirection ActiveSortDirection => _activeSortDirection;
+
+    public event System.Action ExternalGridRefreshRequested;
+
+    public void ReleaseGridForExternalUse()
+    {
+        _isGridExternallyOwned = true;
+        InventoryGridRenderer.Clear(_spawnedCells);
+        _visibleEntries.Clear();
+        _selectionState.Clear();
+    }
+
+    public void RefreshAfterExternalUse()
+    {
+        _isGridExternallyOwned = false;
+        RefreshView();
+    }
+
     private InventoryWindowStateController _windowState;
     private InventoryUseProgressModalPresenter _useProgressModal;
     private InventoryUseProgressApplier _useProgressApplier;
@@ -90,8 +118,14 @@ public partial class InventoryUIController : MonoBehaviour
     private readonly List<InventoryButtonBinding> _sortButtonBindings = new();
     private readonly List<InventoryItemCellView> _spawnedCells = new();
     private readonly List<InventoryViewEntry> _visibleEntries = new();
+    private bool _isGridExternallyOwned;
     private InventorySortMode _activeSortMode = InventorySortMode.None;
     private InventorySortDirection _activeSortDirection = InventorySortDirection.Ascending;
+
+    public void NotifyExternalGridRefreshRequested()
+    {
+        ExternalGridRefreshRequested?.Invoke();
+    }
 
     private void OnValidate()
     {

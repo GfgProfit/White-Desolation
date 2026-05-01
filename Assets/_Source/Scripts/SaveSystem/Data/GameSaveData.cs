@@ -11,6 +11,7 @@ public sealed class GameSaveData
     public DayNightSaveData DayNight = new();
 
     public List<InventorySlotSaveData> InventorySlots = new();
+    public List<CrateSaveData> Crates = new();
     public List<WorldItemSaveData> WorldItems = new();
     public List<FireSourceSaveData> FireSources = new();
 }
