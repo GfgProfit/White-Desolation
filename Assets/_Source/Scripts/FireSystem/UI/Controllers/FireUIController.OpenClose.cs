@@ -75,4 +75,15 @@
 
         _currentSource = null;
     }
+
+    public bool TryCloseOpenWindow()
+    {
+        if (!IsWindowOpen)
+        {
+            return false;
+        }
+
+        CloseAll();
+        return true;
+    }
 }

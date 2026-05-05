@@ -81,6 +81,18 @@ public sealed partial class CrateUIController
         CursorLockService.ReleaseCursor(this);
     }
 
+    public bool TryCloseOpenWindow()
+    {
+        if (!IsWindowOpen)
+        {
+            return false;
+        }
+
+        CloseCrate();
+        CloseBrowsing();
+        return true;
+    }
+
     private void RefreshCrateWindow()
     {
         if (!_isCrateOpen || _activeCrate == null || _inventoryController == null)

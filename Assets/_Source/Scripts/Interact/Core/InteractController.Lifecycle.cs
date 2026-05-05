@@ -27,6 +27,14 @@ public partial class InteractController
 
     private void Update()
     {
+        if (CursorLockService.IsGameplayInputBlocked)
+        {
+            _currentInputState = InteractionInputState.Empty;
+            ClearCurrentTarget();
+            ClearHoverInfo();
+            return;
+        }
+
         _currentInputState = ReadInputState();
 
         if (IsInspectOpen)

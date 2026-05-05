@@ -89,6 +89,7 @@ public partial class InventoryUIController : MonoBehaviour
     public InventoryCategoryFilter ActiveFilter => _activeFilter;
     public InventorySortMode ActiveSortMode => _activeSortMode;
     public InventorySortDirection ActiveSortDirection => _activeSortDirection;
+    public bool IsWindowOpen => _windowState != null && _windowState.IsOpen;
 
     public event System.Action ExternalGridRefreshRequested;
 
@@ -146,6 +147,17 @@ public partial class InventoryUIController : MonoBehaviour
         }
 
         _openBlockOwners.Remove(owner);
+    }
+
+    public bool TryCloseOpenWindow()
+    {
+        if (!IsWindowOpen)
+        {
+            return false;
+        }
+
+        Close();
+        return true;
     }
 
     private bool AreOpenRequestsBlocked => _openBlockOwners.Count > 0;

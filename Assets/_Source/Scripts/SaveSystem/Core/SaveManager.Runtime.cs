@@ -2,7 +2,7 @@
 {
     private void EnsureRuntimeServices()
     {
-        _fileService ??= new JsonSaveFileService();
+        _fileService ??= new ServerSaveFileService(_serverBaseUrl);
         _saveContextFactory ??= new SaveContextFactory();
 
         if (_gameStateService != null)

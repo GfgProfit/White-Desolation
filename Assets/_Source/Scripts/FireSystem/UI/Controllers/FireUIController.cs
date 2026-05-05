@@ -74,5 +74,8 @@ public partial class FireUIController : MonoBehaviour
     private FireStartCompletionService _completionService;
     private FireBurningOperationService _burningOperationService;
 
+    public bool IsWindowOpen => (_startWindowPresenter != null && _startWindowPresenter.IsOpen)
+        || (_burningWindowPresenter != null && _burningWindowPresenter.IsOpen);
+
     private FireBurningOperationSettings BurningOperationSettings => _burningConfig != null ? _burningConfig.Settings : FireBurningConfig.DefaultSettings;
 }

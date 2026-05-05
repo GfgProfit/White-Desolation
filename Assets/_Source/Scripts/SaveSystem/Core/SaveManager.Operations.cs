@@ -1,8 +1,45 @@
-﻿using UnityEngine;
+using System;
+using System.Collections;
+using UnityEngine;
 
 public sealed partial class SaveManager
 {
     public void Save()
+    {
+        if (_saveRoutine != null)
+        {
+            return;
+        }
+
+        if (!isActiveAndEnabled)
+        {
+            SaveImmediately();
+            return;
+        }
+
+        _saveRoutine = StartCoroutine(SaveRoutine());
+    }
+
+    private IEnumerator SaveRoutine()
+    {
+        SetSaveStatusVisible(true);
+
+        yield return null;
+
+        try
+        {
+            SaveImmediately();
+        }
+        catch (Exception exception)
+        {
+            Debug.LogException(exception);
+        }
+
+        SetSaveStatusVisible(false);
+        _saveRoutine = null;
+    }
+
+    private void SaveImmediately()
     {
         EnsureRuntimeServices();
 
@@ -39,5 +76,15 @@ public sealed partial class SaveManager
     {
         EnsureRuntimeServices();
         return _saveContextFactory.Create(_itemDatabaseAsset);
+    }
+
+    private void SetSaveStatusVisible(bool isVisible)
+    {
+        if (_saveStatusCanvasGroup == null)
+        {
+            return;
+        }
+
+        _saveStatusCanvasGroup.alpha = isVisible ? 1f : 0f;
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item Database", menuName = "Inventory/Item Database")]
 public sealed class ItemDatabase : ScriptableObject
 {
+    private const string ResourceItemsPath = "Items";
+
     [SerializeField] private ItemData[] _items;
 
     private Dictionary<string, ItemData> _itemsById;
@@ -28,16 +30,22 @@ public sealed class ItemDatabase : ScriptableObject
             return;
         }
 
-        _itemsById = new Dictionary<string, ItemData>();
+        _itemsById = new Dictionary<string, ItemData>(System.StringComparer.Ordinal);
 
-        if (_items == null)
+        AddItems(_items);
+        AddItems(Resources.LoadAll<ItemData>(ResourceItemsPath));
+    }
+
+    private void AddItems(ItemData[] items)
+    {
+        if (items == null)
         {
             return;
         }
 
-        for (int i = 0; i < _items.Length; i++)
+        for (int i = 0; i < items.Length; i++)
         {
-            ItemData item = _items[i];
+            ItemData item = items[i];
 
             if (item == null)
             {
@@ -52,12 +60,16 @@ public sealed class ItemDatabase : ScriptableObject
 
             if (_itemsById.ContainsKey(item.Id))
             {
-                Debug.LogWarning($"[ItemDatabase] Duplicate item id: {item.Id}");
                 continue;
             }
 
             _itemsById.Add(item.Id, item);
         }
+    }
+
+    private void OnEnable()
+    {
+        _itemsById = null;
     }
 
 #if UNITY_EDITOR

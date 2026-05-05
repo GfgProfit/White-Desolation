@@ -8,6 +8,7 @@ public static class CursorLockService
     private static bool _hasSnapshot;
     private static bool _initialVisible;
     private static CursorLockMode _initialLockState;
+    private static int _gameplayInputBlockedUntilFrame = -1;
 
     public static void ShowCursor(object owner)
     {
@@ -48,6 +49,7 @@ public static class CursorLockService
             return;
         }
 
+        BlockGameplayInputForCurrentFrame();
         RestoreInitialState();
     }
 
@@ -56,7 +58,17 @@ public static class CursorLockService
         ReleaseCursor(owner);
     }
 
+    public static void ForceUnlock()
+    {
+        Owners.Clear();
+        _hasSnapshot = false;
+        BlockGameplayInputForCurrentFrame();
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
     public static bool IsLockedByAnyOwner => Owners.Count > 0;
+    public static bool IsGameplayInputBlocked => Owners.Count > 0 || Time.frameCount <= _gameplayInputBlockedUntilFrame;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStaticState()
@@ -65,6 +77,14 @@ public static class CursorLockService
         _hasSnapshot = false;
         _initialVisible = false;
         _initialLockState = CursorLockMode.None;
+        _gameplayInputBlockedUntilFrame = -1;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    private static void BlockGameplayInputForCurrentFrame()
+    {
+        _gameplayInputBlockedUntilFrame = Mathf.Max(_gameplayInputBlockedUntilFrame, Time.frameCount);
     }
 
     private static void RestoreInitialState()
@@ -76,8 +96,8 @@ public static class CursorLockService
         }
         else
         {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
 
         _hasSnapshot = false;

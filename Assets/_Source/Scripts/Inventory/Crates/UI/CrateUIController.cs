@@ -66,6 +66,8 @@ public sealed partial class CrateUIController : MonoBehaviour
     private bool _inventoryRightPanelWasActive;
     private bool _inventoryUIControllerWasEnabled;
 
+    public bool IsWindowOpen => _isCrateOpen || _isBrowsingSearchResults;
+
     private void Awake()
     {
         EnsureRuntimeReferences();

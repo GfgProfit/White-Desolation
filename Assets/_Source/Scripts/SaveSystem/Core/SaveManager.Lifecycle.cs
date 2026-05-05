@@ -2,6 +2,7 @@
 {
     private void Start()
     {
+        SetSaveStatusVisible(false);
         EnsureRuntimeServices();
 
         if (_loadOnStart)
